@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
 
-source lcov.sh lcov.sh
+source lcov.sh -o test/coverage
 
-lcov_init a
+lcov_init *.sh >/dev/null
 
 exit 1
+
