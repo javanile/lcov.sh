@@ -1,9 +1,10 @@
 #!/bin/bash
 
-source lcov.sh
+source lcov.sh $@
 
 lcov_init *.sh !test.sh !coverage
 
-run_test ./test/test1.sh
+run_test ./test/lcov_init.sh
+#run_test ./test/lcov_init.sh
 
 lcov_done

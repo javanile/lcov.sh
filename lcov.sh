@@ -3,10 +3,16 @@ set -f
 [[ -z "${LCOV_DEBUG}" ]] || set -x
 
 export LCOV_DEBUG=1
-export PS4='+:$0:$LINENO: '
-lcov_stop=$(cat /proc/sys/kernel/random/uuid)
-trap '$(jobs -p) || kill $(jobs -p)' EXIT
 
+### http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/
+export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+lcov_stop=$(cat /proc/sys/kernel/random/uuid)
+#trap '$(jobs -p) || kill $(jobs -p)' EXIT
+
+##
+##
+##
+##
 lcov_init () {
     mkdir -p coverage
     include="-name lcov.sh"
