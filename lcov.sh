@@ -46,6 +46,7 @@ lcov_init () {
         lcov_scan "${file}" > "${output}/init.info"
         [[ -f "${output}/lcov.info" ]] || lcov -q -a "${output}/init.info" -o "${output}/lcov.info" && true
         lcov -q -a "${output}/init.info" -a "${output}/lcov.info" -o "${output}/lcov.info" >/dev/null 2>&1 && true
+        rm -f "${output}/init.info"
     done
 }
 
