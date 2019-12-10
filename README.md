@@ -15,5 +15,9 @@ welcome () {
 welcome "John"
 ```
 
+## TL;DR
+
+> not now :-)
+
 See more:
- - http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/
+-  <http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/>
