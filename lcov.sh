@@ -83,7 +83,7 @@ lcov_done () {
     done=$(echo ${stat} | cut -s -d' ' -f2)
     fail=$(echo ${stat} | cut -s -d' ' -f3)
     skip=$(echo ${stat} | cut -s -d' ' -f4)
-    if [[ "${fail}" -gt "0" ]]; then
+    if [[ ${fail} -gt 0 || ${done} -eq 0 ]]; then
         exit_info=fail
         exit_code=1
     else
