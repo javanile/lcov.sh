@@ -1,4 +1,4 @@
-# lcov.sh
+# LCOV.SH
 
 
 
