@@ -14,3 +14,6 @@ welcome () {
 
 welcome "John"
 ```
+
+See more:
+ - http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/
