@@ -57,10 +57,33 @@ while true; do
 done
 
 ##
+#
+#
+# Arguments
+#  - $1...$N: include or exclude glob or path (eg: *.sh, !test, etc...)
+# Outputs
+#  - Create output directory with scanned tracefile lcov.info file.
+##
+get_files () {
+    include="-name *.sh"
+    exclude="-not -name .gitignore -not -path .git"
+
+    for arg in "$@"; do
+        if [[ "${arg::1}" != "!" ]]; then
+            include+=" -or -wholename ${arg}"
+        else
+            exclude+=" -not -wholename ${arg:1} -not -path *${arg:1}*"
+        fi
+    done
+
+    find . -type f \( ${include[0]} \) \( ${exclude[0]} \)
+}
+
+##
 # Initialize output directory.
 #
 # Arguments
-#  - $1...$N: include or exlude glob or path (eg: *.sh, !test, etc...)
+#  - $1...$N: include or exclude glob or path (eg: *.sh, !test, etc...)
 # Outputs
 #  - Create output directory with scanned tracefile lcov.info file.
 ##
@@ -68,19 +91,9 @@ lcov_init () {
     echo -e "LCOV.SH by Francesco Bianco <bianco@javanile.org>\n"
 
     mkdir -p "${output}"
-    include="-name lcov.sh"
-    exclude="-not -name .gitignore -not -path .git"
+    rm -f "${output}/lcov.info" "${output}/test.*"
 
-    for arg in "$@"; do
-        if [[ "${arg::1}" != "!" ]]; then
-            include+=" -or -name ${arg}"
-        else
-            exclude+=" -not -name ${arg:1} -not -path *${arg:1}*"
-        fi
-    done
-
-    rm -f ${output}/test.stat ${output}/test.lock ${output}/lcov.info >/dev/null 2>&1
-    find . -type f \( ${include[0]} \) \( ${exclude[0]} \) | while read file; do
+    get_files "$@" | while read file; do
         lcov_scan "${file}" > "${output}/init.info"
         [[ -f "${output}/lcov.info" ]] || lcov -q -a "${output}/init.info" -o "${output}/lcov.info" && true
         lcov -q -a "${output}/init.info" -a "${output}/lcov.info" -o "${output}/lcov.info" >/dev/null 2>&1 && true
@@ -142,7 +155,7 @@ lcov_done () {
     lcov --summary "${output}/lcov.info"
     echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
     echo -e "  exit.......: ${exit_code} ${exit_info}"
-    exit ${exit}
+    exit ${exit_code}
 }
 
 ##
