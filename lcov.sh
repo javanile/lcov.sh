@@ -41,7 +41,7 @@ lcov_init () {
         fi
     done
 
-    rm -f ${output}/test.lock ${output}/lcov.info >/dev/null 2>&1
+    rm -f ${output}/test.stat ${output}/test.lock ${output}/lcov.info >/dev/null 2>&1
     find . -type f \( ${include[0]} \) \( ${exclude[0]} \) | while read file; do
         lcov_scan ${file} > ${output}/init.info
         [[ -f ${output}/lcov.info ]] || lcov -q -a ${output}/init.info -o ${output}/lcov.info && true
@@ -76,7 +76,24 @@ lcov_scan () {
 ##
 ##
 lcov_done () {
+    echo ""
+    stat=$(cat ${output}/test.stat)
+    test=$(echo ${stat} | cut -s -d' ' -f1)
+    done=$(echo ${stat} | cut -s -d' ' -f2)
+    fail=$(echo ${stat} | cut -s -d' ' -f3)
+    skip=$(echo ${stat} | cut -s -d' ' -f4)
+    if [[ "${fail}" -gt "0" ]]; then
+        exit_info=fail
+        exit_code=1
+    else
+        exit_info=success
+        exit_code=0
+    fi
     genhtml -q -o ${output} ${output}/lcov.info
+    lcov --summary ${output}/lcov.info
+    echo "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
+    echo "  exit.......: ${exit_code} (${exit_info})"
+    exit ${exit}
 }
 
 ##
@@ -97,10 +114,22 @@ run_step () {
 ##
 ##
 ##
+run_stat () {
+    stat="0 $(cat ${output}/test.stat 2>/dev/null)"
+    test=$(expr $(echo ${stat} | cut -d' ' -f2) + $1)
+    done=$(expr $(echo ${stat} | cut -d' ' -f3) + $2)
+    fail=$(expr $(echo ${stat} | cut -d' ' -f4) + $3)
+    skip=$(expr $(echo ${stat} | cut -d' ' -f5) + $4)
+    echo "${test} ${done} ${fail} ${skip}" > ${output}/test.stat
+}
+
+##
+##
+##
 run_test () {
     if [[ ! -z $1 ]]; then
         run_wait
-        echo -n "   > "
+        echo -n "  > "
         if [[ -f $1 ]]; then
             rm -f ${output}/test.info
             bash -x $1 2> ${output}/test.log
@@ -113,16 +142,19 @@ run_test () {
                         echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${output}/test.info
                     elif [[ "${line}" == "${lcov_stop}" ]]; then
                         echo "[done] $1: banana test.";
+                        run_stat 1 1 0 0
                         lcov -q -a ${output}/test.info -a ${output}/lcov.info -o ${output}/lcov.info && true
                         shift; run_step; run_test "$@"
                     fi
                 done < ${output}/test.log
             else
                 echo "[fail] $1: exit $?.";
+                run_stat 1 0 1 0
                 shift; run_step; run_test "$@"
             fi
         else
             echo "[skip] $1: file not found.";
+            run_stat 1 0 0 1
             shift; run_step; run_test "$@"
         fi
     fi
