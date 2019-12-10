@@ -40,9 +40,9 @@ export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 lcov_stop=$(cat /proc/sys/kernel/random/uuid)
 options=$(getopt -n lcov.sh -o o: -l output: -- "$@")
 output=coverage
-fail_flag="\e[1m\e[31m[fail]\e[0m"
-done_flag="\e[1m\e[32m[done]\e[0m"
-skip_flag="\e[37m[skip]\e[0m"
+fail_flag="\e[1m\e[31m(fail)\e[0m"
+done_flag="\e[1m\e[32m(done)\e[0m"
+skip_flag="\e[37m(skip)\e[0m"
 
 eval set -- "${options}"
 
@@ -131,16 +131,16 @@ lcov_done () {
     fail="$(echo ${stat} | cut -s -d' ' -f3)"
     skip="$(echo ${stat} | cut -s -d' ' -f4)"
     if [[ ${fail} -gt 0 || ${done} -eq 0 ]]; then
-        exit_info=fail
+        exit_info="${fail_flag}"
         exit_code=1
     else
-        exit_info=success
+        exit_info="${done_flag}"
         exit_code=0
     fi
     genhtml -q -o "${output}" "${output}/lcov.info"
     lcov --summary "${output}/lcov.info"
-    echo "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
-    echo "  exit.......: ${exit_code} (${exit_info})"
+    echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
+    echo -e "  exit.......: ${exit_code} ${exit_info}"
     exit ${exit}
 }
 
