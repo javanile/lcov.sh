@@ -14,3 +14,14 @@ assert_file_exists () {
     fi
 }
 
+assert_output_equals () {
+    row=0
+    expect=("$@")
+    while read actual; do
+        if [[ "${actual}" != "${expect[${row}]}" ]]; then
+            echo "Expected '${expect[${row}]}' found '${actual}'"
+            exit 1
+        fi
+        row=$((row+1))
+    done
+}
