@@ -2,7 +2,11 @@
 set -e
 
 source lcov.sh -o test/coverage
+source test/testcase.sh
 
-lcov_init *.sh >/dev/null
+echo "Testing"
 
-echo "Yes"
+lcov_init *.sh
+
+assert_directory_exists test/coverage
+assert_file_exists test/coverage/lcov.info

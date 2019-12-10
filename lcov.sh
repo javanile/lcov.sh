@@ -38,7 +38,7 @@ export LCOV_DEBUG=1
 
 export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 lcov_stop=$(cat /proc/sys/kernel/random/uuid)
-options=$(getopt -n lcov.sh -o o: -l output: -- "$@")
+options=$(getopt -n lcov.sh -o o:v -l output:,version -- "$@")
 output=coverage
 fail_flag="\e[1m\e[31m(fail)\e[0m"
 done_flag="\e[1m\e[32m(done)\e[0m"
@@ -49,6 +49,7 @@ eval set -- "${options}"
 while true; do
     case "$1" in
         -o|--output) shift; output=$1 ;;
+        -v|--version) echo "LCOV.SH version ${VERSION}"; exit ;;
         -h|--help) usage; exit ;;
         --) shift; break ;;
     esac
