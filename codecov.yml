@@ -1,0 +1,4 @@
+ignore:
+  - "coverage"
+  - "release.sh"
+  - "test.sh"
