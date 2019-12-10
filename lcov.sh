@@ -137,8 +137,9 @@ run_test () {
         echo -n "  > "
         if [[ -f $1 ]]; then
             rm -f ${output}/test.info
-            bash -x $1 2> ${output}/test.log && true
-            if [[ $? -eq 0 ]]; then
+            bash -x $1 >${output}/test.out 2>${output}/test.log && true
+            exit_code=$?
+            if [[ ${exit_code} -eq 0 ]]; then
                 echo "${lcov_stop}" >> ${output}/test.log
                 while IFS= read line || [[ -n "${line}" ]]; do
                     if [[ "${line::1}" == "+" ]]; then
@@ -146,13 +147,13 @@ run_test () {
                         lineno=$(echo ${line} | cut -s -d':' -f3)
                         echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${output}/test.info
                     elif [[ "${line}" == "${lcov_stop}" ]]; then
-                        echo "[done] $1: banana test.";
+                        echo "[done] $1: '$(grep "." ${output}/test.out | tail -1)' (ok)";
                         lcov -q -a ${output}/test.info -a ${output}/lcov.info -o ${output}/lcov.info && true
                         shift; run_stat 1 1 0 0; run_step; run_test "$@"
                     fi
                 done < ${output}/test.log
             else
-                echo "[fail] $1: exit $?.";
+                echo "[fail] $1: '$(grep "." ${output}/test.out | tail -1)' (exit ${exit_code})";
                 shift; run_stat 1 0 1 0; run_step; run_test "$@"
             fi
         else
