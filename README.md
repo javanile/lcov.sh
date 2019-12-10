@@ -14,6 +14,3 @@ welcome () {
 
 welcome "John"
 ```
-
-
-

@@ -29,7 +29,7 @@ done
 lcov_init () {
     echo -e "LCOV.SH by Francesco Bianco <bianco@javanile.org>\n"
 
-    mkdir -p ${output}
+    mkdir -p "${output}"
     include="-name lcov.sh"
     exclude="-not -name .gitignore -not -path .git"
 
@@ -43,9 +43,9 @@ lcov_init () {
 
     rm -f ${output}/test.stat ${output}/test.lock ${output}/lcov.info >/dev/null 2>&1
     find . -type f \( ${include[0]} \) \( ${exclude[0]} \) | while read file; do
-        lcov_scan ${file} > ${output}/init.info
-        [[ -f ${output}/lcov.info ]] || lcov -q -a ${output}/init.info -o ${output}/lcov.info && true
-        lcov -q -a ${output}/init.info -a ${output}/lcov.info -o ${output}/lcov.info >/dev/null 2>&1 && true
+        lcov_scan "${file}" > "${output}/init.info"
+        [[ -f "${output}/lcov.info" ]] || lcov -q -a "${output}/init.info" -o "${output}/lcov.info" && true
+        lcov -q -a "${output}/init.info" -a "${output}/lcov.info" -o "${output}/lcov.info" >/dev/null 2>&1 && true
     done
 }
 
@@ -68,7 +68,7 @@ lcov_scan () {
         [[ "${skip_eof}" == "EOF" ]] && continue
         [[ "${line}" == *"<<EOF" ]] && skip_eof=EOF
         echo "DA:${lineno},0"
-    done < $1
+    done < "$1"
     echo "end_of_record"
 }
 
@@ -90,8 +90,8 @@ lcov_done () {
         exit_info=success
         exit_code=0
     fi
-    genhtml -q -o ${output} ${output}/lcov.info
-    lcov --summary ${output}/lcov.info
+    genhtml -q -o "${output}" "${output}/lcov.info"
+    lcov --summary "${output}/lcov.info"
     echo "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
     echo "  exit.......: ${exit_code} (${exit_info})"
     exit ${exit}
@@ -147,13 +147,15 @@ run_test () {
                         lineno=$(echo ${line} | cut -s -d':' -f3)
                         echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${output}/test.info
                     elif [[ "${line}" == "${lcov_stop}" ]]; then
-                        echo "[done] $1: '$(grep "." ${output}/test.out | tail -1)' (ok)";
+                        info=$(grep . ${output}/test.out | tail -1)
+                        echo "[done] $1: '${info}' (ok)";
                         lcov -q -a ${output}/test.info -a ${output}/lcov.info -o ${output}/lcov.info && true
                         shift; run_stat 1 1 0 0; run_step; run_test "$@"
                     fi
-                done < ${output}/test.log
+                done < "${output}/test.log"
             else
-                echo "[fail] $1: '$(grep "." ${output}/test.out | tail -1)' (exit ${exit_code})";
+                info=$(grep "." ${output}/test.out | tail -1)
+                echo "[fail] $1: '${info}' (exit ${exit_code})";
                 shift; run_stat 1 0 1 0; run_step; run_test "$@"
             fi
         else
