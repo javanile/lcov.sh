@@ -8,13 +8,19 @@ The best LCOV framework around a BASH project
 
 ## Get started
 
+Download `lcov.sh` file into your local machine
 ```bash
 $ curl -sL https://git.io/lcov.sh
 ```
 
+Install 
+
+Check for version
 ```bash
 bash lcov.sh -v
 ```
+
+
 
 ```bash
 #!/bin/bash
@@ -31,5 +37,29 @@ welcome "John"
 
 > not now :-)
 
+
+### Short url
+
+```bash
+curl -i https://git.io \
+     -F "url=https://raw.githubusercontent.com/javanile/lcov.sh/master/lcov.sh" \
+     -F "code=lcov.sh"
+```
+
+### Install `lcov` package
+
+Debian/Ubuntu
+```bash
+apt install lcov
+```
+
+Mac OSX
+```bash
+brew install lcov
+```
+
+
+
 See more:
+-   <>
 -   <http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/>
