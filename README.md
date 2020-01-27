@@ -8,19 +8,20 @@ The best LCOV framework around a BASH project
 
 ## Get started
 
-Download `lcov.sh` file into your local machine
+1. Download `lcov.sh` file into your local machine
 ```bash
 $ curl -sL https://git.io/lcov.sh
 ```
 
-Install 
+2. Install `lcov` package into your system 
+```bash
+$ apt install lcov
+```
 
-Check for version
+3. Check if it working
 ```bash
 bash lcov.sh -v
 ```
-
-
 
 ```bash
 #!/bin/bash
