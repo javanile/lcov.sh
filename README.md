@@ -41,7 +41,7 @@ welcome "John"
 ### Short url
 
 ```bash
-curl -i https://git.io \
+curl -i "https://git.io" \
      -F "url=https://raw.githubusercontent.com/javanile/lcov.sh/master/lcov.sh" \
      -F "code=lcov.sh"
 ```
