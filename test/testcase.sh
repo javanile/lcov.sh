@@ -24,4 +24,5 @@ assert_output_equals () {
         fi
         row=$((row+1))
     done
+    echo "Assert output equals success"
 }

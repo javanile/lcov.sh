@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##
 # LCOV.SH
@@ -35,14 +35,25 @@ VERSION="0.13.4"
 trap '$(jobs -p) || kill $(jobs -p)' EXIT
 
 export LCOV_DEBUG=1
-
 export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
-lcov_stop=$(cat /proc/sys/kernel/random/uuid)
-options=$(getopt -n lcov.sh -o o:v -l output:,version -- "$@")
+
+case "$(uname -s)" in
+    Darwin*)
+        getopt=/usr/local/opt/gnu-getopt/bin/getopt
+        fail_flag='\x1B[1m\x1B[31m(fail)\x1B[0m'
+        done_flag='\x1B[1m\x1B[32m(done)\x1B[0m'
+        skip_flag='\x1B[37m(skip)\x1B[0m'
+        ;;
+    Linux|*)
+        getopt=/usr/local/bin/getopt
+        fail_flag="\e[1m\e[31m(fail)\e[0m"
+        done_flag="\e[1m\e[32m(done)\e[0m"
+        skip_flag="\e[37m(skip)\e[0m"
+        ;;
+esac
+
+options=$(${getopt} -n lcov.sh -o o:v -l output:,version -- "$@")
 output=coverage
-fail_flag="\e[1m\e[31m(fail)\e[0m"
-done_flag="\e[1m\e[32m(done)\e[0m"
-skip_flag="\e[37m(skip)\e[0m"
 
 eval set -- "${options}"
 
@@ -55,6 +66,22 @@ while true; do
     esac
     shift
 done
+
+##
+# Generate UUID.
+#
+# Arguments
+#  - None
+# Outputs
+#  - UUID random code
+##
+get_uuid ()  {
+    if [[ -f /proc/sys/kernel/random/uuid ]]; then
+        cat /proc/sys/kernel/random/uuid
+    else
+        uuidgen
+    fi
+}
 
 ##
 #
@@ -201,6 +228,7 @@ run_test () {
             bash -x $1 >${output}/test.out 2>${output}/test.log && true
             exit_code=$?
             if [[ ${exit_code} -eq 0 ]]; then
+                lcov_stop=get_uuid
                 echo "${lcov_stop}" >> ${output}/test.log
                 while IFS= read line || [[ -n "${line}" ]]; do
                     if [[ "${line::1}" == "+" ]]; then
@@ -226,3 +254,19 @@ run_test () {
     fi
     return 0
 }
+
+##
+#
+##
+main () {
+    lcov_init ./*.sh !test.sh !release.sh !coverage
+    run_test "$@"
+    lcov_done
+}
+
+##
+#
+##
+if [[ "${BASH_SOURCE[0]}" = "${0}" ]]; then
+    main "$@"
+fi
