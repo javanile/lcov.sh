@@ -1,9 +1,10 @@
 version: '3'
 
 services:
+
   test:
     build: .
     command:
-      - ./test.sh
+      - make test
     volumes:
       - .:/lcov.sh

@@ -14,3 +14,6 @@ endif
 
 test:
 	bash lcov.sh test/*.test.sh
+
+docker\:test:
+	docker-compose
