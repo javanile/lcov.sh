@@ -16,4 +16,4 @@ test:
 	bash lcov.sh test/*.test.sh
 
 docker\:test:
-	docker-compose
+	docker-compose run --rm test
