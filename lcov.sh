@@ -5,7 +5,7 @@
 #
 # The best LCOV framework around BASH projects.
 #
-# Copyright (c) 2019 Francesco Bianco <bianco@javanile.org>
+# Copyright (c) 2020 Francesco Bianco <bianco@javanile.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
 
 set -f
 
-VERSION="0.13.4"
+VERSION="0.13.4a"
 
 trap '$(jobs -p) || kill $(jobs -p)' EXIT
 
@@ -40,20 +40,19 @@ export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 case "$(uname -s)" in
     Darwin*)
         getopt=/usr/local/opt/gnu-getopt/bin/getopt
-        fail_flag='\x1B[1m\x1B[31m(fail)\x1B[0m'
-        done_flag='\x1B[1m\x1B[32m(done)\x1B[0m'
-        skip_flag='\x1B[37m(skip)\x1B[0m'
+        escape='\x1B'
         ;;
     Linux|*)
-        getopt=/usr/local/bin/getopt
-        fail_flag="\e[1m\e[31m(fail)\e[0m"
-        done_flag="\e[1m\e[32m(done)\e[0m"
-        skip_flag="\e[37m(skip)\e[0m"
+        getopt=/usr/bin/getopt
+        escape='\e'
         ;;
 esac
 
-options=$(${getopt} -n lcov.sh -o o:v -l output:,version -- "$@")
 output=coverage
+skip_flag="${escape}[37m(skip)${escape}[0m"
+done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
+fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
+options=$(${getopt} -n lcov.sh -o o:v -l output:,version -- "$@")
 
 eval set -- "${options}"
 
@@ -84,7 +83,7 @@ get_uuid ()  {
 }
 
 ##
-#
+# Get all files for coverage analysis.
 #
 # Arguments
 #  - $1...$N: include or exclude glob or path (eg: *.sh, !test, etc...)
@@ -129,8 +128,12 @@ lcov_init () {
 }
 
 ##
+# Scan file and generate default lcov file info.
 #
-#
+# Arguments
+#  - $1: file to scan.
+# Outputs
+#  -
 ##
 lcov_scan () {
     lineno=0
