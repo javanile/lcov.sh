@@ -13,7 +13,7 @@ ifeq ($(UNAME),Darwin)
 endif
 
 test:
-	bash lcov.sh test/*.test.sh
+	bash lcov.sh test/*.test.sh -x pipetest.sh
 
 docker\:test:
 	docker-compose run --rm test
