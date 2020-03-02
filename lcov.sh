@@ -48,17 +48,22 @@ case "$(uname -s)" in
         ;;
 esac
 
+coverage=()
+extension=sh
 output=coverage
 skip_flag="${escape}[37m(skip)${escape}[0m"
 done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
 fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
-options=$(${getopt} -n lcov.sh -o o:v -l output:,version -- "$@")
+options=$(${getopt} -n lcov.sh -o i:e:x:o:v -l extension:,include:,exclude:,output:,version -- "$@")
 
 eval set -- "${options}"
 
 while true; do
     case "$1" in
         -o|--output) shift; output=$1 ;;
+        -i|--include) shift; coverage+=("$1") ;;
+        -x|--exclude) shift; coverage+=("!$1") ;;
+        -e|--extension) shift; extension=$1 ;;
         -v|--version) echo "LCOV.SH version ${VERSION}"; exit ;;
         -h|--help) usage; exit ;;
         --) shift; break ;;
@@ -78,7 +83,7 @@ get_uuid ()  {
     if [[ -f /proc/sys/kernel/random/uuid ]]; then
         cat /proc/sys/kernel/random/uuid
     else
-        uuidgen
+        /usr/bin/uuidgen
     fi
 }
 
@@ -91,8 +96,8 @@ get_uuid ()  {
 #  - Create output directory with scanned tracefile lcov.info file.
 ##
 get_files () {
-    include="-name *.sh"
-    exclude="-not -name .gitignore -not -path .git"
+    include="-name *.${extension}"
+    exclude="-not -name ${output} -not -path .git"
 
     for arg in "$@"; do
         if [[ "${arg::1}" != "!" ]]; then
@@ -206,7 +211,7 @@ run_step () {
 }
 
 ##
-#
+# Store running tests stat.
 ##
 run_stat () {
     stat="0 "
@@ -220,7 +225,7 @@ run_stat () {
 }
 
 ##
-#
+# Execute testcase and process LCOV info.
 ##
 run_test () {
     if [[ ! -z $1 ]]; then
@@ -259,17 +264,15 @@ run_test () {
 }
 
 ##
-#
+# Entrypoint
 ##
 main () {
-    lcov_init ./*.sh !test.sh !release.sh !coverage
+    lcov_init "${coverage[@]}"
     run_test "$@"
     lcov_done
 }
 
-##
-#
-##
+## Bypass entrypoint if file was sourced
 if [[ "${BASH_SOURCE[0]}" = "${0}" ]]; then
     main "$@"
 fi
