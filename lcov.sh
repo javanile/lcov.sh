@@ -85,6 +85,7 @@ get_uuid ()  {
     else
         /usr/bin/uuidgen
     fi
+    return 0
 }
 
 ##
@@ -108,6 +109,8 @@ get_files () {
     done
 
     find . -type f \( ${include[0]} \) \( ${exclude[0]} \)
+
+    return 0
 }
 
 ##
@@ -122,14 +125,16 @@ lcov_init () {
     echo -e "LCOV.SH by Francesco Bianco <bianco@javanile.org>\n"
 
     mkdir -p "${output}"
-    rm -f "${output}/lcov.info" "${output}/test.stat"
+    rm -f "${output}/lcov.info" "${output}/test.stat" "${output}/test.lock"
 
-    get_files "$@" | while read file; do
+    get_files "$@" | while IFS= read -r file; do
         lcov_scan "${file}" > "${output}/init.info"
         [[ -f "${output}/lcov.info" ]] || lcov -q -a "${output}/init.info" -o "${output}/lcov.info" && true
         lcov -q -a "${output}/init.info" -a "${output}/lcov.info" -o "${output}/lcov.info" >/dev/null 2>&1 && true
         rm -f "${output}/init.info"
     done
+
+    return 0
 }
 
 ##
@@ -161,6 +166,7 @@ lcov_scan () {
         echo "DA:${lineno},0"
     done < "$1"
     echo "end_of_record"
+    return 0
 }
 
 ##
