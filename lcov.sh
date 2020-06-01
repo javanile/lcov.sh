@@ -87,6 +87,11 @@ while true; do
     shift
 done
 
+if ! [ -x "$(command -v lcov)" ]; then
+  echo "lcov.sh: missing 'lcov' command on your system." >&2
+  exit 1
+fi
+
 ##
 # Generate UUID.
 #
