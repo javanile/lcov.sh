@@ -1,0 +1,7 @@
+{
+  "name": "lcov.sh",
+  "version": "0.0.1",
+  "description": "The best LCOV framework around a BASH project",
+  "global": true,
+  "install": "make install"
+}

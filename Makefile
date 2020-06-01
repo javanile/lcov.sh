@@ -1,4 +1,7 @@
 
+BIN ?= lcov.sh
+PREFIX ?= /usr/local
+
 .PHONY: test
 
 ifeq ($(OS),Windows_NT)
@@ -11,6 +14,10 @@ install:
 ifeq ($(UNAME),Darwin)
 	brew install gnu-getopt lcov
 endif
+	install ./lcov.sh $(PREFIX)/bin/$(BIN)
+
+uninstall:
+	rm -f $(PREFIX)/bin/$(BIN)
 
 test:
 	bash lcov.sh test/*.test.sh -x pipetest.sh
