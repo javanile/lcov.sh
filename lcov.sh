@@ -291,7 +291,7 @@ run_test () {
 }
 
 ##
-# Entrypoint
+# Entry-point
 ##
 main () {
     lcov_init "${coverage[@]}"
