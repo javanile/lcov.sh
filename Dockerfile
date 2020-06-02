@@ -5,4 +5,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN curl -sLo- http://get.bpkg.sh | bash
+
 WORKDIR /lcov.sh
