@@ -26,7 +26,7 @@
 # SOFTWARE.
 ##
 
-#[[ -z "${LCOV_DEBUG}" ]] || set -x
+[[ -z "${LCOV_DEBUG}" ]] || set -x
 
 set -ef
 
