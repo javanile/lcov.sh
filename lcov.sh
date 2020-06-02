@@ -114,9 +114,10 @@ get_uuid ()  {
 ##
 get_files () {
     include="-name *.${extension}"
-    exclude="-not -name ${output} -not -path .git"
+    exclude="-not -wholename ${output} -not -path .git"
 
     for arg in "$@"; do
+        #echo "ARG: ${arg}"
         if [[ "${arg::1}" != "!" ]]; then
             include+=" -or -wholename ${arg}"
         else
@@ -138,7 +139,8 @@ get_files () {
 #  - Create output directory with scanned tracefile lcov.info file.
 ##
 lcov_init () {
-    echo -e "LCOV.SH by Francesco Bianco <bianco@javanile.org>\n"
+    echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
+    echo ""
 
     mkdir -p "${output}"
     rm -f "${output}/lcov.info" "${output}/test.stat" "${output}/test.lock"
@@ -298,7 +300,7 @@ run_test () {
 # Entry-point
 ##
 main () {
-    if ! [ -x "$(command -v lcov)" ]; then
+    if [[ -z "$(command -v lcov)" ]]; then
         echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
         exit 1
     fi

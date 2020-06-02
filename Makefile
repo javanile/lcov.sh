@@ -19,11 +19,13 @@ endif
 uninstall:
 	rm -f $(PREFIX)/bin/$(BIN)
 
+getdeps: deps
+
 deps:
 	bpkg getdeps
 
 test: deps
-	bash ./lcov.sh test/*.test.sh -x deps
+	@bash ./lcov.sh test/*.test.sh -x deps
 
 docker-test:
 	docker-compose run --rm test
