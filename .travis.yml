@@ -7,7 +7,7 @@ env:
   - DOCKER_COMPOSE_VERSION=1.22.0
 
 before_install:
-  - bash <(curl -sL https://get.io/get-bpkg)
+  - bash <(curl -sL https://git.io/get-bpkg)
   - bash <(curl -sL https://git.io/get-docker-compose)
 
 script:
