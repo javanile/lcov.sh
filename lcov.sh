@@ -136,7 +136,7 @@ get_files () {
 # Arguments
 #  - $1...$N: include or exclude glob or path (eg: *.sh, !test, etc...)
 # Outputs
-#  - Create output directory with scanned tracefile lcov.info file.
+#  - Create output directory with scanned trace file lcov.info file.
 ##
 lcov_init () {
     echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
