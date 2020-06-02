@@ -8,6 +8,8 @@ The best LCOV framework around a BASH project
 
 ## Requirements
 
+## Installation
+
 
 
 Download `lcov.sh` file into your local machine

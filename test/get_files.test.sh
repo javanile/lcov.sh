@@ -9,7 +9,7 @@ get_files ./*.md !./*.sh | assert_equals "$(cat <<EOF
 EOF
 )"
 
-get_files ./test/fixtures/*.sh !deps !lcov.sh !*test.sh | assert_equals "$(cat <<EOF
+get_files ./test/fixtures/*.sh !deps !lcov.sh !*test.sh | sort | assert_equals "$(cat <<EOF
 ./test/fixtures/sample.sh
 ./test/fixtures/test1.sh
 ./test/fixtures/test2.sh
