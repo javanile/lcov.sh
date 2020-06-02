@@ -19,8 +19,16 @@ endif
 uninstall:
 	rm -f $(PREFIX)/bin/$(BIN)
 
+getdeps:
+	bpkg getdeps
+
 test:
 	bash lcov.sh test/*.test.sh -x pipetest.sh
 
-docker\:test:
+docker-test:
 	docker-compose run --rm test
+
+release:
+	git add .
+	git commit -am "Release"
+	git push

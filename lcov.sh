@@ -30,7 +30,7 @@
 
 set -ef
 
-VERSION="0.13.4a"
+VERSION="0.0.1"
 
 usage () {
     echo "Usage: ./lcov.sh [OPTION]... FILE..."
