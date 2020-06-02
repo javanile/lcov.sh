@@ -88,8 +88,13 @@ while true; do
 done
 
 if ! [ -x "$(command -v lcov)" ]; then
-  echo "lcov.sh: missing 'lcov' command on your system." >&2
-  exit 1
+    echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
+    exit 1
+fi
+
+if [[ -z "$1" ]]; then
+    echo "lcov.sh: missing file to test as test case. (try: lcov.sh test/*-test.sh)" >&2
+    exit 1
 fi
 
 ##
@@ -149,6 +154,7 @@ lcov_init () {
     rm -f "${output}/lcov.info" "${output}/test.stat" "${output}/test.lock"
 
     get_files "$@" | while IFS= read -r file; do
+        #echo "coverage: ${file}"
         lcov_scan "${file}" > "${output}/init.info"
         [[ -f "${output}/lcov.info" ]] || lcov -q -a "${output}/init.info" -o "${output}/lcov.info" && true
         lcov -q -a "${output}/init.info" -a "${output}/lcov.info" -o "${output}/lcov.info" >/dev/null 2>&1 && true
@@ -258,7 +264,10 @@ run_test () {
     if [[ ! -z $1 ]]; then
         run_wait
         echo -n "  > "
-        if [[ -f $1 ]]; then
+        if [[ -d $1 ]]; then
+            echo -e "${skip_flag} $1/: is directory.";
+            shift; run_stat 1 0 0 1; run_step; run_test "$@"
+        elif [[ -f $1 ]]; then
             rm -f ${output}/test.info
             bash -x $1 >${output}/test.out 2>${output}/test.log && true
             exit_code=$?
@@ -295,11 +304,13 @@ run_test () {
 ##
 main () {
     lcov_init "${coverage[@]}"
-    run_test "$@"
+    for test in "$@"; do
+        run_test "$test"
+    done
     lcov_done
 }
 
-## Bypass entrypoint if file was sourced
+## Bypass entry-point if file was sourced
 if [[ "${BASH_SOURCE[0]}" = "${0}" ]]; then
     main "$@"
 fi
