@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
-source ./test/testcase.sh
+source ./deps/pipetest/pipetest.sh
 source ./lcov.sh -o test/coverage
 
 rm -fr ./test/coverage
