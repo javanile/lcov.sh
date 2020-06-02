@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-source pipetest.sh
-source lcov.sh -o test/coverage
+source ./lcov.sh -o test/coverage
+source ./deps/pipetest/pipetest.sh
 
 get_files ./*.md !./*.sh | assert_equals "$(cat <<EOF
-    ./README.md
+./README.md
 EOF
 )"

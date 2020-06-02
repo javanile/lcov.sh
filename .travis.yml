@@ -10,7 +10,7 @@ before_install:
   - bash <(curl -sL https://git.io/get-docker-compose)
 
 script:
-  - make docker:test
+  - make docker-test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

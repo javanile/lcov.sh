@@ -26,7 +26,7 @@
 # SOFTWARE.
 ##
 
-[[ -z "${LCOV_DEBUG}" ]] || set -x
+#[[ -z "${LCOV_DEBUG}" ]] || set -x
 
 set -ef
 
@@ -86,16 +86,6 @@ while true; do
     esac
     shift
 done
-
-if ! [ -x "$(command -v lcov)" ]; then
-    echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
-    exit 1
-fi
-
-if [[ -z "$1" ]]; then
-    echo "lcov.sh: missing file to test as test case. (try: lcov.sh test/*-test.sh)" >&2
-    exit 1
-fi
 
 ##
 # Generate UUID.
@@ -178,10 +168,14 @@ lcov_scan () {
     echo "TN:"
     echo "SF:$1"
     while IFS= read line || [[ -n "${line}" ]]; do
-        line=${line%%*( )}
+        #line=${line%%*( )}
+        line="${line#"${line%%[![:space:]]*}"}"
+        line="${line%"${line##*[![:space:]]}"}"
         lineno=$((lineno + 1))
         [[ -z "${line}" ]] && continue
+        [[ "${line}" == "else" ]] && continue
         [[ "${line}" == "fi" ]] && continue
+        [[ "${line}" == ";;" ]] && continue
         [[ "${line}" == "esac" ]] && continue
         [[ "${line}" == "done" ]] && continue
         [[ "${line::1}" == "#" ]] && continue
@@ -288,6 +282,7 @@ run_test () {
                 done < "${output}/test.log"
             else
                 info="$(grep "." "${output}/test.out" | tail -1)"
+                [[ -z "${info}" ]] && info="$(grep "." "${output}/test.log" | tail -1)"
                 echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
                 shift; run_stat 1 0 1 0; run_step; run_test "$@"
             fi
@@ -303,10 +298,22 @@ run_test () {
 # Entry-point
 ##
 main () {
+    if ! [ -x "$(command -v lcov)" ]; then
+        echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
+        exit 1
+    fi
+
+    if [[ -z "$1" ]]; then
+        echo "lcov.sh: missing file to test as test case. (try: lcov.sh test/*-test.sh)" >&2
+        exit 1
+    fi
+
     lcov_init "${coverage[@]}"
+
     for test in "$@"; do
         run_test "$test"
     done
+
     lcov_done
 }
 
