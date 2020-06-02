@@ -18,4 +18,3 @@ SF:./test/fixtures/test1.sh
 SF:./test/fixtures/test2.sh
 EOF
 )"
-
