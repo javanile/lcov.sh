@@ -34,3 +34,6 @@ release:
 	git add .
 	git commit -am "Release"
 	git push
+
+qa:
+	curl -sL https://javanile.org/readme-standard/check.sh | bash -

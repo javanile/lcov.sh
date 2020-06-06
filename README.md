@@ -10,22 +10,28 @@ The best LCOV framework around a BASH project
 
 ## Installation
 
-
-
 Download `lcov.sh` file into your local machine
+
 ```bash
-$ curl -sL https://git.io/lcov.sh
+curl -sL https://git.io/lcov.sh
 ```
 
-Install `lcov` package into your system 
+Install `lcov` package into your system
+
 ```bash
-$ apt install lcov
+apt install lcov
 ```
 
 Check if it working
+
 ```bash
 bash lcov.sh -v
 ```
+
+## Usage
+
+Add the following code `[[ -z "${LCOV_DEBUG}" ]] || set -x`
+on top of source file you want in a coverage report, see below example:
 
 ```bash
 #!/bin/bash
@@ -38,10 +44,17 @@ welcome () {
 welcome "John"
 ```
 
+Now, run from command line the following command:
+
+```bash
+lcov.sh FILE...
+```
+
+## Testing
+
 ## TL;DR
 
 > not now :-)
-
 
 ### Short url
 
@@ -54,17 +67,17 @@ curl -i "https://git.io" \
 ### Install `lcov` package
 
 Debian/Ubuntu
+
 ```bash
 apt install lcov
 ```
 
 Mac OSX
+
 ```bash
 brew install lcov
 ```
 
+## See Also
 
-
-See more:
--   <>
--   <http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/>
+- <http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/>
