@@ -30,7 +30,7 @@
 
 set -ef
 
-VERSION="0.0.1"
+VERSION="0.1.0"
 
 usage () {
     echo "Usage: ./lcov.sh [OPTION]... FILE..."
@@ -225,7 +225,7 @@ lcov_done () {
 ##
 #
 ##
-run_wait () {
+lcov_run_wait() {
     while [[ -f ${output}/test.lock ]]; do sleep 2; done;
     touch ${output}/test.lock
     return 0
@@ -234,7 +234,7 @@ run_wait () {
 ##
 #
 ##
-run_step () {
+lcov_run_step () {
     rm -f ${output}/test.lock
     return 0
 }
@@ -242,7 +242,7 @@ run_step () {
 ##
 # Store running tests stat.
 ##
-run_stat () {
+lcov_run_stat () {
     stat="0 "
     [[ -f "${output}/test.stat" ]] && stat+="$(cat "${output}/test.stat")"
     test=$(expr $(echo ${stat} | cut -d' ' -f2) + $1 || true)
@@ -256,13 +256,13 @@ run_stat () {
 ##
 # Execute testcase and process LCOV info.
 ##
-run_test () {
+lcov_run_test () {
     if [[ ! -z $1 ]]; then
-        run_wait
+        lcov_run_wait
         echo -n "  > "
         if [[ -d $1 ]]; then
             echo -e "${skip_flag} $1/: is directory.";
-            shift; run_stat 1 0 0 1; run_step; run_test "$@"
+            shift; lcov_run_stat 1 0 0 1; lcov_run_step; lcov_run_test "$@"
         elif [[ -f $1 ]]; then
             rm -f ${output}/test.info
             bash -x $1 >${output}/test.out 2>${output}/test.log && true
@@ -279,27 +279,48 @@ run_test () {
                         info=$(grep . ${output}/test.out | tail -1)
                         echo -e "${done_flag} $1: '${info}' (ok)";
                         lcov -q -a ${output}/test.info -a ${output}/lcov.info -o ${output}/lcov.info && true
-                        shift; run_stat 1 1 0 0; run_step; run_test "$@"
+                        shift; lcov_run_stat 1 1 0 0; lcov_run_step; lcov_run_test "$@"
                     fi
                 done < "${output}/test.log"
             else
                 info="$(grep "." "${output}/test.out" | tail -1)"
                 [[ -z "${info}" ]] && info="$(grep "." "${output}/test.log" | tail -1)"
                 echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
-                shift; run_stat 1 0 1 0; run_step; run_test "$@"
+                shift; lcov_run_stat 1 0 1 0; lcov_run_step; lcov_run_test "$@"
             fi
         else
             echo -e "${skip_flag} $1: file not found.";
-            shift; run_stat 1 0 0 1; run_step; run_test "$@"
+            shift; lcov_run_stat 1 0 0 1; lcov_run_step; lcov_run_test "$@"
         fi
     fi
     return 0
 }
 
 ##
+# Execute testcase and process LCOV info.
+##
+run() {
+    local flags="$-"
+    set +eET
+    local origIFS="$IFS"
+    [[ "${flags}" =~ x ]] || set -x
+    # 'output', 'status', 'lines' are global variables available to tests.
+    # shellcheck disable=SC2034
+    output="$("$@" 2>&1)"
+    # shellcheck disable=SC2034
+    status="$?"
+    [[ "${flags}" =~ x ]] || set +x
+    set +x
+    # shellcheck disable=SC2034,SC2206
+    IFS=$'\n' lines=($output)
+    IFS="$origIFS"
+    set "-$flags"
+}
+
+##
 # Entry-point
 ##
-main () {
+main() {
     if [[ -z "$(command -v lcov)" ]]; then
         echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
         exit 1
@@ -313,7 +334,7 @@ main () {
     lcov_init "${coverage[@]}"
 
     for test in "$@"; do
-        run_test "$test"
+        lcov_run_test "$test"
     done
 
     lcov_done
