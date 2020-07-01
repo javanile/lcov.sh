@@ -304,11 +304,12 @@ run() {
     set +eET
     local origIFS="$IFS"
     [[ "${flags}" =~ x ]] || set -x
-    # 'output', 'status', 'lines' are global variables available to tests.
-    # shellcheck disable=SC2034
-    output="$("$@" 2>&1)"
-    # shellcheck disable=SC2034
-    status="$?"
+    (
+        # shellcheck disable=SC2034
+        output="$("$@" 2>&1)"
+        # shellcheck disable=SC2034
+        status="$?"
+    )
     [[ "${flags}" =~ x ]] || set +x
     set +x
     # shellcheck disable=SC2034,SC2206
