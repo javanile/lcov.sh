@@ -1,2 +1,3 @@
 title: LCOV.SH
-theme: jekyll-theme-cayman
+#theme: jekyll-theme-cayman
+remote_theme: plusjade/jekyll-bootstrap
