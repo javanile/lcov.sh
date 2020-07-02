@@ -1,3 +1,0 @@
-+ echo AA
-AA
-+ set +x

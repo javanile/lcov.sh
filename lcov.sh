@@ -28,6 +28,8 @@
 
 [[ -z "${LCOV_DEBUG}" ]] || set -x
 
+echo LCOV_DEBUG ${LCOV_DEBUG} >> a.txt
+
 set -ef
 
 VERSION="0.1.0"
@@ -50,7 +52,6 @@ usage () {
 
 trap '$(jobs -p) || kill $(jobs -p)' EXIT
 
-export LCOV_DEBUG=1
 export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 
 case "$(uname -s)" in
@@ -66,7 +67,7 @@ esac
 
 coverage=()
 extension=sh
-output=coverage
+lcov_output=coverage
 skip_flag="${escape}[37m(skip)${escape}[0m"
 done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
 fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
@@ -114,7 +115,7 @@ get_uuid ()  {
 ##
 get_files () {
     include="-name *.${extension}"
-    exclude="-not -wholename ${output} -not -path .git"
+    exclude="-not -wholename ${lcov_output} -not -path .git"
 
     for arg in "$@"; do
         #echo "ARG: ${arg}"
@@ -142,15 +143,15 @@ lcov_init () {
     echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
     echo ""
 
-    mkdir -p "${output}"
-    rm -f "${output}/lcov.info" "${output}/test.stat" "${output}/test.lock"
+    mkdir -p "${lcov_output}"
+    rm -f "${lcov_output}/lcov.info" "${lcov_output}/test.stat" "${lcov_output}/test.lock"
 
     get_files "$@" | while IFS= read -r file; do
         #echo "coverage: ${file}"
-        lcov_scan "${file}" > "${output}/init.info"
-        [[ -f "${output}/lcov.info" ]] || lcov -q -a "${output}/init.info" -o "${output}/lcov.info" && true
-        lcov -q -a "${output}/init.info" -a "${output}/lcov.info" -o "${output}/lcov.info" >/dev/null 2>&1 && true
-        rm -f "${output}/init.info"
+        lcov_scan "${file}" > "${lcov_output}/init.info"
+        [[ -f "${lcov_output}/lcov.info" ]] || lcov -q -a "${lcov_output}/init.info" -o "${lcov_output}/lcov.info" && true
+        lcov -q -a "${lcov_output}/init.info" -a "${lcov_output}/lcov.info" -o "${lcov_output}/lcov.info" >/dev/null 2>&1 && true
+        rm -f "${lcov_output}/init.info"
     done
 
     return 0
@@ -203,7 +204,7 @@ lcov_scan () {
 lcov_done () {
     echo ""
     stat="0 0 0 0"
-    [[ -f "${output}/test.stat" ]] && stat="$(cat ${output}/test.stat && true)"
+    [[ -f "${lcov_output}/test.stat" ]] && stat="$(cat ${lcov_output}/test.stat && true)"
     test="$(echo ${stat} | cut -s -d' ' -f1)"
     done="$(echo ${stat} | cut -s -d' ' -f2)"
     fail="$(echo ${stat} | cut -s -d' ' -f3)"
@@ -215,8 +216,8 @@ lcov_done () {
         exit_info="${done_flag}"
         exit_code=0
     fi
-    genhtml -q -o "${output}" "${output}/lcov.info"
-    lcov --summary "${output}/lcov.info"
+    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info"
+    lcov --summary "${lcov_output}/lcov.info"
     echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
     echo -e "  exit.......: ${exit_code} ${exit_info}"
     exit ${exit_code}
@@ -225,9 +226,9 @@ lcov_done () {
 ##
 #
 ##
-lcov_run_wait() {
-    while [[ -f ${output}/test.lock ]]; do sleep 2; done;
-    touch ${output}/test.lock
+lcov_test_wait() {
+    while [[ -f ${lcov_output}/test.lock ]]; do sleep 2; done;
+    touch ${lcov_output}/test.lock
     return 0
 }
 
@@ -235,7 +236,7 @@ lcov_run_wait() {
 #
 ##
 lcov_run_step () {
-    rm -f ${output}/test.lock
+    rm -f ${lcov_output}/test.lock
     return 0
 }
 
@@ -244,53 +245,62 @@ lcov_run_step () {
 ##
 lcov_run_stat () {
     stat="0 "
-    [[ -f "${output}/test.stat" ]] && stat+="$(cat "${output}/test.stat")"
+    [[ -f "${lcov_output}/test.stat" ]] && stat+="$(cat "${lcov_output}/test.stat")"
     test=$(expr $(echo ${stat} | cut -d' ' -f2) + $1 || true)
     done=$(expr $(echo ${stat} | cut -d' ' -f3) + $2 || true)
     fail=$(expr $(echo ${stat} | cut -d' ' -f4) + $3 || true)
     skip=$(expr $(echo ${stat} | cut -d' ' -f5) + $4 || true)
-    echo "${test} ${done} ${fail} ${skip}" > "${output}/test.stat"
+    echo "${test} ${done} ${fail} ${skip}" > "${lcov_output}/test.stat"
     return 0
+}
+
+##
+#
+##
+lcov_test_parse_log() {
+    local exit_code=$1
+    if [[ ${exit_code} -eq 0 ]]; then
+        lcov_stop=$(get_uuid)
+        echo "${lcov_stop}" >> ${lcov_output}/test.log
+        while IFS= read line || [[ -n "${line}" ]]; do
+            if [[ "${line::1}" = "+" ]]; then
+                file=$(echo ${line} | cut -s -d':' -f2)
+                lineno=$(echo ${line} | cut -s -d':' -f3)
+                echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${lcov_output}/test.info
+            elif [[ "${line}" = "${lcov_stop}" ]]; then
+                info=$(grep . ${lcov_output}/test.out | tail -1)
+                echo -e "${done_flag} $1: '${info}' (ok)";
+                lcov -q -a ${lcov_output}/test.info -a ${lcov_output}/lcov.info -o ${lcov_output}/lcov.info && true
+                shift; lcov_run_stat 1 1 0 0; lcov_run_step; lcov_test "$@"
+            fi
+        done < "${lcov_output}/test.log"
+    else
+        info="$(grep "." "${lcov_output}/test.out" | tail -1)"
+        [[ -z "${info}" ]] && info="$(grep "." "${lcov_output}/test.log" | tail -1)"
+        echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
+        shift; lcov_run_stat 1 0 1 0; lcov_run_step; lcov_test "$@"
+    fi
 }
 
 ##
 # Execute testcase and process LCOV info.
 ##
-lcov_run_test () {
-    if [[ ! -z $1 ]]; then
-        lcov_run_wait
+lcov_test() {
+    if [[ -n $1 ]]; then
+        lcov_test_wait
         echo -n "  > "
         if [[ -d $1 ]]; then
             echo -e "${skip_flag} $1/: is directory.";
-            shift; lcov_run_stat 1 0 0 1; lcov_run_step; lcov_run_test "$@"
+            shift; lcov_test_stat 1 0 0 1; lcov_test_step; lcov_test "$@"
         elif [[ -f $1 ]]; then
-            rm -f ${output}/test.info
-            bash -x $1 >${output}/test.out 2>${output}/test.log && true
-            exit_code=$?
-            if [[ ${exit_code} -eq 0 ]]; then
-                lcov_stop=$(get_uuid)
-                echo "${lcov_stop}" >> ${output}/test.log
-                while IFS= read line || [[ -n "${line}" ]]; do
-                    if [[ "${line::1}" = "+" ]]; then
-                        file=$(echo ${line} | cut -s -d':' -f2)
-                        lineno=$(echo ${line} | cut -s -d':' -f3)
-                        echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${output}/test.info
-                    elif [[ "${line}" = "${lcov_stop}" ]]; then
-                        info=$(grep . ${output}/test.out | tail -1)
-                        echo -e "${done_flag} $1: '${info}' (ok)";
-                        lcov -q -a ${output}/test.info -a ${output}/lcov.info -o ${output}/lcov.info && true
-                        shift; lcov_run_stat 1 1 0 0; lcov_run_step; lcov_run_test "$@"
-                    fi
-                done < "${output}/test.log"
-            else
-                info="$(grep "." "${output}/test.out" | tail -1)"
-                [[ -z "${info}" ]] && info="$(grep "." "${output}/test.log" | tail -1)"
-                echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
-                shift; lcov_run_stat 1 0 1 0; lcov_run_step; lcov_run_test "$@"
-            fi
+            rm -f ${lcov_output}/test.info
+            export LCOV_DEBUG=1
+            bash -x $1 >${lcov_output}/test.out 2>${lcov_output}/test.log && true
+            export LCOV_DEBUG=
+            lcov_test_parse_log $?
         else
             echo -e "${skip_flag} $1: file not found.";
-            shift; lcov_run_stat 1 0 0 1; lcov_run_step; lcov_run_test "$@"
+            shift; lcov_test_stat 1 0 0 1; lcov_test_step; lcov_test "$@"
         fi
     fi
     return 0
@@ -303,15 +313,14 @@ run() {
     local flags="$-"
     set +eET
     local origIFS="$IFS"
+    export LCOV_DEBUG=1
     [[ "${flags}" =~ x ]] || set -x
-    (
-        # shellcheck disable=SC2034
+
         output="$("$@" 2>&1)"
-        # shellcheck disable=SC2034
+     #   echo ${output} > b.txt
         status="$?"
-    )
-    [[ "${flags}" =~ x ]] || set +x
-    set +x
+    #[[ "${flags}" =~ x ]] || set +x
+    #export LCOV_DEBUG=
     # shellcheck disable=SC2034,SC2206
     IFS=$'\n' lines=($output)
     IFS="$origIFS"
@@ -335,13 +344,16 @@ main() {
     lcov_init "${coverage[@]}"
 
     for test in "$@"; do
-        lcov_run_test "$test"
+        lcov_test "$test"
     done
 
     lcov_done
 }
 
 ## Bypass entry-point if file was sourced
-if [[ "${BASH_SOURCE[0]}" = "${0}" ]]; then
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+    export -f run
+else
     main "$@"
+    exit "$?"
 fi
