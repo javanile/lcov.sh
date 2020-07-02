@@ -52,8 +52,6 @@ usage () {
 
 trap '$(jobs -p) || kill $(jobs -p)' EXIT
 
-export PS4='+:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
-
 case "$(uname -s)" in
     Darwin*)
         getopt=/usr/local/opt/gnu-getopt/bin/getopt
@@ -295,6 +293,7 @@ lcov_test() {
         elif [[ -f $1 ]]; then
             rm -f ${lcov_output}/test.info
             export LCOV_DEBUG=1
+            export PS4='+:LCOV_DEBUG:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
             bash -x $1 >${lcov_output}/test.out 2>${lcov_output}/test.log && true
             export LCOV_DEBUG=
             lcov_test_parse_log $?
@@ -314,17 +313,27 @@ run() {
     set +eET
     local origIFS="$IFS"
     export LCOV_DEBUG=1
-    [[ "${flags}" =~ x ]] || set -x
-
-        output="$("$@" 2>&1)"
-     #   echo ${output} > b.txt
-        status="$?"
-    #[[ "${flags}" =~ x ]] || set +x
-    #export LCOV_DEBUG=
+    #[[ "${flags}" =~ x ]] ||
+    set -x
+    #(
+    echo "aa" > >(lcov_redirect_log)
+    output="$("$@" 2> >(lcov_redirect_log))"
+    #output="$("$@")"
+    status="$?"
+    #)  >${lcov_output}/test.out 2>${lcov_output}/test.log
+    set +x
+    export LCOV_DEBUG=
     # shellcheck disable=SC2034,SC2206
     IFS=$'\n' lines=($output)
     IFS="$origIFS"
     set "-$flags"
+}
+
+lcov_redirect_log() {
+    while read log; do
+        echo "---  $log"
+        echo ">>>  $log" >> log.log
+    done
 }
 
 ##
