@@ -1,0 +1,1 @@
+TEST1_FUNC1---  ++:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/test1.sh:7:test1_func1: echo -n TEST1_FUNC1
