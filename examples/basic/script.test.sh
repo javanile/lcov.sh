@@ -1,13 +1,5 @@
 #!/bin/bash
 
+bash script.sh
 
-(
-    echo  "# Examples"
-    echo  "..."
-) > index.md
-
-(
-    echo '```bash'
-    cat basic/script.sh
-    echo '```'
-) >> index.md
+exit $?

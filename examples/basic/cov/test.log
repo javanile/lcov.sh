@@ -1,5 +1,0 @@
-++:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:320:run: test1_func1
-++:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/test1.sh:6:test1_func1: echo TEST1_FUNC1
-TEST1_FUNC1
-+:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:320:run: output=
-+:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:321:run: status=0
