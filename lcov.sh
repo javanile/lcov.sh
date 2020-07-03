@@ -223,8 +223,8 @@ lcov_done () {
     fi
     genhtml -q -o "${output}" "${output}/lcov.info"
     lcov --summary "${output}/lcov.info"
-    echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
-    echo -e "  exit.......: ${exit_code} ${exit_info}"
+    echo -e "  tests......: ${test} (DONE=${done}, FAIL=${fail}, SKIP=${skip}"
+    echo -e "  exit.......: CODE=${exit_code} (${exit_info})"
     exit ${exit_code}
 }
 
