@@ -1,5 +1,5 @@
-++:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:320:run: test1_func1
-++:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/test1.sh:6:test1_func1: echo TEST1_FUNC1
-TEST1_FUNC1
-+:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:320:run: output=
-+:/Users/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:321:run: status=0
++:script-test.sh:3:: bash script.sh
++:script.sh:13:: covered_func 'World!'
++:script.sh:6:covered_func: echo 'Hello World!!'
++:script-test.sh:5:: exit 0
+b689093d-1752-4f81-ae4e-319eab2c2a2d

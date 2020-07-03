@@ -21,9 +21,11 @@ cd examples
 
 cd basic
 (
+    cp ../../lcov.sh .
     code script.sh
-    code script.test.sh
-    dump ls
-    echo '<iframe width="100%" height="400" src="basic/coverage/"></iframe>'
-) >> ../index.md
+    code script-test.sh
+    dump ./lcov.sh script-test.sh
+    echo '<iframe width="100%" height="400" src="coverage/"></iframe>'
+    rm lcov.sh
+) > index.md
 cd ..
