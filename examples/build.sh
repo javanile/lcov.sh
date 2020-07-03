@@ -3,15 +3,16 @@
 export LCOV_DEBUG_NO_COLOR=yes
 
 code() {
+    echo '> File: `' $1 '`'
     echo '```bash'
     cat $1
     echo '```'
 }
 
 dump() {
-    echo '```bash'
+    echo '```'
     echo "$ $@"
-    "$@" | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g"
+    "$@"
     echo '```'
 }
 

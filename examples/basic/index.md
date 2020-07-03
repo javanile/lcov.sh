@@ -1,3 +1,4 @@
+> File: ` script.sh `
 ```bash
 #!/bin/bash
 
@@ -13,6 +14,7 @@ uncovered_func() {
 
 covered_func "World!"
 ```
+> File: ` script-test.sh `
 ```bash
 #!/bin/bash
 
@@ -20,7 +22,7 @@ bash script.sh
 
 exit $?
 ```
-```bash
+```
 $ ../../lcov.sh script-test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
