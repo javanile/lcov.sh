@@ -21,14 +21,14 @@ bash script.sh
 exit $?
 ```
 ```bash
-$ ./lcov.sh script-test.sh
+$ ../../lcov.sh script-test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
   > (done) script-test.sh: 'Hello World!!' (ok)
 
 Reading tracefile coverage/lcov.info
 Summary coverage rate:
-  lines......: 2.3% (4 of 173 lines)
+  lines......: 40.0% (4 of 10 lines)
   functions..: no data found
   branches...: no data found
   tests......: 1 (1 done, 0 fail, 0 skip)
