@@ -72,9 +72,9 @@ if [[ -z "LCOV_DEBUG_NO_COLOR" ]]; then
   done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
   fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
 else
-  skip_flag="(skip)"
-  done_flag="(done)"
-  fail_flag="(fail)"
+  skip_flag="SKIP"
+  done_flag="DONE"
+  fail_flag="FAIL"
 fi
 options=$(${getopt} -n lcov.sh -o i:e:x:o:vh -l extension:,include:,exclude:,output:,version,help -- "$@")
 
