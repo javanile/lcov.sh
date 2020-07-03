@@ -31,7 +31,7 @@ Summary coverage rate:
   lines......: 40.0% (4 of 10 lines)
   functions..: no data found
   branches...: no data found
-  tests......: 1 (DONE=1, FAIL=0, SKIP=0
-  exit.......: CODE=0 (DONE)
+  tests......: TOTAL 1, DONE 1, FAIL 0, SKIP 0
+  exit.......: CODE 0, DONE
 ```
 <iframe width="100%" height="400" src="coverage/basic"></iframe>
