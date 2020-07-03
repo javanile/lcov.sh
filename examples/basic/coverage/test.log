@@ -2,4 +2,4 @@
 +:script.sh:13:: covered_func 'World!'
 +:script.sh:6:covered_func: echo 'Hello World!!'
 +:script-test.sh:5:: exit 0
-b61ce066-896c-48a0-a352-467df534e5fa
+c82f1fd0-6524-457a-a440-cb5ad6b4d287

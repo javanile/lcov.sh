@@ -9,7 +9,7 @@ code() {
 dump() {
     echo '```bash'
     echo "$ $@"
-    "$@"
+    "$@" | sed 's/[^[:print:]]//g'
     echo '```'
 }
 
