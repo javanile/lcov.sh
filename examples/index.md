@@ -28,4 +28,4 @@ coverage
 script.sh
 script.test.sh
 ```
-<iframe width="100%" height="400" src="cov/"></iframe>
+<iframe width="100%" height="400" src="basic/coverage/"></iframe>

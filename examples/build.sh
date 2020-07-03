@@ -24,6 +24,6 @@ cd basic
     code script.sh
     code script.test.sh
     dump ls
-    echo '<iframe width="100%" height="400" src="cov/"></iframe>'
+    echo '<iframe width="100%" height="400" src="basic/coverage/"></iframe>'
 ) >> ../index.md
 cd ..
