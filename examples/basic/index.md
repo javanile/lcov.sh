@@ -36,4 +36,4 @@ Summary coverage rate:
   tests......: TOTAL 1, DONE 1, FAIL 0, SKIP 0
   exit.......: CODE 0, DONE
 ```
-<iframe width="100%" height="400" src="coverage/basic"></iframe>
+<iframe width="100%" height="400" src="coverage/basic" style="border:1px solid #000"></iframe>
