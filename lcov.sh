@@ -67,9 +67,15 @@ esac
 coverage=()
 extension=sh
 output=coverage
-skip_flag="${escape}[37m(skip)${escape}[0m"
-done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
-fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
+if [[ -z "LCOV_DEBUG_NO_COLOR" ]]; then
+  skip_flag="${escape}[37m(skip)${escape}[0m"
+  done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
+  fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
+else
+  skip_flag="(skip)"
+  done_flag="(done)"
+  fail_flag="(fail)"
+fi
 options=$(${getopt} -n lcov.sh -o i:e:x:o:vh -l extension:,include:,exclude:,output:,version,help -- "$@")
 
 eval set -- "${options}"

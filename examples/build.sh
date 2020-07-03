@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export LCOV_DEBUG_NO_COLOR=yes
+
 code() {
     echo '```bash'
     cat $1
