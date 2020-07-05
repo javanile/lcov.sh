@@ -326,7 +326,6 @@ main () {
 }
 
 ## Bypass entry-point if file was sourced
-echo "source: ${BASH_SOURCE[0]}"
-if [[ "${BASH_SOURCE[0]}" = "${0}" ]]; then
+if [[ -z "${BASH_SOURCE[0]}" || "${BASH_SOURCE[0]}" = "${0}" ]]; then
     main "$@"
 fi
