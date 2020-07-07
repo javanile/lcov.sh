@@ -59,7 +59,7 @@ case "$(uname -s)" in
         escape='\x1B'
         ;;
     Linux|*)
-        getopt=/usr/bin/getopt
+        [ -x /bin/getopt ] && getopt=/bin/getopt || getopt=/usr/bin/getopt
         escape='\e'
         ;;
 esac
