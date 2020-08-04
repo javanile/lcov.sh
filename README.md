@@ -61,8 +61,8 @@ lcov.sh FILE...
 
 ```bash
 curl -i "https://git.io" \
-     -F "url=https://raw.githubusercontent.com/javanile/lcov.sh/master/lcov.sh" \
-     -F "code=lcov.sh"
+     -d "url=https://raw.githubusercontent.com/javanile/lcov.sh/master/lcov.sh" \
+     -d "code=lcov.sh"
 ```
 
 ### Install `lcov` package
