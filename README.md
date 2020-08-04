@@ -1,5 +1,7 @@
 # LCOV.SH
 
+<img align="right" width="100" height="100" src="http://www.fillmurray.com/100/100">
+
 The best LCOV framework around a BASH project
 
 ![.github/workflows/super-linter.yml](https://github.com/javanile/lcov.sh/workflows/.github/workflows/super-linter.yml/badge.svg)
