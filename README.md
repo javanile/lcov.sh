@@ -1,6 +1,6 @@
 # LCOV.SH
 
-<img align="right" width="100" height="100" src="https://github.com/javanile/lcov.sh/raw/master/lcov.png">
+<img align="right" width="400" height="230" src="https://github.com/javanile/lcov.sh/raw/master/lcov.png">
 
 The best LCOV framework around a BASH project
 
