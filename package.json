@@ -1,11 +1,34 @@
 {
   "name": "lcov.sh",
-  "version": "0.0.1",
-  "license": "MIT",
+  "version": "0.1.0",
   "description": "The best LCOV framework around a BASH project",
-  "global": true,
-  "install": "make install",
-  "dependencies": {
-    "javanile/pipetest": "master"
-  }
+  "homepage": "https://github.com/javanile/lcov.sh#readme",
+  "license": "MIT",
+  "author": "Francesco Bianco <bianco@javanile> (https://git.io/francesco)",
+  "repository": "github:javanile/lcov.sh",
+  "bugs": "https://github.com/javanile/lcov.sh/issues",
+  "files": [
+    "bin",
+    "libexec",
+    "lib",
+    "man"
+  ],
+  "directories": {
+    "bin": "bin",
+    "doc": "docs",
+    "man": "man",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "bin/bats test"
+  },
+  "keywords": [
+    "bats",
+    "bash",
+    "shell",
+    "coverage",
+    "lcov",
+    "test",
+    "unit"
+  ]
 }
