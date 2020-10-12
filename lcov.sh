@@ -65,8 +65,7 @@ esac
 lcov_coverage=()
 lcov_extension=sh
 lcov_output=coverage
-#lcov_temp_dir=$(mktemp -d -t lcov-sh-XXXXXXXXXXXX)
-lcov_temp_dir=.tmp
+lcov_temp_dir=$(mktemp -d -t lcov-sh-XXXXXXXXXXXX)
 if [[ -z "LCOV_DEBUG_NO_COLOR" ]]; then
   skip_flag="${escape}[37m(skip)${escape}[0m"
   done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
@@ -93,6 +92,7 @@ while true; do
   shift
 done
 
+lcov_log="${lcov_output}/lcov.log"
 lcov_info="${lcov_output}/lcov.info"
 lcov_files="${lcov_output}/lcov.files"
 lcov_test_log="${lcov_output}/test.log"
@@ -143,6 +143,34 @@ get_files () {
 }
 
 ##
+#
+##
+function lcov_error () {
+   echo "--> $1"
+   local i
+   local stack_size=${#FUNCNAME[@]}
+   for (( i=1; i<$stack_size ; i++ )); do
+      local func="${FUNCNAME[$i]}"
+      [ x$func = x ] && func=MAIN
+      #local linen="${BASH_LINENO[(( i - 1 ))]}"
+      local linen="${BASH_LINENO[$i]}"
+      local src="${BASH_SOURCE[$i]}"
+      [ x"$src" = x ] && src=non_file_source
+      echo "    ${func}() at ${src}:${linen}"
+   done
+}
+
+##
+#
+##
+lcov_exec() {
+  local log=$(lcov "${@}" 2>&1 && true)
+  if [[ -n ${log} ]]; then
+    lcov_error "${log}" >> "${lcov_log}"
+  fi
+}
+
+##
 # Initialize output directory.
 #
 # Arguments
@@ -159,8 +187,8 @@ lcov_init() {
   get_files "$@" | while IFS= read -r file; do
     echo "${file}" >> "${lcov_files}"
     lcov_scan "${file}" > "${init_info}"
-    [[ -f "${lcov_info}" ]] || lcov -q -a "${init_info}" -o "${lcov_info}" && true
-    lcov -q -a "${init_info}" -a "${lcov_info}" -o "${lcov_info}" >/dev/null 2>&1 && true
+    [[ -f "${lcov_info}" ]] || lcov_exec -q -a "${init_info}" -o "${lcov_info}" && true
+    lcov_exec -q -a "${init_info}" -a "${lcov_info}" -o "${lcov_info}"
     rm -f "${init_info}"
   done
 
@@ -347,20 +375,22 @@ lcov_append_info() {
 
   rm -f "${temp_info}"
   echo "${line_stop}" >> "$1"
+  #echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+  #cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
   while IFS= read line || [[ -n "${line}" ]]; do
     if [[ "${line::1}" = "+" ]]; then
       file=$(echo ${line} | cut -s -d':' -f2)
       lineno=$(echo ${line} | cut -s -d':' -f3)
       echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
     elif [[ "${line}" = "${line_stop}" ]]; then
-      echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
-      cat ${temp_info} >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
       if [[ -n "$2" ]]; then
         local info=$(grep . $2 | tail -1)
         echo -e "${done_flag} $1: '${info}' (ok)";
       fi
-      #lcov -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}" && true
-      lcov -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}" &>> /home/francesco/Develop/Javanile/lcov.sh/a1.txt
+      echo "START" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+      cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+      echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+      lcov_exec -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}"
       rm -f "${temp_info}"
       shift
       lcov_test_stat 1 1 0 0

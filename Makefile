@@ -45,7 +45,7 @@ build-examples:
 ## Testing
 ## -------
 test-bats:
-	@rm -fr coverage
+	@rm -fr coverage a.txt
 	@bats test/bats
 
 test-get-uuid-function:
