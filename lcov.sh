@@ -65,6 +65,7 @@ esac
 lcov_coverage=()
 lcov_extension=sh
 lcov_output=coverage
+lcov_tmp=.tmp
 if [[ -z "LCOV_DEBUG_NO_COLOR" ]]; then
   skip_flag="${escape}[37m(skip)${escape}[0m"
   done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
@@ -261,50 +262,66 @@ lcov_run_stat () {
 #
 ##
 lcov_test_parse_log() {
-    local exit_code=$1
-    if [[ ${exit_code} -eq 0 ]]; then
-        lcov_stop=$(get_uuid)
-        echo "${lcov_stop}" >> ${lcov_output}/test.log
-        while IFS= read line || [[ -n "${line}" ]]; do
-            if [[ "${line::1}" = "+" ]]; then
-                file=$(echo ${line} | cut -s -d':' -f2)
-                lineno=$(echo ${line} | cut -s -d':' -f3)
-                echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${lcov_output}/test.info
-            elif [[ "${line}" = "${lcov_stop}" ]]; then
-                info=$(grep . ${lcov_output}/test.out | tail -1)
-                echo -e "${done_flag} $1: '${info}' (ok)";
-                lcov -q -a ${lcov_output}/test.info -a ${lcov_output}/lcov.info -o ${lcov_output}/lcov.info && true
-                shift; lcov_run_stat 1 1 0 0; lcov_run_step; lcov_test "$@"
-            fi
-        done < "${lcov_output}/test.log"
-    else
-        info="$(grep "." "${lcov_output}/test.out" | tail -1)"
-        [[ -z "${info}" ]] && info="$(grep "." "${lcov_output}/test.log" | tail -1)"
-        echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
-        shift; lcov_run_stat 1 0 1 0; lcov_run_step; lcov_test "$@"
-    fi
+  local exit_code=$1
+  if [[ ${exit_code} -eq 0 ]]; then
+    lcov_process_log "${lcov_output}/test.log" "${lcov_output}/test.info" "${lcov_output}/test.out"
+  else
+    info="$(grep "." "${lcov_output}/test.out" | tail -1)"
+    [[ -z "${info}" ]] && info="$(grep "." "${lcov_output}/test.log" | tail -1)"
+    echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
+    shift; lcov_run_stat 1 0 1 0; lcov_run_step; lcov_test "$@"
+  fi
 }
+
+##
+# $1 - Log file
+# $2 - Info file
+# $3 - Output file
+##
+lcov_process_log() {
+  local file_stop=$(get_uuid)
+  echo "${file_stop}" >> $1
+  while IFS= read line || [[ -n "${line}" ]]; do
+    if [[ "${line::1}" = "+" ]]; then
+      file=$(echo ${line} | cut -s -d':' -f2)
+      lineno=$(echo ${line} | cut -s -d':' -f3)
+      echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> $2
+    elif [[ "${line}" = "${file_stop}" ]]; then
+      info=$(grep . $3 | tail -1)
+      echo -e "${done_flag} $1: '${info}' (ok)";
+      lcov -q -a ${lcov_output}/test.info -a ${lcov_output}/lcov.info -o ${lcov_output}/lcov.info && true
+      shift; lcov_run_stat 1 1 0 0; lcov_run_step; lcov_test "$@"
+    fi
+  done < "${lcov_output}/test.log"
+}
+
 
 ##
 # Execute testcase and process LCOV info.
 ##
 lcov_test() {
-    if [[ -n $1 ]]; then
-        lcov_test_wait
-        echo -n "  > "
-        if [[ -d $1 ]]; then
-            echo -e "${skip_flag} $1/: is directory.";
-            shift; lcov_test_stat 1 0 0 1; lcov_test_step; lcov_test "$@"
-        elif [[ -f $1 ]]; then
-            rm -f ${lcov_output}/test.info
-            lcov_bash_debug $1
-            lcov_test_parse_log $?
-        else
-            echo -e "${skip_flag} $1: file not found.";
-            shift; lcov_test_stat 1 0 0 1; lcov_test_step; lcov_test "$@"
-        fi
+  if [[ -n "$1" ]]; then
+    lcov_test_wait
+    echo -n "  > "
+    if [[ -d "$1" ]]; then
+      echo -e "${skip_flag} $1/: is directory.";
+      shift
+      lcov_test_stat 1 0 0 1
+      lcov_test_step
+      lcov_test "$@"
+    elif [[ -f "$1" ]]; then
+      rm -f ${lcov_output}/test.info
+      lcov_bash_debug $1
+      lcov_test_parse_log $?
+    else
+      echo -e "${skip_flag} $1: file not found.";
+      shift
+      lcov_test_stat 1 0 0 1
+      lcov_test_step
+      lcov_test "$@"
     fi
-    return 0
+  fi
+  return 0
 }
 
 ##
@@ -318,7 +335,34 @@ lcov_bash_debug () {
 }
 
 ##
-# Execute testcase and process LCOV info.
+# Run function used by BATS test case.
+#
+##
+run () {
+  local orig_ps4="${PS4}"
+  local orig_lcov_debug="${LCOV_DEBUG}"
+  local log_file=${lcov_tmp}/run.log
+  rm -f "${log_file}"
+  export LCOV_DEBUG=1
+  export PS4="${LCOV_PS4}"
+  lcov_bats_run "${@}" 2> ${log_file}
+  export LCOV_DEBUG="${orig_lcov_debug}"
+  export PS4="${orig_ps4}"
+}
+
+##
+# Run function used by BATS test case.
+#
+##
+teardown() {
+  local log_file=${lcov_tmp}/run.log
+  if [[ "${BATS_TEST_COMPLETED}" = 1 ]]; then
+    lcov_process_log ${log_file}
+  fi
+}
+
+##
+# Execute testcase and prepare BATS global vars.
 ##
 lcov_bats_run() {
   local flags="$-"
@@ -334,14 +378,10 @@ lcov_bats_run() {
   set "-$flags"
 }
 
-run () {
-  local orig_lcov_debug="${LCOV_DEBUG}"
-  local orig_ps4="${LCOV_DEBUG}"
-  export LCOV_DEBUG=1
-  export PS4="${LCOV_PS4}"
-  debug_run "${@}" 2> /home/francesco/Develop/Javanile/git-auto-commit-action/o2.log
-}
-
+##
+#
+#
+##
 lcov_redirect_log() {
     while read log; do
         echo "---  $log"

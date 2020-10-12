@@ -40,3 +40,9 @@ qa:
 
 build-examples:
 	bash examples/build.sh
+
+## -------
+## Testing
+## -------
+test-bats:
+	bats test/bats
