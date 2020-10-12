@@ -1,6 +1,7 @@
 
 load test1.sh
 load ../../lcov.sh
+#load node_modules/.bin/lcov.sh
 
 @test "testing: test1_func1()" {
     run test1_func1

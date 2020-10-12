@@ -45,4 +45,9 @@ build-examples:
 ## Testing
 ## -------
 test-bats:
-	bats test/bats
+	@rm -fr coverage
+	@bats test/bats
+
+test-get-uuid-function:
+	@rm -fr coverage test/coverage
+	@bash lcov.sh test/get_uuid.test.sh

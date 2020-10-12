@@ -1,4 +1,4 @@
-++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:356:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
+++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:377:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/lib/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/libexec/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:128:bats_debug_trap: BATS_CURRENT_STACK_TRACE=("${BATS_STACK_TRACE[@]+"${BATS_STACK_TRACE[@]}"}")
@@ -12,25 +12,25 @@
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=lcov_bats_run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-26224/bats.26269.src
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-27814/bats.27861.src
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=test_testing-3a_test1-5ffunc2-28-29
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-26224/bats.26269.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-27814/bats.27861.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:17:bats_capture_stack_trace: case "$funcname" in
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:19:bats_capture_stack_trace: break
-++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:356:lcov_bats_run: test1_func1
+++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:377:lcov_bats_run: test1_func1
 ++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/test1.sh:6:test1_func1: echo -n TEST1_FUNC1
-+:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:356:lcov_bats_run: output=TEST1_FUNC1
-++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:357:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:377:lcov_bats_run: output=TEST1_FUNC1
+++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:378:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/lib/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/libexec/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:128:bats_debug_trap: BATS_CURRENT_STACK_TRACE=("${BATS_STACK_TRACE[@]+"${BATS_STACK_TRACE[@]}"}")
@@ -44,23 +44,23 @@
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=lcov_bats_run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-26224/bats.26269.src
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-27814/bats.27861.src
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=test_testing-3a_test1-5ffunc2-28-29
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-26224/bats.26269.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-27814/bats.27861.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:17:bats_capture_stack_trace: case "$funcname" in
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:19:bats_capture_stack_trace: break
-+:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:357:lcov_bats_run: status=0
-++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:358:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:378:lcov_bats_run: status=0
+++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:379:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/lib/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/libexec/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:128:bats_debug_trap: BATS_CURRENT_STACK_TRACE=("${BATS_STACK_TRACE[@]+"${BATS_STACK_TRACE[@]}"}")
@@ -74,23 +74,23 @@
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=lcov_bats_run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-26224/bats.26269.src
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-27814/bats.27861.src
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=test_testing-3a_test1-5ffunc2-28-29
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-26224/bats.26269.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-27814/bats.27861.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:17:bats_capture_stack_trace: case "$funcname" in
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:19:bats_capture_stack_trace: break
-+:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:358:lcov_bats_run: [[ efhBET =~ x ]]
-++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:358:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:379:lcov_bats_run: [[ efhBET =~ x ]]
+++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:379:lcov_bats_run: bats_debug_trap /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/lib/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:122:bats_debug_trap: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh != /usr/local/libexec/* ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:128:bats_debug_trap: BATS_CURRENT_STACK_TRACE=("${BATS_STACK_TRACE[@]+"${BATS_STACK_TRACE[@]}"}")
@@ -104,19 +104,19 @@
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=lcov_bats_run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=run
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( ++i ))
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:10:bats_capture_stack_trace: (( i != 7 ))
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-26224/bats.26269.src
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:13:bats_capture_stack_trace: test_file=/tmp/bats-run-27814/bats.27861.src
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:14:bats_capture_stack_trace: funcname=test_testing-3a_test1-5ffunc2-28-29
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:15:bats_capture_stack_trace: BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
-++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-26224/bats.26269.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\6\2\2\4\/\b\a\t\s\.\2\6\2\6\9\.\s\r\c ]]
+++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:16:bats_capture_stack_trace: [[ /tmp/bats-run-27814/bats.27861.src == \/\t\m\p\/\b\a\t\s\-\r\u\n\-\2\7\8\1\4\/\b\a\t\s\.\2\7\8\6\1\.\s\r\c ]]
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:17:bats_capture_stack_trace: case "$funcname" in
 ++:LCOV_DEBUG:/usr/local/lib/bats-core/tracing.bash:19:bats_capture_stack_trace: break
-+:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:358:lcov_bats_run: set +x
++:LCOV_DEBUG:/home/francesco/Develop/Javanile/lcov.sh/test/bats/../../lcov.sh:379:lcov_bats_run: set +x

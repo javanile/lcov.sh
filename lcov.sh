@@ -92,7 +92,10 @@ while true; do
   shift
 done
 
-lcov_test_lock=
+lcov_info="${lcov_output}/lcov.info"
+lcov_test_log="${lcov_output}/test.log"
+lcov_test_lock="${lcov_output}/test.lock"
+lcov_test_info="${lcov_output}/test.info"
 
 ##
 # Generate UUID.
@@ -120,21 +123,21 @@ get_uuid ()  {
 #  - Create output directory with scanned tracefile lcov.info file.
 ##
 get_files () {
-    include="-name *.${extension}"
-    exclude="-not -wholename ${lcov_output} -not -path .git"
+  local include="-name *.${extension}"
+  local exclude="-not -wholename ${lcov_output} -not -path .git"
 
-    for arg in "$@"; do
-        #echo "ARG: ${arg}"
-        if [[ "${arg::1}" != "!" ]]; then
-            include+=" -or -wholename ${arg}"
-        else
-            exclude+=" -not -wholename ${arg:1} -not -path *${arg:1}*"
-        fi
-    done
+  for arg in "$@"; do
+    #echo "ARG: ${arg}"
+    if [[ "${arg::1}" != "!" ]]; then
+      include+=" -or -wholename ${arg}"
+    else
+      exclude+=" -not -wholename ${arg:1} -not -path *${arg:1}*"
+    fi
+  done
 
-    find . -type f \( ${include[0]} \) \( ${exclude[0]} \)
+  find . -type f \( ${include[0]} \) \( ${exclude[0]} \)
 
-    return 0
+  return 0
 }
 
 ##
@@ -145,19 +148,21 @@ get_files () {
 # Outputs
 #  - Create output directory with scanned trace file lcov.info file.
 ##
-lcov_init () {
+lcov_init() {
   echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
   echo ""
 
   mkdir -p "${lcov_output}"
-  rm -f "${lcov_output}/lcov.info" "${lcov_output}/test.stat" "${lcov_output}/test.lock"
+  rm -f "${lcov_info}" "${lcov_test_stat}" "${lcov_test_lock}"
+
+  local init_info="${lcov_output}/init.info"
 
   get_files "$@" | while IFS= read -r file; do
     #echo "coverage: ${file}"
-    lcov_scan "${file}" > "${lcov_output}/init.info"
-    [[ -f "${lcov_output}/lcov.info" ]] || lcov -q -a "${lcov_output}/init.info" -o "${lcov_output}/lcov.info" && true
-    lcov -q -a "${lcov_output}/init.info" -a "${lcov_output}/lcov.info" -o "${lcov_output}/lcov.info" >/dev/null 2>&1 && true
-    rm -f "${lcov_output}/init.info"
+    lcov_scan "${file}" > "${init_info}"
+    [[ -f "${lcov_info}" ]] || lcov -q -a "${init_info}" -o "${lcov_info}" && true
+    lcov -q -a "${init_info}" -a "${lcov_info}" -o "${lcov_info}" >/dev/null 2>&1 && true
+    rm -f "${init_info}"
   done
 
   return 0
@@ -169,34 +174,38 @@ lcov_init () {
 # Arguments
 #  - $1: file to scan.
 # Outputs
-#  -
+#  - LCOV rules from file.
 ##
-lcov_scan () {
-    lineno=0
-    skip_eof=
-    echo "TN:"
-    echo "SF:$1"
-    while IFS= read line || [[ -n "${line}" ]]; do
-        #line=${line%%*( )}
-        line="${line#"${line%%[![:space:]]*}"}"
-        line="${line%"${line##*[![:space:]]}"}"
-        lineno=$((lineno + 1))
-        [[ -z "${line}" ]] && continue
-        [[ "${line}" == "else" ]] && continue
-        [[ "${line}" == "fi" ]] && continue
-        [[ "${line}" == ";;" ]] && continue
-        [[ "${line}" == "esac" ]] && continue
-        [[ "${line}" == "done" ]] && continue
-        [[ "${line::1}" == "#" ]] && continue
-        [[ "${line::1}" == "}" ]] && continue
-        [[ "${line}" == *"{" ]] && continue
-        [[ "${line}" == "EOF" ]] && skip_eof= && continue
-        [[ "${skip_eof}" == "EOF" ]] && continue
-        [[ "${line}" == *"<<EOF" ]] && skip_eof=EOF
-        echo "DA:${lineno},0"
-    done < "$1"
-    echo "end_of_record"
-    return 0
+lcov_scan() {
+  local lineno=0
+  local skip_eof=
+
+  echo "TN:"
+  echo "SF:$1"
+
+  while IFS= read line || [[ -n "${line}" ]]; do
+    #line=${line%%*( )}
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
+    lineno=$((lineno + 1))
+    [[ -z "${line}" ]] && continue
+    [[ "${line}" == "else" ]] && continue
+    [[ "${line}" == "fi" ]] && continue
+    [[ "${line}" == ";;" ]] && continue
+    [[ "${line}" == "esac" ]] && continue
+    [[ "${line}" == "done" ]] && continue
+    [[ "${line::1}" == "#" ]] && continue
+    [[ "${line::1}" == "}" ]] && continue
+    [[ "${line}" == *"{" ]] && continue
+    [[ "${line}" == "EOF" ]] && skip_eof= && continue
+    [[ "${skip_eof}" == "EOF" ]] && continue
+    [[ "${line}" == *"<<EOF" ]] && skip_eof=EOF
+    echo "DA:${lineno},0"
+  done < "$1"
+
+  echo "end_of_record"
+
+  return 0
 }
 
 ##
@@ -207,26 +216,28 @@ lcov_scan () {
 # Outputs:
 #  - Show LCOV summary with tests information
 ##
-lcov_done () {
-    echo ""
-    stat="0 0 0 0"
-    [[ -f "${lcov_output}/test.stat" ]] && stat="$(cat ${lcov_output}/test.stat && true)"
-    test="$(echo ${stat} | cut -s -d' ' -f1)"
-    done="$(echo ${stat} | cut -s -d' ' -f2)"
-    fail="$(echo ${stat} | cut -s -d' ' -f3)"
-    skip="$(echo ${stat} | cut -s -d' ' -f4)"
-    if [[ ${fail} -gt 0 || ${done} -eq 0 ]]; then
-        exit_info="${fail_flag}"
-        exit_code=1
-    else
-        exit_info="${done_flag}"
-        exit_code=0
-    fi
-    genhtml -q -o "${output}" "${output}/lcov.info"
-    lcov --summary "${output}/lcov.info"
-    echo -e "  tests......: TOTAL ${test}, DONE ${done}, FAIL ${fail}, SKIP ${skip}"
-    echo -e "  exit.......: CODE ${exit_code}, ${exit_info}"
-    exit ${exit_code}
+lcov_done() {
+  local stat="0 0 0 0"
+  [[ -f "${lcov_test_stat}" ]] && stat="$(cat ${lcov_test_stat} && true)"
+  test="$(echo ${stat} | cut -s -d' ' -f1)"
+  done="$(echo ${stat} | cut -s -d' ' -f2)"
+  fail="$(echo ${stat} | cut -s -d' ' -f3)"
+  skip="$(echo ${stat} | cut -s -d' ' -f4)"
+
+  if [[ ${fail} -gt 0 || ${done} -eq 0 ]]; then
+      exit_info="${fail_flag}"
+      exit_code=1
+  else
+      exit_info="${done_flag}"
+      exit_code=0
+  fi
+
+  echo ""
+  genhtml -q -o "${lcov_output}" "${lcov_info}"
+  lcov --summary "${lcov_info}"
+  echo -e "  tests......: TOTAL ${test}, DONE ${done}, FAIL ${fail}, SKIP ${skip}"
+  echo -e "  exit.......: CODE ${exit_code}, ${exit_info}"
+  exit ${exit_code}
 }
 
 ##
@@ -242,22 +253,25 @@ lcov_test_wait() {
 #
 ##
 lcov_run_step () {
-    rm -f ${lcov_output}/test.lock
-    return 0
+  rm -f ${lcov_output}/test.lock
+  return 0
 }
 
 ##
 # Store running tests stat.
 ##
 lcov_run_stat () {
-    stat="0 "
-    [[ -f "${lcov_output}/test.stat" ]] && stat+="$(cat "${lcov_output}/test.stat")"
-    test=$(expr $(echo ${stat} | cut -d' ' -f2) + $1 || true)
-    done=$(expr $(echo ${stat} | cut -d' ' -f3) + $2 || true)
-    fail=$(expr $(echo ${stat} | cut -d' ' -f4) + $3 || true)
-    skip=$(expr $(echo ${stat} | cut -d' ' -f5) + $4 || true)
-    echo "${test} ${done} ${fail} ${skip}" > "${lcov_output}/test.stat"
-    return 0
+  stat="0 "
+  [[ -f "${lcov_test_stat}" ]] && stat+="$(cat "${lcov_test_stat}")"
+
+  test=$(expr $(echo ${stat} | cut -d' ' -f2) + $1 || true)
+  done=$(expr $(echo ${stat} | cut -d' ' -f3) + $2 || true)
+  fail=$(expr $(echo ${stat} | cut -d' ' -f4) + $3 || true)
+  skip=$(expr $(echo ${stat} | cut -d' ' -f5) + $4 || true)
+
+  echo "${test} ${done} ${fail} ${skip}" > "${lcov_test_stat}"
+
+  return 0
 }
 
 ##
@@ -381,43 +395,33 @@ lcov_bats_run() {
 }
 
 ##
-#
-#
-##
-lcov_redirect_log() {
-    while read log; do
-        echo "---  $log"
-        echo ">>>  $log" >> log.log
-    done
-}
-
-##
 # Entry-point
 ##
 main() {
-    if [[ -z "$(command -v lcov)" ]]; then
-        echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
-        exit 1
-    fi
+  if [[ -z "$(command -v lcov)" ]]; then
+    echo "lcov.sh: missing 'lcov' command on your system. (try: sudo apt install lcov)" >&2
+    exit 1
+  fi
 
-    if [[ -z "$1" ]]; then
-        echo "lcov.sh: missing file to test as test case. (try: lcov.sh test/*-test.sh)" >&2
-        exit 1
-    fi
+  if [[ -z "$1" ]]; then
+    echo "lcov.sh: missing file to test as test case. (try: lcov.sh test/*-test.sh)" >&2
+    exit 1
+  fi
 
-    lcov_init "${coverage[@]}"
+  lcov_init "${lcov_coverage[@]}"
 
-    for test in "$@"; do
-        lcov_test "$test"
-    done
+  for test in "$@"; do
+    lcov_test "${test}"
+  done
 
-    lcov_done
+  lcov_done
 }
 
 ## Bypass entry-point if file was sourced
+## than expose LCOV.SH and BATS functions
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-    export -f run
+  export -f run
 else
-    main "$@"
-    exit "$?"
+  main "$@"
+  exit "$?"
 fi
