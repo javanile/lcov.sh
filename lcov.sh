@@ -34,32 +34,32 @@ VERSION="0.1.0"
 LCOV_PS4='+:LCOV_DEBUG:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 
 usage () {
-    echo "Usage: ./lcov.sh [OPTION]... FILE..."
-    echo ""
-    echo "Executes FILE as a test case also collect each LCOV info and generate HTML report"
-    echo ""
-    echo "List of available options"
-    echo "  -e, --extension EXT     Coverage of every *.EXT file (default: sh)"
-    echo "  -i, --include PATH      Include files matching PATH"
-    echo "  -x, --exclude PATH      Exclude files matching PATH"
-    echo "  -o, --output OUTDIR     Write HTML output to OUTDIR"
-    echo "  -h, --help              Display this help and exit"
-    echo "  -v, --version           Display current version"
-    echo ""
-    echo "Documentation can be found at https://github.com/javanile/lcov.sh"
+  echo "Usage: ./lcov.sh [OPTION]... FILE..."
+  echo ""
+  echo "Executes FILE as a test case also collect each LCOV info and generate HTML report"
+  echo ""
+  echo "List of available options"
+  echo "  -e, --extension EXT     Coverage of every *.EXT file (default: sh)"
+  echo "  -i, --include PATH      Include files matching PATH"
+  echo "  -x, --exclude PATH      Exclude files matching PATH"
+  echo "  -o, --output OUTDIR     Write HTML output to OUTDIR"
+  echo "  -h, --help              Display this help and exit"
+  echo "  -v, --version           Display current version"
+  echo ""
+  echo "Documentation can be found at https://github.com/javanile/lcov.sh"
 }
 
 trap '$(jobs -p) || kill $(jobs -p)' EXIT
 
 case "$(uname -s)" in
-    Darwin*)
-        getopt=/usr/local/opt/gnu-getopt/bin/getopt
-        escape='\x1B'
-        ;;
-    Linux|*)
-        [ -x /bin/getopt ] && getopt=/bin/getopt || getopt=/usr/bin/getopt
-        escape='\e'
-        ;;
+  Darwin*)
+    getopt=/usr/local/opt/gnu-getopt/bin/getopt
+    escape='\x1B'
+    ;;
+  Linux|*)
+    [ -x /bin/getopt ] && getopt=/bin/getopt || getopt=/usr/bin/getopt
+    escape='\e'
+    ;;
 esac
 
 lcov_coverage=()
@@ -80,17 +80,19 @@ options=$(${getopt} -n lcov.sh -o i:e:x:o:vh -l extension:,include:,exclude:,out
 eval set -- "${options}"
 
 while true; do
-    case "$1" in
-        -o|--output) shift; lcov_output=$1 ;;
-        -i|--include) shift; lcov_coverage+=("$1") ;;
-        -x|--exclude) shift; lcov_coverage+=("!$1") ;;
-        -e|--extension) shift; lcov_extension=$1 ;;
-        -v|--version) echo "LCOV.SH version ${VERSION}"; exit ;;
-        -h|--help) usage; exit ;;
-        --) shift; break ;;
-    esac
-    shift
+  case "$1" in
+    -o|--output) shift; lcov_output=$1 ;;
+    -i|--include) shift; lcov_coverage+=("$1") ;;
+    -x|--exclude) shift; lcov_coverage+=("!$1") ;;
+    -e|--extension) shift; lcov_extension=$1 ;;
+    -v|--version) echo "LCOV.SH version ${VERSION}"; exit ;;
+    -h|--help) usage; exit ;;
+    --) shift; break ;;
+  esac
+  shift
 done
+
+lcov_test_lock=
 
 ##
 # Generate UUID.
@@ -101,12 +103,12 @@ done
 #  - UUID random code
 ##
 get_uuid ()  {
-    if [[ -f /proc/sys/kernel/random/uuid ]]; then
-        cat /proc/sys/kernel/random/uuid
-    else
-        /usr/bin/uuidgen
-    fi
-    return 0
+  if [[ -f /proc/sys/kernel/random/uuid ]]; then
+    cat /proc/sys/kernel/random/uuid
+  else
+    /usr/bin/uuidgen
+  fi
+  return 0
 }
 
 ##
@@ -144,21 +146,21 @@ get_files () {
 #  - Create output directory with scanned trace file lcov.info file.
 ##
 lcov_init () {
-    echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
-    echo ""
+  echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
+  echo ""
 
-    mkdir -p "${lcov_output}"
-    rm -f "${lcov_output}/lcov.info" "${lcov_output}/test.stat" "${lcov_output}/test.lock"
+  mkdir -p "${lcov_output}"
+  rm -f "${lcov_output}/lcov.info" "${lcov_output}/test.stat" "${lcov_output}/test.lock"
 
-    get_files "$@" | while IFS= read -r file; do
-        #echo "coverage: ${file}"
-        lcov_scan "${file}" > "${lcov_output}/init.info"
-        [[ -f "${lcov_output}/lcov.info" ]] || lcov -q -a "${lcov_output}/init.info" -o "${lcov_output}/lcov.info" && true
-        lcov -q -a "${lcov_output}/init.info" -a "${lcov_output}/lcov.info" -o "${lcov_output}/lcov.info" >/dev/null 2>&1 && true
-        rm -f "${lcov_output}/init.info"
-    done
+  get_files "$@" | while IFS= read -r file; do
+    #echo "coverage: ${file}"
+    lcov_scan "${file}" > "${lcov_output}/init.info"
+    [[ -f "${lcov_output}/lcov.info" ]] || lcov -q -a "${lcov_output}/init.info" -o "${lcov_output}/lcov.info" && true
+    lcov -q -a "${lcov_output}/init.info" -a "${lcov_output}/lcov.info" -o "${lcov_output}/lcov.info" >/dev/null 2>&1 && true
+    rm -f "${lcov_output}/init.info"
+  done
 
-    return 0
+  return 0
 }
 
 ##
@@ -231,9 +233,9 @@ lcov_done () {
 #
 ##
 lcov_test_wait() {
-    while [[ -f ${lcov_output}/test.lock ]]; do sleep 2; done;
-    touch ${lcov_output}/test.lock
-    return 0
+  while [[ -f ${lcov_output}/test.lock ]]; do sleep 2; done;
+  touch ${lcov_output}/test.lock
+  return 0
 }
 
 ##
