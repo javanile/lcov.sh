@@ -379,8 +379,8 @@ lcov_append_info() {
   #cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
   while IFS= read line || [[ -n "${line}" ]]; do
     if [[ "${line::1}" = "+" ]]; then
-      file=$(echo ${line} | cut -s -d':' -f2)
-      lineno=$(echo ${line} | cut -s -d':' -f3)
+      file=$(echo ${line} | cut -s -d':' -f3)
+      lineno=$(echo ${line} | cut -s -d':' -f4)
       echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
     elif [[ "${line}" = "${line_stop}" ]]; then
       if [[ -n "$2" ]]; then
@@ -388,7 +388,7 @@ lcov_append_info() {
         echo -e "${done_flag} $1: '${info}' (ok)";
       fi
       echo "START" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
-      cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+      cat "${temp_info}" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
       echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
       lcov_exec -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}"
       rm -f "${temp_info}"
@@ -437,6 +437,7 @@ lcov_teardown() {
     lcov_append_info "${log_file}"
   fi
   #rm "${log_file}"
+  genhtml -q -o "${lcov_output}" "${lcov_info}"
 }
 
 ##
