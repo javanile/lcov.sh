@@ -65,7 +65,8 @@ esac
 lcov_coverage=()
 lcov_extension=sh
 lcov_output=coverage
-lcov_temp_dir=$(mktemp -d -t lcov-sh-XXXXXXXXXXXX)
+#lcov_temp_dir=$(mktemp -d -t lcov-sh-XXXXXXXXXXXX)
+lcov_temp_dir=.tmp
 if [[ -z "LCOV_DEBUG_NO_COLOR" ]]; then
   skip_flag="${escape}[37m(skip)${escape}[0m"
   done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
@@ -93,6 +94,7 @@ while true; do
 done
 
 lcov_info="${lcov_output}/lcov.info"
+lcov_files="${lcov_output}/lcov.files"
 lcov_test_log="${lcov_output}/test.log"
 lcov_test_lock="${lcov_output}/test.lock"
 lcov_test_info="${lcov_output}/test.info"
@@ -123,7 +125,7 @@ get_uuid ()  {
 #  - Create output directory with scanned tracefile lcov.info file.
 ##
 get_files () {
-  local include="-name *.${extension}"
+  local include="-name *.${lcov_extension}"
   local exclude="-not -wholename ${lcov_output} -not -path .git"
 
   for arg in "$@"; do
@@ -149,16 +151,13 @@ get_files () {
 #  - Create output directory with scanned trace file lcov.info file.
 ##
 lcov_init() {
-  echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
-  echo ""
-
   mkdir -p "${lcov_output}"
-  rm -f "${lcov_info}" "${lcov_test_stat}" "${lcov_test_lock}"
+  rm -f "${lcov_info}" "${lcov_files}" "${lcov_test_stat}" "${lcov_test_lock}"
 
   local init_info="${lcov_output}/init.info"
 
   get_files "$@" | while IFS= read -r file; do
-    #echo "coverage: ${file}"
+    echo "${file}" >> "${lcov_files}"
     lcov_scan "${file}" > "${init_info}"
     [[ -f "${lcov_info}" ]] || lcov -q -a "${init_info}" -o "${lcov_info}" && true
     lcov -q -a "${init_info}" -a "${lcov_info}" -o "${lcov_info}" >/dev/null 2>&1 && true
@@ -343,21 +342,26 @@ lcov_test_check() {
 # $2 - Output file
 ##
 lcov_append_info() {
-  local line_stop=$(get_uuid)
+  local line_stop="$(get_uuid)"
+  local temp_info="${lcov_temp_dir}/temp.info"
 
-  rm -f ${lcov_output}/test.info
+  rm -f "${temp_info}"
   echo "${line_stop}" >> "$1"
   while IFS= read line || [[ -n "${line}" ]]; do
     if [[ "${line::1}" = "+" ]]; then
       file=$(echo ${line} | cut -s -d':' -f2)
       lineno=$(echo ${line} | cut -s -d':' -f3)
-      echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> ${lcov_output}/test.info
+      echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
     elif [[ "${line}" = "${line_stop}" ]]; then
+      echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+      cat ${temp_info} >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
       if [[ -n "$2" ]]; then
         local info=$(grep . $2 | tail -1)
         echo -e "${done_flag} $1: '${info}' (ok)";
       fi
-      lcov -q -a ${lcov_output}/test.info -a ${lcov_output}/lcov.info -o ${lcov_output}/lcov.info && true
+      #lcov -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}" && true
+      lcov -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}" &>> /home/francesco/Develop/Javanile/lcov.sh/a1.txt
+      rm -f "${temp_info}"
       shift
       lcov_test_stat 1 1 0 0
       lcov_test_next
@@ -367,20 +371,20 @@ lcov_append_info() {
 }
 
 ##
-# Run function used by BATS test case.
+# Run function used inside BATS test case.
 #
 ##
 run () {
   local orig_ps4="${PS4}"
   local orig_lcov_debug="${LCOV_DEBUG}"
-  local log_file=${lcov_tmp}/run.log
+  local log_file="${lcov_temp_dir}/bats_${BATS_SUITE_TEST_NUMBER}_${BATS_TEST_NUMBER}.log"
 
   rm -f "${log_file}"
 
   export LCOV_DEBUG=1
   export PS4="${LCOV_PS4}"
 
-  lcov_bats_run "${@}" 2> ${log_file}
+  lcov_bats_run "${@}" 2>> ${log_file}
 
   export LCOV_DEBUG="${orig_lcov_debug}"
   export PS4="${orig_ps4}"
@@ -391,10 +395,18 @@ run () {
 #
 ##
 teardown() {
-  local log_file=${lcov_tmp}/run.log
+  lcov_teardown
+}
+
+##
+#
+##
+lcov_teardown() {
+  local log_file="${lcov_temp_dir}/bats_${BATS_SUITE_TEST_NUMBER}_${BATS_TEST_NUMBER}.log"
   if [[ "${BATS_TEST_COMPLETED}" = 1 ]]; then
-    lcov_process_log ${log_file}
+    lcov_append_info "${log_file}"
   fi
+  #rm "${log_file}"
 }
 
 ##
@@ -428,6 +440,9 @@ main() {
     exit 1
   fi
 
+  echo "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
+  echo ""
+
   lcov_init "${lcov_coverage[@]}"
 
   for test in "$@"; do
@@ -440,6 +455,10 @@ main() {
 ## Bypass entry-point if file was sourced
 ## than expose LCOV.SH and BATS functions
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  if [[ -z "${LCOV_INIT}" ]]; then
+    export LCOV_INIT=1
+    lcov_init "${lcov_coverage[@]}"
+  fi
   export -f run
 else
   main "$@"
