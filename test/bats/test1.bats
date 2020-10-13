@@ -10,7 +10,7 @@ load ../../lcov.sh
 }
 
 @test "testing: test1_func2()" {
-    run test1_func1
+    run test1_func2
 
-    [ "${output}" = "wrong" ]
+    [ "${output}" = "TEST1_FUNC2" ]
 }
