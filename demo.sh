@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+set -e
 
-if [[ -f deps ]]; then
+if [[ -n "$(grep -e "^/home/francesco/Develop/Javanile/lcov.sh/examples/basic/script-test.s$" "coverage/lcov.files" && true)" ]]; then
   echo "A"
-elif [[ -d deps ]]; then
-  echo "B"
 else
-  echo "C"
+  echo "B"
 fi

@@ -31,7 +31,7 @@
 set -ef
 
 VERSION="0.1.0"
-LCOV_PS4='+:LCOV_DEBUG:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+LCOV_PS4='+:lcov.sh:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 
 usage () {
   echo "Usage: ./lcov.sh [OPTION]... FILE..."
@@ -185,7 +185,7 @@ lcov_init() {
   local init_info="${lcov_output}/init.info"
 
   get_files "$@" | while IFS= read -r file; do
-    echo "${file}" >> "${lcov_files}"
+    readlink -f "${file}" >> "${lcov_files}"
     lcov_scan "${file}" > "${init_info}"
     [[ -f "${lcov_info}" ]] || lcov_exec -q -a "${init_info}" -o "${lcov_info}" && true
     lcov_exec -q -a "${init_info}" -a "${lcov_info}" -o "${lcov_info}"
@@ -379,9 +379,15 @@ lcov_append_info() {
   #cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
   while IFS= read line || [[ -n "${line}" ]]; do
     if [[ "${line::1}" = "+" ]]; then
-      file=$(echo ${line} | cut -s -d':' -f3)
-      lineno=$(echo ${line} | cut -s -d':' -f4)
-      echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
+      local scope=$(echo ${line} | cut -s -d':' -f2)
+      if [[ "${scope}" = "lcov.sh" ]]; then
+        file="$(echo "${line}" | cut -s -d':' -f3)"
+        file="$(readlink -f "${file}")"
+        if [[ -n "$(grep -e "^${file}$" "${lcov_files}" && true)" ]]; then
+          lineno=$(echo ${line} | cut -s -d':' -f4)
+          echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
+        fi
+      fi
     elif [[ "${line}" = "${line_stop}" ]]; then
       if [[ -n "$2" ]]; then
         local info=$(grep . $2 | tail -1)
