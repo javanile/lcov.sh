@@ -98,6 +98,7 @@ lcov_files="${lcov_output}/lcov.files"
 lcov_test_log="${lcov_output}/test.log"
 lcov_test_out="${lcov_output}/test.out"
 lcov_test_lock="${lcov_output}/test.lock"
+lcov_test_stat="${lcov_output}/test.stat"
 lcov_test_info="${lcov_output}/test.info"
 
 ##
@@ -247,6 +248,7 @@ lcov_scan() {
 lcov_done() {
   local stat="0 0 0 0"
   [[ -f "${lcov_test_stat}" ]] && stat="$(cat ${lcov_test_stat} && true)"
+
   test="$(echo ${stat} | cut -s -d' ' -f1)"
   done="$(echo ${stat} | cut -s -d' ' -f2)"
   fail="$(echo ${stat} | cut -s -d' ' -f3)"
@@ -272,7 +274,6 @@ lcov_done() {
 #
 ##
 lcov_test_wait() {
-  [[ -f "${lcov_test_lock}" ]] && echo "A" || echo "B"
   while [[ -f "${lcov_test_lock}" ]]; do sleep 2; done
   touch "${lcov_test_lock}"
   return 0
@@ -309,10 +310,10 @@ lcov_test_stat () {
 lcov_test() {
   if [[ -n "$1" ]]; then
     lcov_test_wait
-    echo -n "  > $1"
+    echo -n "  > "
     if [[ -f "$1" ]]; then
       lcov_test_debug "$1" && true
-      lcov_test_check "$?" && true
+      lcov_test_check "$1" "$?"
     else
       if [[ -d "$1" ]]; then
         echo -e "${skip_flag} $1/: is directory.";
@@ -323,9 +324,7 @@ lcov_test() {
     fi
     shift
     lcov_test_next
-    echo "A1"
     lcov_test "$@"
-    echo "A2"
   fi
   return 0
 }
@@ -357,16 +356,14 @@ lcov_test_debug () {
 #
 ##
 lcov_test_check() {
-  local exit_code="$1"
-  echo "CHE ${exit_code}"
+  local test="$1"
+  local exit_code="$2"
   if [[ ${exit_code} -eq 0 ]]; then
-    echo "KK"
     lcov_append_info "${lcov_test_log}" "${lcov_test_out}"
-    echo "LL"
   else
-    local info="$(grep "." "${lcov_output}/test.out" | tail -1)"
-    [[ -z "${info}" ]] && info="$(grep "." "${lcov_output}/test.log" | tail -1)"
-    echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
+    local info="$(grep "." "${lcov_test_out}" | tail -1)"
+    [[ -z "${info}" ]] && info="$(grep "." "${lcov_test_log}" | tail -1)"
+    echo -e "${fail_flag} ${test}: '${info}' (exit ${exit_code})"
     lcov_test_stat 1 0 1 0
   fi
 }
