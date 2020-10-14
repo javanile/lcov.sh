@@ -96,6 +96,7 @@ lcov_log="${lcov_output}/lcov.log"
 lcov_info="${lcov_output}/lcov.info"
 lcov_files="${lcov_output}/lcov.files"
 lcov_test_log="${lcov_output}/test.log"
+lcov_test_out="${lcov_output}/test.out"
 lcov_test_lock="${lcov_output}/test.lock"
 lcov_test_info="${lcov_output}/test.info"
 
@@ -271,6 +272,7 @@ lcov_done() {
 #
 ##
 lcov_test_wait() {
+  [[ -f "${lcov_test_lock}" ]] && echo "A" || echo "B"
   while [[ -f "${lcov_test_lock}" ]]; do sleep 2; done
   touch "${lcov_test_lock}"
   return 0
@@ -307,21 +309,23 @@ lcov_test_stat () {
 lcov_test() {
   if [[ -n "$1" ]]; then
     lcov_test_wait
-    echo -n "  > "
+    echo -n "  > $1"
     if [[ -f "$1" ]]; then
-      lcov_test_debug "$1" "${lcov_output}/test.log" "${lcov_output}/test.out"
-      lcov_test_check "$?"
+      lcov_test_debug "$1" && true
+      lcov_test_check "$?" && true
     else
       if [[ -d "$1" ]]; then
         echo -e "${skip_flag} $1/: is directory.";
       else
         echo -e "${skip_flag} $1: file not found.";
       fi
-      shift
-      lcov_test_next
       lcov_test_stat 1 0 0 1
-      lcov_test "$@"
     fi
+    shift
+    lcov_test_next
+    echo "A1"
+    lcov_test "$@"
+    echo "A2"
   fi
   return 0
 }
@@ -340,10 +344,13 @@ lcov_test_debug () {
   export PS4="${LCOV_PS4}"
 
   ## Execute test as bash script and capture output and logs
-  bash -x "$1" > "$3" 2> "$2" && true
+  bash -x "$1" > "${lcov_test_out}" 2> "${lcov_test_log}" && true
+  exit_code=$?
 
   export LCOV_DEBUG="${orig_lcov_debug}"
   export PS4="${orig_ps4}"
+
+  return "${exit_code}"
 }
 
 ##
@@ -351,17 +358,16 @@ lcov_test_debug () {
 ##
 lcov_test_check() {
   local exit_code="$1"
-
+  echo "CHE ${exit_code}"
   if [[ ${exit_code} -eq 0 ]]; then
-    lcov_append_info "${lcov_output}/test.log" "${lcov_output}/test.out"
+    echo "KK"
+    lcov_append_info "${lcov_test_log}" "${lcov_test_out}"
+    echo "LL"
   else
     local info="$(grep "." "${lcov_output}/test.out" | tail -1)"
     [[ -z "${info}" ]] && info="$(grep "." "${lcov_output}/test.log" | tail -1)"
     echo -e "${fail_flag} $1: '${info}' (exit ${exit_code})"
-    shift
     lcov_test_stat 1 0 1 0
-    lcov_test_next
-    lcov_test "$@"
   fi
 }
 
@@ -377,9 +383,13 @@ lcov_append_info() {
   echo "${line_stop}" >> "$1"
   #echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
   #cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+  echo "YY"
+  index=0
   while IFS= read line || [[ -n "${line}" ]]; do
+    index=$((index+1))
+    echo "$index"
     if [[ "${line::1}" = "+" ]]; then
-      local scope=$(echo ${line} | cut -s -d':' -f2)
+      scope=$(echo ${line} | cut -s -d':' -f2)
       if [[ "${scope}" = "lcov.sh" ]]; then
         file="$(echo "${line}" | cut -s -d':' -f3)"
         file="$(readlink -f "${file}")"
@@ -390,18 +400,13 @@ lcov_append_info() {
       fi
     elif [[ "${line}" = "${line_stop}" ]]; then
       if [[ -n "$2" ]]; then
-        local info=$(grep . $2 | tail -1)
+        info=$(grep . $2 | tail -1)
         echo -e "${done_flag} $1: '${info}' (ok)";
       fi
-      echo "START" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
-      cat "${temp_info}" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
-      echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
+      echo "LL"
       lcov_exec -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}"
       rm -f "${temp_info}"
-      shift
       lcov_test_stat 1 1 0 0
-      lcov_test_next
-      lcov_test "$@"
     fi
   done < "$1"
 }
@@ -424,6 +429,17 @@ run () {
 
   export LCOV_DEBUG="${orig_lcov_debug}"
   export PS4="${orig_ps4}"
+}
+
+setup() {
+  lcov_setup
+}
+
+lcov_setup() {
+  if [[ -z "${LCOV_INIT}" ]]; then
+    export LCOV_INIT=1
+    lcov_init "${lcov_coverage[@]}"
+  fi
 }
 
 ##
@@ -492,10 +508,6 @@ main() {
 ## Bypass entry-point if file was sourced
 ## than expose LCOV.SH and BATS functions
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-  if [[ -z "${LCOV_INIT}" ]]; then
-    export LCOV_INIT=1
-    lcov_init "${lcov_coverage[@]}"
-  fi
   export -f run
 else
   main "$@"
