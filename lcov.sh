@@ -382,7 +382,7 @@ lcov_append_info() {
   #cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
   echo "YY"
   index=0
-  while IFS= read line || [[ -n "${line}" ]]; do
+  while IFS= read -r line || [[ -n "${line}" ]]; do
     index=$((index+1))
     echo "$index"
     if [[ "${line::1}" = "+" ]]; then
@@ -391,13 +391,13 @@ lcov_append_info() {
         file="$(echo "${line}" | cut -s -d':' -f3)"
         file="$(readlink -f "${file}")"
         if [[ -n "$(grep -e "^${file}$" "${lcov_files}" && true)" ]]; then
-          lineno=$(echo ${line} | cut -s -d':' -f4)
+          lineno=$(echo "${line}" | cut -s -d':' -f4)
           echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
         fi
       fi
     elif [[ "${line}" = "${line_stop}" ]]; then
       if [[ -n "$2" ]]; then
-        info=$(grep . $2 | tail -1)
+        info=$(grep . "$2" | tail -1)
         echo -e "${done_flag} $1: '${info}' (ok)";
       fi
       echo "LL"
@@ -422,7 +422,7 @@ run () {
   export LCOV_DEBUG=1
   export PS4="${LCOV_PS4}"
 
-  lcov_bats_run "${@}" 2>> ${log_file}
+  lcov_bats_run "${@}" 2>> "${log_file}"
 
   export LCOV_DEBUG="${orig_lcov_debug}"
   export PS4="${orig_ps4}"
@@ -467,7 +467,9 @@ lcov_bats_run() {
   set +eET
   local orig_ifs="$IFS"
   [[ "${flags}" =~ x ]] || set -x
+  # shellcheck disable=SC2034
   output="$("$@")"
+  # shellcheck disable=SC2034
   status="$?"
   [[ "${flags}" =~ x ]] || set +x
   # shellcheck disable=SC2034,SC2206
