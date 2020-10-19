@@ -33,7 +33,7 @@ set -ef
 VERSION="0.1.0"
 LCOV_PS4='+:lcov.sh:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 
-usage () {
+usage() {
   echo "Usage: ./lcov.sh [OPTION]... FILE..."
   echo ""
   echo "Executes FILE as a test case also collect each LCOV info and generate HTML report"
@@ -305,7 +305,7 @@ lcov_test_stat () {
 }
 
 ##
-# Execute testcase and process LCOV info.
+# Execute test case and process LCOV info.
 ##
 lcov_test() {
   if [[ -n "$1" ]]; then
@@ -360,6 +360,9 @@ lcov_test_check() {
   local exit_code="$2"
   if [[ ${exit_code} -eq 0 ]]; then
     lcov_append_info "${lcov_test_log}" "${lcov_test_out}"
+    local info=$(grep . "${lcov_test_out}" | tail -1)
+    echo -e "${done_flag} ${test}: '${info}' (ok)";
+    lcov_test_stat 1 1 0 0
   else
     local info="$(grep "." "${lcov_test_out}" | tail -1)"
     [[ -z "${info}" ]] && info="$(grep "." "${lcov_test_log}" | tail -1)"
@@ -380,11 +383,7 @@ lcov_append_info() {
   echo "${line_stop}" >> "$1"
   #echo "STOP" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
   #cat "$1" >> /home/francesco/Develop/Javanile/lcov.sh/a.txt
-  echo "YY"
-  index=0
   while IFS= read -r line || [[ -n "${line}" ]]; do
-    index=$((index+1))
-    echo "$index"
     if [[ "${line::1}" = "+" ]]; then
       scope=$(echo ${line} | cut -s -d':' -f2)
       if [[ "${scope}" = "lcov.sh" ]]; then
@@ -396,14 +395,8 @@ lcov_append_info() {
         fi
       fi
     elif [[ "${line}" = "${line_stop}" ]]; then
-      if [[ -n "$2" ]]; then
-        info=$(grep . "$2" | tail -1)
-        echo -e "${done_flag} $1: '${info}' (ok)";
-      fi
-      echo "LL"
       lcov_exec -q -a "${temp_info}" -a "${lcov_info}" -o "${lcov_info}"
       rm -f "${temp_info}"
-      lcov_test_stat 1 1 0 0
     fi
   done < "$1"
 }
