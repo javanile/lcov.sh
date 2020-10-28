@@ -51,6 +51,10 @@ Now, run from command line the following command:
 lcov.sh FILE...
 ```
 
+## Suggestion
+
+Use this link to post any soggestion <https://lcov.hearken.io/>
+
 ## Testing
 
 ## TL;DR
