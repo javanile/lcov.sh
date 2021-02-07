@@ -22,7 +22,7 @@ cd examples/basic
     rm -fr coverage
     code script.sh
     code script-test.sh
-    dump ../../lcov.sh script-test.sh
+    dump ../../../lcov.sh script-test.sh
     echo '<iframe width="100%" height="400" src="coverage/basic"></iframe>'
 ) > index.md
 cd ../..
