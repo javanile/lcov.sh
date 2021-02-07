@@ -34,6 +34,9 @@ qa:
 test: deps
 	@bash ./lcov.sh test/*.test.sh -x deps
 
+test-travis:
+	@docker-compose -f test/travis/docker-compose.yml run --rm travis test/travis/test-runner.sh
+
 test-bats:
 	@rm -fr coverage a.txt
 	@bats test/bats

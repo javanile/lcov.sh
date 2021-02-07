@@ -5,6 +5,8 @@ language: generic
 
 env:
   - DOCKER_COMPOSE_VERSION=1.22.0
+  - BASH_VERSION=4
+  - BASH_VERSION=5
 
 before_install:
   - bash <(curl -sL https://git.io/get-bpkg)
