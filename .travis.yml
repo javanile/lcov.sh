@@ -8,7 +8,6 @@ branches:
     - bats
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.22.0
   - BASH_VERSION=4
   - BASH_VERSION=5
 
