@@ -1,7 +1,5 @@
 #!/usr/bin/env bats
 
-export LCOV_DEBUG_LOG=test/bats/lcov.log
-
 load test1.sh
 load ../../lcov.sh
 

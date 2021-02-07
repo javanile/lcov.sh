@@ -39,7 +39,8 @@ test-travis:
 
 test-bats:
 	@rm -fr coverage lcov.log
-	@bats test/bats/*
+	@export LCOV_DEBUG_LOG=test/bats/lcov.log
+	@bats test/bats
 
 test-get-uuid-function:
 	@rm -fr coverage test/coverage

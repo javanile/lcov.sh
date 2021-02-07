@@ -43,7 +43,6 @@ usage() {
   echo "  -i, --include PATH      Include files matching PATH"
   echo "  -x, --exclude PATH      Exclude files matching PATH"
   echo "  -o, --output OUTDIR     Write HTML output to OUTDIR"
-  echo "  -l, --log FILE          Write log messages to FILE"
   echo "  -h, --help              Display this help and exit"
   echo "  -v, --version           Display current version"
   echo ""
