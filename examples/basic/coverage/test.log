@@ -1,5 +1,0 @@
-+:script-test.sh:3:: bash script.sh
-+:script.sh:13:: covered_func 'World!'
-+:script.sh:6:covered_func: echo 'Hello World!!'
-+:script-test.sh:5:: exit 0
-fe0e084d-2e55-41df-b87d-bb3c4e0aa64d
