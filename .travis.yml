@@ -3,6 +3,10 @@ group: stable
 dist: trusty
 language: generic
 
+branches:
+  only:
+    - bats
+
 env:
   - BASH_VERSION=4
   - BASH_VERSION=5
