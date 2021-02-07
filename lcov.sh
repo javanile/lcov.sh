@@ -39,12 +39,13 @@ usage() {
   echo "Executes FILE as a test case also collect each LCOV info and generate HTML report"
   echo ""
   echo "List of available options"
-  echo "  -e, --extension EXT     Coverage of every *.EXT file (default: sh)"
-  echo "  -i, --include PATH      Include files matching PATH"
-  echo "  -x, --exclude PATH      Exclude files matching PATH"
-  echo "  -o, --output OUTDIR     Write HTML output to OUTDIR"
-  echo "  -h, --help              Display this help and exit"
-  echo "  -v, --version           Display current version"
+  echo "  -e, --extension EXT      Coverage of every *.EXT file (default: sh)"
+  echo "  -i, --include PATH       Include files matching PATH"
+  echo "  -x, --exclude PATH       Exclude files matching PATH"
+  echo "  -o, --output OUTDIR      Write HTML output to OUTDIR"
+  echo "  -s, --stop-on-failure    Stop analysis if a test fails"
+  echo "  -h, --help               Display this help and exit"
+  echo "  -v, --version            Display current version"
   echo ""
   echo "Documentation can be found at https://github.com/javanile/lcov.sh"
 }
@@ -62,6 +63,7 @@ case "$(uname -s)" in
     ;;
 esac
 
+stop_on_failure=
 lcov_coverage=()
 lcov_extension=sh
 lcov_output=coverage
@@ -76,7 +78,7 @@ else
   done_flag="DONE"
   fail_flag="FAIL"
 fi
-options=$(${getopt} -n lcov.sh -o i:e:x:o:l:vh -l extension:,include:,exclude:,output:,log:,version,help -- "$@")
+options=$(${getopt} -n lcov.sh -o i:e:x:o:svh -l extension:,include:,exclude:,output:,stop-on-failure,version,help -- "$@")
 
 eval set -- "${options}"
 
@@ -86,7 +88,7 @@ while true; do
     -i|--include) shift; lcov_coverage+=("$1") ;;
     -x|--exclude) shift; lcov_coverage+=("!$1") ;;
     -e|--extension) shift; lcov_extension=$1 ;;
-    -l|--log) shift; lcov_log=$1 ;;
+    -s|--stop-on-failure) shift; stop_on_failure=1 ;;
     -v|--version) echo "LCOV.SH version ${VERSION}"; exit ;;
     -h|--help) usage; exit ;;
     --) shift; break ;;
