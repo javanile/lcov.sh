@@ -165,8 +165,8 @@ log() {
 ##
 #
 ##
-lcov_error() {
-   echo "--> $1"
+error() {
+   echo "==> $1"
    local i
    local stack_size=${#FUNCNAME[@]}
    for (( i=1; i<$stack_size ; i++ )); do
@@ -263,7 +263,8 @@ lcov_scan() {
 # Outputs:
 #  - Show LCOV summary with tests information
 ##
-lcov_done () {
+lcov_done() {
+  if [[ -f "${lcov_info}" ]]; then
     echo ""
     stat="0 0 0 0"
     [[ -f "${lcov_output}/test.stat" ]] && stat="$(cat ${lcov_output}/test.stat && true)"
@@ -272,17 +273,20 @@ lcov_done () {
     fail="$(echo ${stat} | cut -s -d' ' -f3)"
     skip="$(echo ${stat} | cut -s -d' ' -f4)"
     if [[ ${fail} -gt 0 || ${done} -eq 0 ]]; then
-        exit_info="${fail_flag}"
-        exit_code=1
+      exit_info="${fail_flag}"
+      exit_code=1
     else
-        exit_info="${done_flag}"
-        exit_code=0
+      exit_info="${done_flag}"
+      exit_code=0
     fi
-    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info"
+    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info" && true
     lcov --summary "${lcov_output}/lcov.info"
     echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
     echo -e "  exit.......: ${exit_code} ${exit_info}"
     exit ${exit_code}
+  else
+    error "Error missing lcov_init before lcov_done."
+  fi
 }
 
 ##
@@ -383,6 +387,10 @@ lcov_test_check() {
     [[ -z "${info}" ]] && info="$(grep "." "${lcov_test_log}" | tail -1)"
     echo -e "${fail_flag} ${test}: '${info}' (exit ${exit_code})"
     lcov_test_stat 1 0 1 0
+    if [[ -n "${stop_on_failure}" ]]; then
+      cat "${lcov_test_out}"
+      exit 1
+    fi
   fi
 }
 

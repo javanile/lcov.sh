@@ -32,7 +32,10 @@ qa:
 ## Testing
 ## =======
 test: deps
-	@bash ./lcov.sh test/*.test.sh -x deps
+	@bash ./lcov.sh test/*.test.sh -sx deps
+
+test-file:
+	@bash ./lcov.sh -sx deps $(file)
 
 test-travis:
 	@docker-compose -f test/travis/docker-compose.yml run --rm travis test/travis/test-runner.sh
