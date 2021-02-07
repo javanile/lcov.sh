@@ -32,3 +32,5 @@ header_pages:
 
 # controls how big the shell and font looks
 font-size: small # options: [small] or [large]
+
+theme: jekyll-theme-cayman
