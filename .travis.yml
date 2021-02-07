@@ -3,6 +3,10 @@ group: stable
 dist: trusty
 language: generic
 
+branches:
+  only:
+    - bats
+
 env:
   - DOCKER_COMPOSE_VERSION=1.22.0
   - BASH_VERSION=4
