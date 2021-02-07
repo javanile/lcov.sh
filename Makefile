@@ -52,10 +52,10 @@ docker-test:
 ## Operations
 ## ----------
 build-examples:
-	bash examples/build.sh
+	bash docs/examples/build.sh
 
 release: build-examples
 	git add .
-	git commit -am "Release"
+	git commit -am "Release" && true
 	git push
 
