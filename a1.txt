@@ -1,0 +1,3 @@
+lcov: ERROR: no valid records found in tracefile .tmp/temp.info
+lcov: ERROR: no valid records found in tracefile .tmp/temp.info
+lcov: ERROR: no valid records found in tracefile .tmp/temp.info
