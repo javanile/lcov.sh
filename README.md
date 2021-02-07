@@ -86,3 +86,44 @@ brew install lcov
 ## See Also
 
 - <http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/>
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Testing
+
+```bash
+make install && make test 
+```
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Security
+
+If you discover any security related issues, please email bianco@javanile.org instead of using the issue tracker.
+
+## Socialware
+
+We highly appreciate if you create a social post on facebook or twitter with following hashtag:
+
+- [#javanile](#Socialware)
+- [#lcovsh](#Socialware)
+
+## Credits
+
+- [Francesco Bianco](https://github.com/francescobianco)
+- [All Contributors](../../contributors) 
+
+## Support us
+
+Javanile is a community project agency based in Sicily, Italy. 
+You'll find an overview of all our projects [on our website](https://www.javanile.org).
+
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/javanile). 
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
