@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[[ -n "${LCOV_DEBUG}" ]] && set -x
+[ -f "${LCOV_DEBUG}" ] && set -x
 
 test1_func1() {
   echo -n "TEST1_FUNC1"

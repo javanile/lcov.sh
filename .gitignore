@@ -4,3 +4,4 @@
 coverage/
 !examples/*/coverage/
 deps/
+*.log

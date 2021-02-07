@@ -10,9 +10,8 @@ if command -v apk &> /dev/null; then
     make lcov
 fi
 
-echo ""
 echo "========================================"
 bash --version
 echo "========================================"
 
-./lcov.sh test
+make test-bats

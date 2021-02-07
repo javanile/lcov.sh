@@ -43,6 +43,7 @@ usage() {
   echo "  -i, --include PATH      Include files matching PATH"
   echo "  -x, --exclude PATH      Exclude files matching PATH"
   echo "  -o, --output OUTDIR     Write HTML output to OUTDIR"
+  echo "  -l, --log FILE          Write log messages to FILE"
   echo "  -h, --help              Display this help and exit"
   echo "  -v, --version           Display current version"
   echo ""
@@ -65,8 +66,9 @@ esac
 lcov_coverage=()
 lcov_extension=sh
 lcov_output=coverage
+lcov_debug_log=${LCOV_DEBUG_LOG}
 lcov_temp_dir=$(mktemp -d -t lcov-sh-XXXXXXXXXXXX)
-if [[ -z "LCOV_DEBUG_NO_COLOR" ]]; then
+if [[ -z "${LCOV_DEBUG_NO_COLOR}" ]]; then
   skip_flag="${escape}[37m(skip)${escape}[0m"
   done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
   fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
@@ -75,7 +77,7 @@ else
   done_flag="DONE"
   fail_flag="FAIL"
 fi
-options=$(${getopt} -n lcov.sh -o i:e:x:o:vh -l extension:,include:,exclude:,output:,version,help -- "$@")
+options=$(${getopt} -n lcov.sh -o i:e:x:o:l:vh -l extension:,include:,exclude:,output:,log:,version,help -- "$@")
 
 eval set -- "${options}"
 
@@ -85,6 +87,7 @@ while true; do
     -i|--include) shift; lcov_coverage+=("$1") ;;
     -x|--exclude) shift; lcov_coverage+=("!$1") ;;
     -e|--extension) shift; lcov_extension=$1 ;;
+    -l|--log) shift; lcov_log=$1 ;;
     -v|--version) echo "LCOV.SH version ${VERSION}"; exit ;;
     -h|--help) usage; exit ;;
     --) shift; break ;;
@@ -147,7 +150,21 @@ get_files () {
 ##
 #
 ##
-function lcov_error () {
+log() {
+  if [[ -n "${lcov_debug_log}" ]]; then
+    if [[ ! -f "${lcov_debug_log}" ]]; then
+      touch "${lcov_debug_log}"
+      lcov_debug_log="$(realpath "${lcov_debug_log}")"
+      echo "$(date +"%F %T") INIT_LOG ${lcov_debug_log}" >> "${lcov_debug_log}"
+    fi
+    echo "$(date +"%F %T") $@" >> "${lcov_debug_log}"
+  fi
+}
+
+##
+#
+##
+lcov_error() {
    echo "--> $1"
    local i
    local stack_size=${#FUNCNAME[@]}
@@ -402,7 +419,10 @@ lcov_append_info() {
 # Run function used inside BATS test case.
 #
 ##
-run () {
+run() {
+  log "BATS_RUN ${@}"
+  #declare -p >> ${lcov_debug_log}
+
   local orig_ps4="${PS4}"
   local orig_lcov_debug="${LCOV_DEBUG}"
   local log_file="${lcov_temp_dir}/bats_${BATS_SUITE_TEST_NUMBER}_${BATS_TEST_NUMBER}.log"
@@ -414,14 +434,23 @@ run () {
 
   lcov_bats_run "${@}" 2>> "${log_file}"
 
+  #log "BATS_OUTPUT=${output}"
+  log "BATS_STATUS=${status}"
+
   export LCOV_DEBUG="${orig_lcov_debug}"
   export PS4="${orig_ps4}"
 }
 
+##
+#
+##
 setup() {
   lcov_setup
 }
 
+##
+#
+##
 lcov_setup() {
   if [[ -z "${LCOV_INIT}" ]]; then
     export LCOV_INIT=1
@@ -442,6 +471,7 @@ teardown() {
 ##
 lcov_teardown() {
   local log_file="${lcov_temp_dir}/bats_${BATS_SUITE_TEST_NUMBER}_${BATS_TEST_NUMBER}.log"
+  log "BATS_TEARDOWN (${BATS_TEST_COMPLETED}) ${log_file}"
   if [[ "${BATS_TEST_COMPLETED}" = 1 ]]; then
     lcov_append_info "${log_file}"
   fi
@@ -499,6 +529,6 @@ main() {
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
   export -f run
 else
-    main "$@"
-    exit "$?"
+  main "$@"
+  exit "$?"
 fi
