@@ -89,7 +89,7 @@ brew install lcov
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](docs/CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
@@ -99,18 +99,20 @@ make install && make test
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](docs/CONTRIBUTING.md) for details.
 
 ## Security
 
 If you discover any security related issues, please email bianco@javanile.org instead of using the issue tracker.
 
-## Socialware
+## Social campaigns
 
 We highly appreciate if you create a social post on facebook or twitter with following hashtag:
 
-- [#javanile](#Socialware)
-- [#lcovsh](#Socialware)
+- [#Javanile](#javanile)
+- [#LCOVSH](#lcovsh)
+- [#LCOV](#lcovsh)
+- [#DEVCommunity](#DEVCommunity)
 
 ## Credits
 
