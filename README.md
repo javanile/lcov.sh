@@ -101,10 +101,6 @@ make install && make test
 
 Please see [CONTRIBUTING](docs/CONTRIBUTING.md) for details.
 
-## Security
-
-If you discover any security related issues, please email bianco@javanile.org instead of using the issue tracker.
-
 ## Campaigns
 
 We highly appreciate if you create a social post on facebook or twitter with following hashtag:
@@ -125,6 +121,10 @@ Javanile is a community project agency based in Sicily, Italy.
 You'll find an overview of all our projects [on our website](https://www.javanile.org).
 
 Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/javanile). 
+
+## Security
+
+If you discover any security related issues, please email bianco@javanile.org instead of using the issue tracker.
 
 ## License
 
