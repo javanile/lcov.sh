@@ -105,7 +105,7 @@ Please see [CONTRIBUTING](docs/CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email bianco@javanile.org instead of using the issue tracker.
 
-## Social campaigns
+## Campaigns
 
 We highly appreciate if you create a social post on facebook or twitter with following hashtag:
 
