@@ -9,6 +9,9 @@
 
 ## Requirements
 
+- BASH 4.* or greater
+- LCOV package ([Ubuntu](http://manpages.ubuntu.com/manpages/focal/man1/lcov.1.html))
+
 ## Installation
 
 Download `lcov.sh` file into your local machine
