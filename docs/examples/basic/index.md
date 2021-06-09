@@ -2,7 +2,7 @@
 ```bash
 #!/bin/bash
 
-[[ -z "${LCOV_DEBUG}" ]] || set -x
+[ -f "${LCOV_DEBUG}" ] && set -x
 
 covered_func() {
   echo "Hello $1!"
