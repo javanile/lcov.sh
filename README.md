@@ -32,7 +32,7 @@ Check if it working
 bash lcov.sh -v
 ```
 
-## Usage
+### Usage
 
 Add the following code `[[ -z "${LCOV_DEBUG}" ]] || set -x`
 on top of source file you want in a coverage report, see below example:
@@ -54,15 +54,13 @@ Now, run from command line the following command:
 lcov.sh FILE...
 ```
 
-## Suggestion
+### Suggestion
 
 Use this link to post any soggestion <https://lcov.hearken.io/>
 
-## Testing
+### Testing
 
-## TL;DR
-
-> not now :-)
+> Work in progress
 
 ### Short url
 
@@ -86,25 +84,25 @@ Mac OSX
 brew install lcov
 ```
 
-## See Also
+### See Also
 
 - <http://www.skybert.net/bash/debugging-bash-scripts-on-the-command-line/>
 
-## Changelog
+### Changelog
 
 Please see [CHANGELOG](docs/CHANGELOG.md) for more information on what has changed recently.
 
-## Testing
+### Testing
 
 ```bash
 make install && make test 
 ```
 
-## Contributing
+### Contributing
 
 Please see [CONTRIBUTING](docs/CONTRIBUTING.md) for details.
 
-## Campaigns
+### Campaigns
 
 We highly appreciate if you create a social post on facebook or twitter with following hashtag:
 
@@ -113,22 +111,22 @@ We highly appreciate if you create a social post on facebook or twitter with fol
 - [#LCOV](#lcovsh)
 - [#DEVCommunity](#DEVCommunity)
 
-## Credits
+### Credits
 
 - [Francesco Bianco](https://github.com/francescobianco)
 - [All Contributors](../../contributors) 
 
-## Support us
+### Support us
 
 Javanile is a community project agency based in Sicily, Italy. 
 You'll find an overview of all our projects [on our website](https://www.javanile.org).
 
 Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/javanile). 
 
-## Security
+### Security
 
 If you discover any security related issues, please email bianco@javanile.org instead of using the issue tracker.
 
-## License
+### License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
