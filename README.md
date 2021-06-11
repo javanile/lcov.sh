@@ -1,6 +1,6 @@
 # LCOV.SH
 
-> The best LCOV framework around a BASH project
+> LCOV framework around a Shell projects
 
 ![.github/workflows/super-linter.yml](https://github.com/javanile/lcov.sh/workflows/.github/workflows/super-linter.yml/badge.svg)
 [![Build Status](https://travis-ci.com/javanile/lcov.sh.svg?branch=master)](https://travis-ci.org/javanile/lcov.sh)
