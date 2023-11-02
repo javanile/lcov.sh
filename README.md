@@ -38,7 +38,7 @@ Add the following code `[[ -z "${LCOV_DEBUG}" ]] || set -x`
 on top of source file you want in a coverage report, see below example:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 [[ -z "${LCOV_DEBUG}" ]] || set -x
 
 welcome () {

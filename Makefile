@@ -1,3 +1,4 @@
+#!make
 
 BIN ?= lcov.sh
 PREFIX ?= /usr/local
@@ -24,19 +25,34 @@ getdeps: deps
 deps:
 	bpkg getdeps
 
+qa:
+	curl -sL https://javanile.org/readme-standard/check.sh | bash -
+
+## -------
+## Testing
+## -------
 test: deps
 	@bash ./lcov.sh test/*.test.sh -x deps
 
+test-bats:
+	@rm -fr coverage a.txt
+	@bats test/bats
+
+test-get-uuid-function:
+	@rm -fr coverage test/coverage
+	@bash lcov.sh test/get_uuid.test.sh
+
 docker-test:
-	docker-compose run --rm test
+	@docker-compose run --rm test
+
+## ----------
+## Operations
+## ----------
+build-examples:
+	bash examples/build.sh
 
 release: build-examples
 	git add .
 	git commit -am "Release"
 	git push
 
-qa:
-	curl -sL https://javanile.org/readme-standard/check.sh | bash -
-
-build-examples:
-	bash examples/build.sh

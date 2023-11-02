@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# shellcheck disable=SC1091
 source ./deps/pipetest/pipetest.sh
+# shellcheck source=./lcov.sh
 source ./lcov.sh -o test/coverage
 
 rm -fr ./test/coverage
