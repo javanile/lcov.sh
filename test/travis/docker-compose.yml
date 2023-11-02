@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  travis:
+    image: bash:${BASH_VERSION:-5}
+    working_dir: /lcov.sh
+    volumes:
+      - ../..:/lcov.sh

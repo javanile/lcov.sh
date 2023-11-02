@@ -3,15 +3,19 @@ group: stable
 dist: trusty
 language: generic
 
+branches:
+  only:
+    - bats
+
 env:
-  - DOCKER_COMPOSE_VERSION=1.22.0
+  - BASH_VERSION=4
+  - BASH_VERSION=5
 
 before_install:
-  - bash <(curl -sL https://git.io/get-bpkg)
   - bash <(curl -sL https://git.io/get-docker-compose)
 
 script:
-  - make docker-test
+  - make test-travis
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

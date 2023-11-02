@@ -28,31 +28,38 @@ deps:
 qa:
 	curl -sL https://javanile.org/readme-standard/check.sh | bash -
 
-## -------
+## =======
 ## Testing
-## -------
+## =======
 test: deps
-	@bash ./lcov.sh test/*.test.sh -x deps
+	@bash ./lcov.sh test/*.test.sh -sx deps
+
+test-file:
+	@bash ./lcov.sh -sx deps $(file)
+
+test-travis:
+	@docker-compose -f test/travis/docker-compose.yml run --rm travis test/travis/test-runner.sh
 
 test-bats:
-	@rm -fr coverage a.txt
+	@rm -fr coverage lcov.log
+	@export LCOV_DEBUG_LOG=test/bats/lcov.log
 	@bats test/bats
 
 test-get-uuid-function:
 	@rm -fr coverage test/coverage
 	@bash lcov.sh test/get_uuid.test.sh
 
-docker-test:
-	@docker-compose run --rm test
+test-docker:
+	@docker-compose run --rm -u $$(id -u) test
 
-## ----------
+## ==========
 ## Operations
-## ----------
+## ==========
 build-examples:
-	bash examples/build.sh
+	bash docs/examples/build.sh
 
 release: build-examples
+	git pull
 	git add .
-	git commit -am "Release"
+	git commit -am "Release" && true
 	git push
-
