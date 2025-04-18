@@ -1,3 +1,15 @@
+<div align="center">
+
+
+<a href="https://www.javanile.org/hackathon/">
+<img src="https://raw.githubusercontent.com/javanile/hackathon/refs/heads/main/assets/images/devops-hackathon-banner.svg" />
+</a>
+
+
+</div>
+
+---
+
 # LCOV.SH
 
 > LCOV framework for Shell projects
