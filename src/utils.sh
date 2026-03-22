@@ -45,6 +45,34 @@ get_files() {
 }
 
 ##
+# Show a text spinner on the current line while a background process runs.
+# Usage: lcov_spinner_start <message>  → sets lcov_spinner_pid
+#        lcov_spinner_stop             → kills spinner and clears line
+##
+lcov_spinner_start() {
+  local msg="${1:-scanning...}"
+  local frames=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
+  local i=0
+  [[ -t 1 ]] || return 0
+  (
+    while true; do
+      printf "\r  > %s %s" "${frames[$((i % 8))]}" "${msg}"
+      i=$((i + 1))
+      sleep 0.08
+    done
+  ) &
+  lcov_spinner_pid=$!
+}
+
+lcov_spinner_stop() {
+  [[ -z "${lcov_spinner_pid:-}" ]] && return 0
+  kill "${lcov_spinner_pid}" 2>/dev/null
+  wait "${lcov_spinner_pid}" 2>/dev/null || true
+  printf "\r%-60s\r" ""
+  lcov_spinner_pid=
+}
+
+##
 #
 ##
 log() {

@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T23:20:47Z
+# @build_date: 2026-03-22T23:25:01Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -190,7 +190,9 @@ main() {
   lcov_test_stat="${lcov_output}/test.stat"
   lcov_test_info="${lcov_output}/test.info"
 
+  lcov_spinner_start "scanning files..."
   lcov_init "${lcov_coverage[@]}"
+  lcov_spinner_stop
 
   for test in "$@"; do
     lcov_test "${test}"
@@ -273,6 +275,34 @@ get_files() {
   find . -type f \( ${include[0]} \) \( ${exclude[0]} \)
 
   return 0
+}
+
+##
+# Show a text spinner on the current line while a background process runs.
+# Usage: lcov_spinner_start <message>  → sets lcov_spinner_pid
+#        lcov_spinner_stop             → kills spinner and clears line
+##
+lcov_spinner_start() {
+  local msg="${1:-scanning...}"
+  local frames=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
+  local i=0
+  [[ -t 1 ]] || return 0
+  (
+    while true; do
+      printf "\r  > %s %s" "${frames[$((i % 8))]}" "${msg}"
+      i=$((i + 1))
+      sleep 0.08
+    done
+  ) &
+  lcov_spinner_pid=$!
+}
+
+lcov_spinner_stop() {
+  [[ -z "${lcov_spinner_pid:-}" ]] && return 0
+  kill "${lcov_spinner_pid}" 2>/dev/null
+  wait "${lcov_spinner_pid}" 2>/dev/null || true
+  printf "\r%-60s\r" ""
+  lcov_spinner_pid=
 }
 
 ##

@@ -158,7 +158,9 @@ main() {
   lcov_test_stat="${lcov_output}/test.stat"
   lcov_test_info="${lcov_output}/test.info"
 
+  lcov_spinner_start "scanning files..."
   lcov_init "${lcov_coverage[@]}"
+  lcov_spinner_stop
 
   for test in "$@"; do
     lcov_test "${test}"
