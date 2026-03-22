@@ -2,16 +2,17 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
-lcov_scan test/fixtures/sample.sh | assert_equals "$(cat <<EOF
+lcov_scan tests/fixtures/sample.sh | assert_equals "$(cat <<EXPECTED
 TN:
-SF:test/fixtures/sample.sh
+SF:tests/fixtures/sample.sh
 DA:2,0
 DA:4,0
 DA:5,0
 end_of_record
-EOF
+EXPECTED
 )"

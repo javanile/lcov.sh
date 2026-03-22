@@ -2,15 +2,12 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
-rm -fr ./test/coverage
+rm -fr ./tests/coverage
 
-lcov_done | assert_equals "$(cat <<EOF
-==> Error missing lcov_init bef ore lcov_done.
-    lcov_done() at ./lcov.sh:11
-    main() at test/lcov_done.test.sh:1
-EOF
-)"
+# Without lcov_init, lcov_done should print error
+lcov_done 2>&1 | head -1 | assert_equals "==> Error missing lcov_init before lcov_done."

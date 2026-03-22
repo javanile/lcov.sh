@@ -2,16 +2,14 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
-lcov_scan test/fixtures/sample.sh | assert_equals "$(cat <<EOF
-TN:
-SF:test/fixtures/sample.sh
-DA:2,0
-DA:4,0
-DA:5,0
-end_of_record
-EOF
-)"
+mkdir -p tests/coverage
+touch "${lcov_test_lock}"
+
+# lcov_test_next should remove the lock file
+lcov_test_next
+[[ ! -f "${lcov_test_lock}" ]] && echo "lock removed" | assert_equals "lock removed"

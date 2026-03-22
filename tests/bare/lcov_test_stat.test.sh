@@ -2,21 +2,22 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
-rm -fr ./test/coverage
+mkdir -p tests/coverage
+rm -f "${lcov_test_stat}"
 
-lcov_init ./test/fixtures/subdir/*.zsh !lcov.sh !deps !*test.sh | assert_equals "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
+# Add first result: 1 test, 1 done, 0 fail, 0 skip
+lcov_test_stat 1 1 0 0
+cat "${lcov_test_stat}" | assert_equals "1 1 0 0"
 
-assert_directory_exists ./test/coverage
-assert_file_exists ./test/coverage/lcov.info
+# Add second result: 1 test, 0 done, 1 fail, 0 skip → cumulative: 2 1 1 0
+lcov_test_stat 1 0 1 0
+cat "${lcov_test_stat}" | assert_equals "2 1 1 0"
 
-grep -e "^SF:" ./test/coverage/lcov.info | assert_equals "$(cat <<EOF
-SF:./test/fixtures/sample.sh
-SF:./test/fixtures/subdir/custom1.zsh
-SF:./test/fixtures/test1.sh
-SF:./test/fixtures/test2.sh
-EOF
-)"
+# Add skipped: 1 test, 0 done, 0 fail, 1 skip → cumulative: 3 1 1 1
+lcov_test_stat 1 0 0 1
+cat "${lcov_test_stat}" | assert_equals "3 1 1 1"

@@ -238,6 +238,16 @@ assert_failure() {
 ##
 # If input is provided by STDIN
 ##
+assert_file_not_exists() {
+  echo "assert_file_not_exists: not implemented" >&2
+  exit 1
+}
+
+assert_directory_not_exists() {
+  echo "assert_directory_not_exists: not implemented" >&2
+  exit 1
+}
+
 if [[ -n "${SOURCED}" ]]; then
   export -f assert_empty
   export -f assert_not_empty

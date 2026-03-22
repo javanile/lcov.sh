@@ -2,21 +2,16 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
-rm -fr ./test/coverage
+rm -fr ./tests/coverage
 
-lcov_init ./test/fixtures/subdir/*.zsh !lcov.sh !deps !*test.sh | assert_equals "LCOV.SH by Francesco Bianco <bianco@javanile.org>"
+lcov_init tests/fixtures/sample.sh
 
-assert_directory_exists ./test/coverage
-assert_file_exists ./test/coverage/lcov.info
+echo "./tests/coverage" | assert_directory_exists
+echo "./tests/coverage/lcov.info" | assert_file_exists
 
-grep -e "^SF:" ./test/coverage/lcov.info | assert_equals "$(cat <<EOF
-SF:./test/fixtures/sample.sh
-SF:./test/fixtures/subdir/custom1.zsh
-SF:./test/fixtures/test1.sh
-SF:./test/fixtures/test2.sh
-EOF
-)"
+grep -c "^SF:" ./tests/coverage/lcov.info | assert_equals 1

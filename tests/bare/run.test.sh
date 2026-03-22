@@ -2,9 +2,11 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
 run echo "Hello World!"
-echo ">>> ${output}"
+echo "${output}" | assert_equals "Hello World!"
+echo "${status}" | assert_equals "0"
