@@ -3,8 +3,6 @@ title: Examples
 permalink: /examples/
 ---
 
-# Examples
-
 Each example shows a real bash script, its test file, the lcov.sh output, and an interactive
 coverage report embedded via `<iframe>`.
 

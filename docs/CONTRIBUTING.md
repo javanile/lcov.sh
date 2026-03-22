@@ -3,8 +3,6 @@ title: Contributing
 permalink: /contributing/
 ---
 
-# Contributing
-
 Contributions are welcome! Here is how to get started.
 
 ---

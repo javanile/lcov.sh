@@ -3,8 +3,6 @@ title: Changelog
 permalink: /changelog/
 ---
 
-# Changelog
-
 All notable changes to lcov.sh are documented here.
 
 ---

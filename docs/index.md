@@ -3,8 +3,6 @@ title: Home
 permalink: /
 ---
 
-# LCOV.SH
-
 > The best LCOV coverage framework for Bash projects.
 
 **lcov.sh** wraps `lcov` and `genhtml` to give you line-coverage reports for your shell scripts —
@@ -16,7 +14,7 @@ the same HTML reports you know from C/C++ projects, applied to Bash.
 
 ```bash
 # Install
-curl -sL https://lcov.sh/install.sh | bash
+curl get.javanile.org/lcov | sh
 
 # Run your tests and generate a coverage report
 lcov.sh -o coverage tests/my-test.sh

@@ -3,5 +3,7 @@
 .tmp/
 coverage/
 !examples/*/coverage/
+!docs/examples/*/coverage/
+!docs/examples/*/coverage/**
 deps/
 *.log

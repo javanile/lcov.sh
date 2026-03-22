@@ -3,12 +3,10 @@ title: Docs
 permalink: /docs/
 ---
 
-# Documentation
-
 ## Installation
 
 ```bash
-curl -sL https://lcov.sh/install.sh | bash
+curl get.javanile.org/lcov | sh
 ```
 
 This installs `lcov.sh` to `/usr/local/bin`. Requires `lcov` and `genhtml` to be available:

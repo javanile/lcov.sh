@@ -1,0 +1,40 @@
+---
+---
+
+@import "minima";
+
+// Wider content area to accommodate iframe coverage reports
+.wrapper {
+  max-width: 1000px;
+}
+
+// Tighten up heading/paragraph spacing
+h1, h2, h3, h4 {
+  margin-top: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+
+p {
+  margin-bottom: 0.8rem;
+}
+
+// Give the site-header a bit more breathing room
+.site-header {
+  padding: 8px 0;
+}
+
+// Reduce top margin on post/page content
+.post-content,
+.page-content .wrapper {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+// Tables look better with tighter cells
+table {
+  margin-bottom: 1rem;
+
+  th, td {
+    padding: 6px 14px;
+  }
+}
