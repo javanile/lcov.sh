@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-# shellcheck source=./examples/if_basic/script.sh
-source ./examples/if_basic/script.sh
+# shellcheck source=docs/examples/if_basic/script.sh
+source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
 # classify_number: only testing POSITIVE — negative and zero branches NOT covered
 classify_number 5

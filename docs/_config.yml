@@ -1,1 +1,20 @@
 title: LCOV.SH
+description: The best LCOV coverage framework for Bash projects
+theme: minima
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+plugins:
+  - jekyll-seo-tag
+
+include:
+  - examples
+
+# Prevent Jekyll from processing genhtml output (serve as static files)
+keep_files:
+  - examples/basic/coverage
+  - examples/if_basic/coverage
+  - examples/case_select/coverage
+  - examples/mixed/coverage

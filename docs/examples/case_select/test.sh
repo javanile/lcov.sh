@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-# shellcheck source=./examples/case_select/script.sh
-source ./examples/case_select/script.sh
+# shellcheck source=docs/examples/case_select/script.sh
+source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
 # http_status_message: only testing 200 and 404
 # NOT covered: 201, 301, 400, 401, 403, 500, 503, wildcard

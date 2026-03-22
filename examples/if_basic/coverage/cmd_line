@@ -1,1 +1,0 @@
-genhtml -q -o ./examples/if_basic/coverage ./examples/if_basic/coverage/lcov.info

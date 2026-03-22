@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-# shellcheck source=./examples/mixed/script.sh
-source ./examples/mixed/script.sh
+# shellcheck source=docs/examples/mixed/script.sh
+source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
 # authenticate: only testing successful admin login
 # NOT covered: empty username, empty password, guest login, wrong credentials
