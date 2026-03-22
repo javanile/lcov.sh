@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+[ -z "${LCOV_DEBUG}" ] || set -x
+
 ##
-# Authenticate a user with username and password.
-# Returns 0 on success, 1 on failure.
+# Authenticate a user — uses one-liner if guards at the top.
 ##
 authenticate() {
     local username
@@ -10,15 +11,8 @@ authenticate() {
     username="$1"
     password="$2"
 
-    if [[ -z "$username" ]]; then
-        echo "error: username required"
-        return 1
-    fi
-
-    if [[ -z "$password" ]]; then
-        echo "error: password required"
-        return 1
-    fi
+    if [[ -z "$username" ]]; then echo "error: username required"; return 1; fi
+    if [[ -z "$password" ]]; then echo "error: password required"; return 1; fi
 
     if [[ "$username" == "admin" && "$password" == "secret" ]]; then
         echo "authenticated as admin"
@@ -33,7 +27,7 @@ authenticate() {
 }
 
 ##
-# Return the permissions for a given role.
+# Return the permissions for a given role — mix of multi-line case branches.
 ##
 get_permissions() {
     local role
@@ -56,6 +50,47 @@ get_permissions() {
             echo "none"
             ;;
     esac
+}
+
+##
+# Normalize a text string using a pipe chain with escaped newlines.
+##
+normalize_text() {
+    local text
+    text="$1"
+
+    if [[ -z "$text" ]]; then
+        echo "empty"
+        return 1
+    fi
+
+    echo "$text" \
+        | tr '[:upper:]' '[:lower:]' \
+        | tr -s ' ' \
+        | sed 's/^ //;s/ $//'
+}
+
+##
+# Run a deploy sequence using a brace group block.
+##
+deploy() {
+    local env
+    env="$1"
+
+    if [[ "$env" == "prod" ]]; then
+        {
+            echo "stopping services"
+            echo "running migrations"
+            echo "starting services"
+        }
+        return 0
+    elif [[ "$env" == "staging" ]]; then
+        echo "deploying to staging"
+        return 0
+    else
+        echo "unknown environment: $env"
+        return 1
+    fi
 }
 
 ##

@@ -104,18 +104,18 @@ echo ""
 build_basic_example
 build_new_example "if_basic" \
   "Example: If / Elif / Else Coverage" \
-  "This example demonstrates how lcov.sh tracks **line coverage inside \`if\`, \`elif\`, and \`else\` branches**. The test only exercises a subset of paths — uncovered branches are highlighted in the report." \
+  "This example shows multi-line \`if/elif/else\` chains alongside **one-liner \`if\` statements** and short-circuit \`&&\` guards. The test only exercises a subset of paths — uncovered branches appear red." \
   "The red lines below are branches that were **never executed** by the test."
 
 build_new_example "case_select" \
   "Example: Case Statement Coverage" \
-  "This example demonstrates how lcov.sh tracks **line coverage inside \`case\` statements**. Only two HTTP status codes and two log levels are tested — the rest show as uncovered." \
+  "This example mixes **one-liner \`case\` branches** (\`200) echo \"OK\" ;;\`) with **multi-line branches** and pipe alternatives (\`PUT|PATCH\`). Only a subset of branches are tested — the rest show as uncovered." \
   "Each untested \`case\` branch appears red — helping you identify missing test scenarios."
 
 build_new_example "mixed" \
-  "Example: Mixed If + Case Coverage" \
-  "This example combines **nested \`if\` guards and a \`case\` dispatch** to show how lcov.sh handles real-world scripts where multiple code paths exist simultaneously." \
-  "The coverage report shows exactly which error paths, roles, and access denials were never tested."
+  "Example: Mixed Patterns Coverage" \
+  "This example combines one-liner \`if\` guards, multi-line \`case\` branches, a **pipe chain with escaped newlines** (\`\\\\\`), and a **brace group block** (\`{ ... }\`). Only some paths are tested." \
+  "The coverage report highlights which error paths, pipe stages, brace blocks, and access denials were never tested."
 
 echo ""
 echo "Done. All examples built."

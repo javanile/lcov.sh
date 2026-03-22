@@ -2,15 +2,17 @@
 title: "Example: If / Elif / Else Coverage"
 ---
 
-This example demonstrates how lcov.sh tracks **line coverage inside `if`, `elif`, and `else` branches**. The test only exercises a subset of paths — uncovered branches are highlighted in the report.
+This example shows multi-line `if/elif/else` chains alongside **one-liner `if` statements** and short-circuit `&&` guards. The test only exercises a subset of paths — uncovered branches appear red.
 
 **`script.sh`**
 
 ```bash
 #!/usr/bin/env bash
 
+[ -z "${LCOV_DEBUG}" ] || set -x
+
 ##
-# Classify a number as positive, negative or zero.
+# Classify a number using a standard multi-line if/elif/else.
 ##
 classify_number() {
     local n
@@ -26,7 +28,7 @@ classify_number() {
 }
 
 ##
-# Describe a temperature range.
+# Describe a temperature range (multi-line if/elif chain).
 ##
 describe_temperature() {
     local temp
@@ -42,6 +44,32 @@ describe_temperature() {
         echo "cold"
     fi
 }
+
+##
+# Validate an age using one-liner if statements (each on its own line).
+##
+validate_age() {
+    local age
+    age="$1"
+
+    if [[ ! "$age" =~ ^[0-9]+$ ]]; then echo "invalid: not a number"; return 1; fi
+    if [[ "$age" -gt 150 ]]; then echo "invalid: too large"; return 1; fi
+    if [[ "$age" -lt 18 ]]; then echo "minor"; return 0; fi
+    if [[ "$age" -ge 65 ]]; then echo "senior"; return 0; fi
+    echo "adult"
+}
+
+##
+# Check the sign of a number using short-circuit && operators on one line.
+##
+check_sign() {
+    local n
+    n="$1"
+
+    [[ "$n" -gt 0 ]] && echo "positive" && return 0
+    [[ "$n" -lt 0 ]] && echo "negative" && return 0
+    echo "zero"
+}
 ```
 
 **`test.sh`**
@@ -53,26 +81,33 @@ set -e
 # shellcheck source=docs/examples/if_basic/script.sh
 source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
-# classify_number: only testing POSITIVE — negative and zero branches NOT covered
+# classify_number: positive and zero only — negative NOT covered
 classify_number 5
-classify_number 42
+classify_number 0
 
-# describe_temperature: only testing HOT — warm, cool, cold branches NOT covered
+# describe_temperature: hot and cold only — warm and cool NOT covered
 describe_temperature 35
-describe_temperature 40
+describe_temperature 5
+
+# validate_age: adult and invalid string only — minor, senior, too-large NOT covered
+validate_age 30
+validate_age "abc" || true
+
+# check_sign: positive only — negative and zero NOT covered
+check_sign 10
 ```
 
 ```text
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  DONE test.sh: 'hot' (ok)
+  DONE test.sh: 'positive' (ok)
 
 Overall coverage rate:
-  lines......: 50.0% (8 of 16 lines)
+  lines......: 82.8% (24 of 29 lines)
   functions..: no data found
 Summary coverage rate:
-  lines......: 50.0% (8 of 16 lines)
+  lines......: 82.8% (24 of 29 lines)
   functions..: no data found
   branches...: no data found
   tests......: 1 (1 done, 0 fail, 0 skip)

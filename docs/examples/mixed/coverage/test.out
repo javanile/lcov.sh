@@ -1,4 +1,6 @@
 authenticated as admin
-read write delete
-read
+error: username required
+hello world
+deploying to staging
 access granted: viewer can read
+access denied: viewer cannot write

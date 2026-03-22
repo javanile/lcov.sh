@@ -2,15 +2,18 @@
 title: "Example: Case Statement Coverage"
 ---
 
-This example demonstrates how lcov.sh tracks **line coverage inside `case` statements**. Only two HTTP status codes and two log levels are tested — the rest show as uncovered.
+This example mixes **one-liner `case` branches** (`200) echo "OK" ;;`) with **multi-line branches** and pipe alternatives (`PUT|PATCH`). Only a subset of branches are tested — the rest show as uncovered.
 
 **`script.sh`**
 
 ```bash
 #!/usr/bin/env bash
 
+[ -z "${LCOV_DEBUG}" ] || set -x
+
 ##
 # Return the message for an HTTP status code.
+# Uses one-liner case branches.
 ##
 http_status_message() {
     local code
@@ -31,7 +34,36 @@ http_status_message() {
 }
 
 ##
+# Describe an HTTP method using multi-line case branches.
+# Also shows a pipe-alternative pattern (PUT|PATCH).
+##
+http_method_info() {
+    local method
+    method="$1"
+
+    case "$method" in
+        GET)
+            echo "read-only"
+            echo "safe and idempotent"
+            ;;
+        POST)
+            echo "creates resource"
+            ;;
+        PUT|PATCH)
+            echo "updates resource"
+            ;;
+        DELETE)
+            echo "removes resource"
+            ;;
+        *)
+            echo "unknown method"
+            ;;
+    esac
+}
+
+##
 # Convert a log level name to a numeric priority.
+# Uses one-liner case branches.
 ##
 log_level_priority() {
     local level
@@ -58,13 +90,16 @@ set -e
 # shellcheck source=docs/examples/case_select/script.sh
 source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
-# http_status_message: only testing 200 and 404
-# NOT covered: 201, 301, 400, 401, 403, 500, 503, wildcard
+# http_status_message: 200, 404, 500 only — 201, 301, 400, 401, 403, 503 NOT covered
 http_status_message 200
 http_status_message 404
+http_status_message 500
 
-# log_level_priority: only testing info and error
-# NOT covered: trace, debug, warn, fatal, wildcard
+# http_method_info: GET and DELETE only — POST, PUT/PATCH NOT covered
+http_method_info GET
+http_method_info DELETE
+
+# log_level_priority: info and error only — trace, debug, warn, fatal NOT covered
 log_level_priority info
 log_level_priority error
 ```
@@ -76,10 +111,10 @@ LCOV.SH by Francesco Bianco <bianco@javanile.org>
   DONE test.sh: '4' (ok)
 
 Overall coverage rate:
-  lines......: 43.5% (10 of 23 lines)
+  lines......: 52.6% (20 of 38 lines)
   functions..: no data found
 Summary coverage rate:
-  lines......: 43.5% (10 of 23 lines)
+  lines......: 52.6% (20 of 38 lines)
   functions..: no data found
   branches...: no data found
   tests......: 1 (1 done, 0 fail, 0 skip)

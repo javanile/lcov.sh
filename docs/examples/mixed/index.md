@@ -1,17 +1,18 @@
 ---
-title: "Example: Mixed If + Case Coverage"
+title: "Example: Mixed Patterns Coverage"
 ---
 
-This example combines **nested `if` guards and a `case` dispatch** to show how lcov.sh handles real-world scripts where multiple code paths exist simultaneously.
+This example combines one-liner `if` guards, multi-line `case` branches, a **pipe chain with escaped newlines** (`\\`), and a **brace group block** (`{ ... }`). Only some paths are tested.
 
 **`script.sh`**
 
 ```bash
 #!/usr/bin/env bash
 
+[ -z "${LCOV_DEBUG}" ] || set -x
+
 ##
-# Authenticate a user with username and password.
-# Returns 0 on success, 1 on failure.
+# Authenticate a user — uses one-liner if guards at the top.
 ##
 authenticate() {
     local username
@@ -19,15 +20,8 @@ authenticate() {
     username="$1"
     password="$2"
 
-    if [[ -z "$username" ]]; then
-        echo "error: username required"
-        return 1
-    fi
-
-    if [[ -z "$password" ]]; then
-        echo "error: password required"
-        return 1
-    fi
+    if [[ -z "$username" ]]; then echo "error: username required"; return 1; fi
+    if [[ -z "$password" ]]; then echo "error: password required"; return 1; fi
 
     if [[ "$username" == "admin" && "$password" == "secret" ]]; then
         echo "authenticated as admin"
@@ -42,7 +36,7 @@ authenticate() {
 }
 
 ##
-# Return the permissions for a given role.
+# Return the permissions for a given role — mix of multi-line case branches.
 ##
 get_permissions() {
     local role
@@ -65,6 +59,47 @@ get_permissions() {
             echo "none"
             ;;
     esac
+}
+
+##
+# Normalize a text string using a pipe chain with escaped newlines.
+##
+normalize_text() {
+    local text
+    text="$1"
+
+    if [[ -z "$text" ]]; then
+        echo "empty"
+        return 1
+    fi
+
+    echo "$text" \
+        | tr '[:upper:]' '[:lower:]' \
+        | tr -s ' ' \
+        | sed 's/^ //;s/ $//'
+}
+
+##
+# Run a deploy sequence using a brace group block.
+##
+deploy() {
+    local env
+    env="$1"
+
+    if [[ "$env" == "prod" ]]; then
+        {
+            echo "stopping services"
+            echo "running migrations"
+            echo "starting services"
+        }
+        return 0
+    elif [[ "$env" == "staging" ]]; then
+        echo "deploying to staging"
+        return 0
+    else
+        echo "unknown environment: $env"
+        return 1
+    fi
 }
 
 ##
@@ -98,37 +133,38 @@ set -e
 # shellcheck source=docs/examples/mixed/script.sh
 source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
-# authenticate: only testing successful admin login
-# NOT covered: empty username, empty password, guest login, wrong credentials
+# authenticate: admin login and missing username — guest and wrong credentials NOT covered
 authenticate "admin" "secret"
+authenticate "" "pass" || true
 
-# get_permissions: only testing admin and viewer
-# NOT covered: superadmin, editor, wildcard
-get_permissions "admin"
-get_permissions "viewer"
+# normalize_text: with content — empty string NOT covered
+normalize_text "  Hello   World  "
 
-# check_access: only testing read access for viewer
-# NOT covered: denied access path
-check_access "viewer" "read"
+# deploy: staging only — prod brace block and unknown env NOT covered
+deploy staging
+
+# check_access: viewer read (granted) and viewer write (denied)
+check_access viewer read
+check_access viewer write || true
 ```
 
 ```text
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  DONE test.sh: 'access granted: viewer can read' (ok)
+  DONE test.sh: 'access denied: viewer cannot write' (ok)
 
 Overall coverage rate:
-  lines......: 59.5% (25 of 42 lines)
+  lines......: 59.1% (39 of 66 lines)
   functions..: no data found
 Summary coverage rate:
-  lines......: 59.5% (25 of 42 lines)
+  lines......: 59.1% (39 of 66 lines)
   functions..: no data found
   branches...: no data found
   tests......: 1 (1 done, 0 fail, 0 skip)
   exit.......: 0 DONE
 ```
 
-_The coverage report shows exactly which error paths, roles, and access denials were never tested._
+_The coverage report highlights which error paths, pipe stages, brace blocks, and access denials were never tested._
 
 <iframe width="100%" height="640" src="coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>

@@ -4,15 +4,16 @@ set -e
 # shellcheck source=docs/examples/mixed/script.sh
 source "$(dirname "${BASH_SOURCE[0]}")/script.sh"
 
-# authenticate: only testing successful admin login
-# NOT covered: empty username, empty password, guest login, wrong credentials
+# authenticate: admin login and missing username — guest and wrong credentials NOT covered
 authenticate "admin" "secret"
+authenticate "" "pass" || true
 
-# get_permissions: only testing admin and viewer
-# NOT covered: superadmin, editor, wildcard
-get_permissions "admin"
-get_permissions "viewer"
+# normalize_text: with content — empty string NOT covered
+normalize_text "  Hello   World  "
 
-# check_access: only testing read access for viewer
-# NOT covered: denied access path
-check_access "viewer" "read"
+# deploy: staging only — prod brace block and unknown env NOT covered
+deploy staging
+
+# check_access: viewer read (granted) and viewer write (denied)
+check_access viewer read
+check_access viewer write || true

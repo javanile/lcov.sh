@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">50.0&nbsp;%</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryMed">82.8&nbsp;%</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntry">24</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-23 00:39:55</td>
+            <td class="headerValue">2026-03-23 00:46:50</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -62,39 +62,67 @@
 <pre class="source">
 <span id="L1"><span class="lineNum">       1</span>              : #!/usr/bin/env bash</span>
 <span id="L2"><span class="lineNum">       2</span>              : </span>
-<span id="L3"><span class="lineNum">       3</span>              : ##</span>
-<span id="L4"><span class="lineNum">       4</span>              : # Classify a number as positive, negative or zero.</span>
+<span id="L3"><span class="lineNum">       3</span> <span class="tlaGNC tlaBgGNC">           4 : [ -z &quot;${LCOV_DEBUG}&quot; ] || set -x</span></span>
+<span id="L4"><span class="lineNum">       4</span>              : </span>
 <span id="L5"><span class="lineNum">       5</span>              : ##</span>
-<span id="L6"><span class="lineNum">       6</span>              : classify_number() {</span>
-<span id="L7"><span class="lineNum">       7</span> <span class="tlaGNC tlaBgGNC">           2 :     local n</span></span>
-<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC">           2 :     n=&quot;$1&quot;</span></span>
-<span id="L9"><span class="lineNum">       9</span>              : </span>
-<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">           2 :     if [[ &quot;$n&quot; -gt 0 ]]; then</span></span>
-<span id="L11"><span class="lineNum">      11</span> <span class="tlaGNC">           2 :         echo &quot;positive&quot;</span></span>
-<span id="L12"><span class="lineNum">      12</span> <span class="tlaUNC tlaBgUNC">           0 :     elif [[ &quot;$n&quot; -lt 0 ]]; then</span></span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaUNC">           0 :         echo &quot;negative&quot;</span></span>
-<span id="L14"><span class="lineNum">      14</span>              :     else</span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaUNC">           0 :         echo &quot;zero&quot;</span></span>
-<span id="L16"><span class="lineNum">      16</span>              :     fi</span>
-<span id="L17"><span class="lineNum">      17</span>              : }</span>
-<span id="L18"><span class="lineNum">      18</span>              : </span>
-<span id="L19"><span class="lineNum">      19</span>              : ##</span>
-<span id="L20"><span class="lineNum">      20</span>              : # Describe a temperature range.</span>
+<span id="L6"><span class="lineNum">       6</span>              : # Classify a number using a standard multi-line if/elif/else.</span>
+<span id="L7"><span class="lineNum">       7</span>              : ##</span>
+<span id="L8"><span class="lineNum">       8</span>              : classify_number() {</span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">           2 :     local n</span></span>
+<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">           2 :     n=&quot;$1&quot;</span></span>
+<span id="L11"><span class="lineNum">      11</span>              : </span>
+<span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           2 :     if [[ &quot;$n&quot; -gt 0 ]]; then</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">           1 :         echo &quot;positive&quot;</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC">           1 :     elif [[ &quot;$n&quot; -lt 0 ]]; then</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaUNC tlaBgUNC">           0 :         echo &quot;negative&quot;</span></span>
+<span id="L16"><span class="lineNum">      16</span>              :     else</span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC tlaBgGNC">           1 :         echo &quot;zero&quot;</span></span>
+<span id="L18"><span class="lineNum">      18</span>              :     fi</span>
+<span id="L19"><span class="lineNum">      19</span>              : }</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
 <span id="L21"><span class="lineNum">      21</span>              : ##</span>
-<span id="L22"><span class="lineNum">      22</span>              : describe_temperature() {</span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC tlaBgGNC">           2 :     local temp</span></span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           2 :     temp=&quot;$1&quot;</span></span>
-<span id="L25"><span class="lineNum">      25</span>              : </span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           2 :     if [[ &quot;$temp&quot; -ge 30 ]]; then</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">           2 :         echo &quot;hot&quot;</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC tlaBgUNC">           0 :     elif [[ &quot;$temp&quot; -ge 20 ]]; then</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :         echo &quot;warm&quot;</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 :     elif [[ &quot;$temp&quot; -ge 10 ]]; then</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0 :         echo &quot;cool&quot;</span></span>
-<span id="L32"><span class="lineNum">      32</span>              :     else</span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 :         echo &quot;cold&quot;</span></span>
-<span id="L34"><span class="lineNum">      34</span>              :     fi</span>
-<span id="L35"><span class="lineNum">      35</span>              : }</span>
+<span id="L22"><span class="lineNum">      22</span>              : # Describe a temperature range (multi-line if/elif chain).</span>
+<span id="L23"><span class="lineNum">      23</span>              : ##</span>
+<span id="L24"><span class="lineNum">      24</span>              : describe_temperature() {</span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           2 :     local temp</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           2 :     temp=&quot;$1&quot;</span></span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           2 :     if [[ &quot;$temp&quot; -ge 30 ]]; then</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           1 :         echo &quot;hot&quot;</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           1 :     elif [[ &quot;$temp&quot; -ge 20 ]]; then</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC tlaBgUNC">           0 :         echo &quot;warm&quot;</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC tlaBgGNC">           1 :     elif [[ &quot;$temp&quot; -ge 10 ]]; then</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC tlaBgUNC">           0 :         echo &quot;cool&quot;</span></span>
+<span id="L34"><span class="lineNum">      34</span>              :     else</span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC tlaBgGNC">           1 :         echo &quot;cold&quot;</span></span>
+<span id="L36"><span class="lineNum">      36</span>              :     fi</span>
+<span id="L37"><span class="lineNum">      37</span>              : }</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span>              : ##</span>
+<span id="L40"><span class="lineNum">      40</span>              : # Validate an age using one-liner if statements (each on its own line).</span>
+<span id="L41"><span class="lineNum">      41</span>              : ##</span>
+<span id="L42"><span class="lineNum">      42</span>              : validate_age() {</span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           2 :     local age</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           2 :     age=&quot;$1&quot;</span></span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           4 :     if [[ ! &quot;$age&quot; =~ ^[0-9]+$ ]]; then echo &quot;invalid: not a number&quot;; return 1; fi</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           1 :     if [[ &quot;$age&quot; -gt 150 ]]; then echo &quot;invalid: too large&quot;; return 1; fi</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">           1 :     if [[ &quot;$age&quot; -lt 18 ]]; then echo &quot;minor&quot;; return 0; fi</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           1 :     if [[ &quot;$age&quot; -ge 65 ]]; then echo &quot;senior&quot;; return 0; fi</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">           1 :     echo &quot;adult&quot;</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : }</span>
+<span id="L52"><span class="lineNum">      52</span>              : </span>
+<span id="L53"><span class="lineNum">      53</span>              : ##</span>
+<span id="L54"><span class="lineNum">      54</span>              : # Check the sign of a number using short-circuit &amp;&amp; operators on one line.</span>
+<span id="L55"><span class="lineNum">      55</span>              : ##</span>
+<span id="L56"><span class="lineNum">      56</span>              : check_sign() {</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">           1 :     local n</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">           1 :     n=&quot;$1&quot;</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           3 :     [[ &quot;$n&quot; -gt 0 ]] &amp;&amp; echo &quot;positive&quot; &amp;&amp; return 0</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC tlaBgUNC">           0 :     [[ &quot;$n&quot; -lt 0 ]] &amp;&amp; echo &quot;negative&quot; &amp;&amp; return 0</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :     echo &quot;zero&quot;</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : }</span>
         </pre>
               </td>
             </tr>
