@@ -70,7 +70,7 @@ LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
 Overall coverage rate:
   lines......: 50.0% (8 of 16 lines)
-  functions......: no data found
+  functions..: no data found
 Summary coverage rate:
   lines......: 50.0% (8 of 16 lines)
   functions..: no data found

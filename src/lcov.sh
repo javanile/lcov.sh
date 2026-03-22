@@ -112,8 +112,8 @@ lcov_done() {
       exit_info="${done_flag}"
       exit_code=0
     fi
-    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info" && true
-    lcov --summary "${lcov_output}/lcov.info"
+    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info" 2>&1 | sed 's/functions\.\.\.\.\.\./functions../g' && true
+    lcov --summary "${lcov_output}/lcov.info" | sed 's/functions\.\.\.\.\.\./functions../g'
     echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
     echo -e "  exit.......: ${exit_code} ${exit_info}"
     exit ${exit_code}

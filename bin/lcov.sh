@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T23:13:15Z
+# @build_date: 2026-03-22T23:20:47Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -428,8 +428,8 @@ lcov_done() {
       exit_info="${done_flag}"
       exit_code=0
     fi
-    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info" && true
-    lcov --summary "${lcov_output}/lcov.info"
+    genhtml -q -o "${lcov_output}" "${lcov_output}/lcov.info" 2>&1 | sed 's/functions\.\.\.\.\.\./functions../g' && true
+    lcov --summary "${lcov_output}/lcov.info" | sed 's/functions\.\.\.\.\.\./functions../g'
     echo -e "  tests......: ${test} (${done} done, ${fail} fail, ${skip} skip)"
     echo -e "  exit.......: ${exit_code} ${exit_info}"
     exit ${exit_code}
