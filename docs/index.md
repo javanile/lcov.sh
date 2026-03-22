@@ -8,8 +8,6 @@ permalink: /
 **lcov.sh** wraps `lcov` and `genhtml` to give you line-coverage reports for your shell scripts —
 the same HTML reports you know from C/C++ projects, applied to Bash.
 
----
-
 ## Quick start
 
 ```bash
@@ -23,8 +21,6 @@ lcov.sh -o coverage tests/my-test.sh
 open coverage/index.html
 ```
 
----
-
 ## How it works
 
 1. **`lcov_init`** scans your source files and creates a baseline trace with every line at `DA:N,0`
@@ -32,16 +28,12 @@ open coverage/index.html
 3. **`lcov_append_info`** parses the xtrace log and marks executed lines as `DA:N,1`
 4. **`genhtml`** renders the final HTML report with green (covered) and red (not covered) lines
 
----
-
 ## Coverage report preview
 
 The example below shows a script where `uncovered_func` was never called by the test.
 Lines in red were **never executed**.
 
 <iframe width="100%" height="640" src="examples/basic/coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>
-
----
 
 ## Browse examples
 

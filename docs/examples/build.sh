@@ -34,7 +34,7 @@ dump() {
 }
 
 ##
-# Build a new-style example (run from project root with -e xyz -i flags).
+# Build a new-style example (run from inside the example dir so relative paths work).
 # Usage: build_new_example <name> <title> <description> <note>
 ##
 build_new_example() {
@@ -45,15 +45,12 @@ build_new_example() {
   local dir="${EXAMPLES}/${name}"
 
   echo "  Building: ${name}..."
-  rm -fr "${dir}/coverage"
 
   local output
   output=$(
-    "${BIN}" \
-      -e xyz \
-      -o "${dir}/coverage" \
-      -i "${dir}/script.sh" \
-      "${dir}/test.sh" 2>&1
+    cd "${dir}"
+    rm -fr coverage
+    "${BIN}" -e xyz -o coverage -i script.sh test.sh 2>&1
   )
 
   (

@@ -69,34 +69,17 @@ log_level_priority error
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  > grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/coverage/lcov.files: File o directory non esistente
-DONE /home/francesco/Develop/Javanile/lcov.sh/docs/examples/case_select/test.sh: '4' (ok)
-==> Error missing lcov_init before lcov_done.
-    lcov_done() at /home/francesco/Develop/Javanile/lcov.sh/bin/lcov.sh:199
-    main() at /home/francesco/Develop/Javanile/lcov.sh/bin/lcov.sh:685
-    main() at /home/francesco/Develop/Javanile/lcov.sh/bin/lcov.sh:0
+  > DONE test.sh: '4' (ok)
+
+Overall coverage rate:
+  lines......: 43.5% (10 of 23 lines)
+  functions......: no data found
+Summary coverage rate:
+  lines......: 43.5% (10 of 23 lines)
+  functions..: no data found
+  branches...: no data found
+  tests......: 1 (1 done, 0 fail, 0 skip)
+  exit.......: 0 DONE
 ```
 
 > Each untested `case` branch appears red — helping you identify missing test scenarios.

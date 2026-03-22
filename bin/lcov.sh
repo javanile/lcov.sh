@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T22:18:32Z
+# @build_date: 2026-03-22T22:53:10Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -263,6 +263,7 @@ get_files() {
 
   for arg in "$@"; do
     if [[ "${arg::1}" != "!" ]]; then
+      [[ "${arg::1}" != "/" && "${arg::2}" != "./" ]] && arg="./${arg}"
       include+=" -or -wholename ${arg}"
     else
       exclude+=" -not -wholename ${arg:1} -not -path *${arg:1}*"

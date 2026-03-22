@@ -19,8 +19,6 @@ apt-get install lcov
 brew install lcov
 ```
 
----
-
 ## Usage
 
 ```
@@ -38,8 +36,6 @@ lcov.sh [OPTIONS] <test-file> [test-file ...]
 | `-s, --stop-on-failure` | Stop immediately if a test fails |
 | `-v, --version` | Show version |
 | `-h, --help` | Show help |
-
----
 
 ## How it works
 
@@ -64,8 +60,6 @@ lines are executed during a test run. The trace is then converted into `.info` f
 4. **Report** — `genhtml` renders the final HTML with green (covered) and red (not covered)
    lines, plus summary statistics.
 
----
-
 ## Source mode
 
 `lcov.sh` can also be sourced to use individual functions directly in your test scripts:
@@ -89,16 +83,12 @@ lcov_done
 | `lcov_done` | Finalize and generate HTML report |
 | `lcov_append_info FILE` | Parse one xtrace log and merge into coverage |
 
----
-
 ## Environment variables
 
 | Variable | Description |
 |----------|-------------|
 | `LCOV_DEBUG_LOG` | Path to write full debug log |
 | `LCOV_DEBUG_NO_COLOR` | Set to any value to disable colored output |
-
----
 
 ## Examples
 

@@ -5,8 +5,6 @@ permalink: /contributing/
 
 Contributions are welcome! Here is how to get started.
 
----
-
 ## Development setup
 
 ```bash
@@ -19,8 +17,6 @@ mush build --release
 ```
 
 Requires [mush](https://github.com/javanile/mush) and `lcov` / `genhtml` installed.
-
----
 
 ## Project structure
 
@@ -41,8 +37,6 @@ docs/
   examples/     # interactive coverage example pages
 ```
 
----
-
 ## Running tests
 
 ```bash
@@ -52,8 +46,6 @@ bash tests/bare/run.sh
 # Rebuild documentation examples
 bash docs/examples/build.sh
 ```
-
----
 
 ## Submitting changes
 

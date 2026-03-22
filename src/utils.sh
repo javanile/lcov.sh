@@ -32,6 +32,7 @@ get_files() {
 
   for arg in "$@"; do
     if [[ "${arg::1}" != "!" ]]; then
+      [[ "${arg::1}" != "/" && "${arg::2}" != "./" ]] && arg="./${arg}"
       include+=" -or -wholename ${arg}"
     else
       exclude+=" -not -wholename ${arg:1} -not -path *${arg:1}*"

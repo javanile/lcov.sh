@@ -5,8 +5,6 @@ permalink: /changelog/
 
 All notable changes to lcov.sh are documented here.
 
----
-
 ## [Unreleased] — mush branch
 
 ### Added
@@ -23,8 +21,6 @@ All notable changes to lcov.sh are documented here.
 - Absolute path normalization in `lcov_init` prevents SF path mismatch between baseline and trace
 - `lcov_exec` now uses `|| true` pattern to avoid `set -e` triggering on lcov warnings
 - BASH_SOURCE check moved to last module so all functions are defined before `return 0`
-
----
 
 ## [0.1.0] — initial release
 

@@ -112,50 +112,17 @@ check_access "viewer" "read"
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  > grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-grep: /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/coverage/lcov.files: File o directory non esistente
-DONE /home/francesco/Develop/Javanile/lcov.sh/docs/examples/mixed/test.sh: 'access granted: viewer can read' (ok)
-==> Error missing lcov_init before lcov_done.
-    lcov_done() at /home/francesco/Develop/Javanile/lcov.sh/bin/lcov.sh:199
-    main() at /home/francesco/Develop/Javanile/lcov.sh/bin/lcov.sh:685
-    main() at /home/francesco/Develop/Javanile/lcov.sh/bin/lcov.sh:0
+  > DONE test.sh: 'access granted: viewer can read' (ok)
+
+Overall coverage rate:
+  lines......: 54.8% (23 of 42 lines)
+  functions......: no data found
+Summary coverage rate:
+  lines......: 54.8% (23 of 42 lines)
+  functions..: no data found
+  branches...: no data found
+  tests......: 1 (1 done, 0 fail, 0 skip)
+  exit.......: 0 DONE
 ```
 
 > The coverage report shows exactly which error paths, roles, and access denials were never tested.
