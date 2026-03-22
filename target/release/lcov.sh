@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T21:28:04Z
+# @build_date: 2026-03-22T21:38:06Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -72,6 +72,46 @@ VERSION="0.1.0"
 
 # shellcheck disable=SC2016
 LCOV_PS4='+:lcov.sh:${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+
+##
+# Initialize environment variables for source mode.
+# Call this after sourcing lcov.sh to set up all required globals.
+#
+# Arguments:
+#  - $1: output directory (default: coverage)
+##
+lcov_env() {
+  lcov_output="${1:-coverage}"
+  lcov_extension="${lcov_extension:-sh}"
+  lcov_coverage=()
+  lcov_debug_log="${LCOV_DEBUG_LOG:-}"
+  lcov_temp_dir=$(mktemp -d -t lcov-sh-XXXXXXXXXXXX)
+
+  local escape
+  case "$(uname -s)" in
+    Darwin*) escape='\x1B' ;;
+    Linux|*) escape='\e' ;;
+  esac
+
+  if [[ -z "${LCOV_DEBUG_NO_COLOR}" ]]; then
+    skip_flag="${escape}[37m(skip)${escape}[0m"
+    done_flag="${escape}[1m${escape}[32m(done)${escape}[0m"
+    fail_flag="${escape}[1m${escape}[31m(fail)${escape}[0m"
+  else
+    skip_flag="SKIP"
+    done_flag="DONE"
+    fail_flag="FAIL"
+  fi
+
+  lcov_log="${lcov_output}/lcov.log"
+  lcov_info="${lcov_output}/lcov.info"
+  lcov_files="${lcov_output}/lcov.files"
+  lcov_test_log="${lcov_output}/test.log"
+  lcov_test_out="${lcov_output}/test.out"
+  lcov_test_lock="${lcov_output}/test.lock"
+  lcov_test_stat="${lcov_output}/test.stat"
+  lcov_test_info="${lcov_output}/test.info"
+}
 
 ##
 # Entry-point
@@ -163,10 +203,10 @@ main() {
 ## then expose LCOV.SH and BATS functions
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
   export -f run
-else
-  main "$@"
-  exit "$?"
+  return 0
 fi
+main "$@"
+exit "$?"
 # @section_code: SC007
 # @section_name: source
 # @source_index: 2

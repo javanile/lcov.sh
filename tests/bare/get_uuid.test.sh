@@ -2,8 +2,9 @@
 set -e
 
 # shellcheck disable=SC1091
-source ./deps/pipetest/pipetest.sh
-# shellcheck source=./lcov.sh
-source ./lcov.sh -o test/coverage
+source ./tests/pipetest.sh
+# shellcheck source=./bin/lcov.sh
+source ./bin/lcov.sh
+lcov_env tests/coverage
 
-get_uuid ./*.md !./*.sh | wc -c | assert_equals 37
+get_uuid | wc -c | assert_equals 37
