@@ -59,6 +59,7 @@ build-examples:
 	bash docs/examples/build.sh
 
 dev-commit:
+	git config credential.helper 'cache --timeout=3600'
 	git add .
 	git commit -am "Release" && true
 	git push
