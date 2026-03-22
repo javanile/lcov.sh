@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T23:25:01Z
+# @build_date: 2026-03-22T23:29:14Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -284,12 +284,14 @@ get_files() {
 ##
 lcov_spinner_start() {
   local msg="${1:-scanning...}"
-  local frames=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
+  # 12 frames: one perimeter dot off, rotating clockwise around the 4x4 outer square
+  # Left char base ⣏ (dots 1,2,3,4,7,8) | Right char base ⣹ (dots 1,4,5,6,7,8)
+  local frames=('⣎⣹' '⣇⣹' '⣏⣸' '⣏⣱' '⣏⣩' '⣏⣙' '⣏⡹' '⣏⢹' '⡏⣹' '⢏⣹' '⣋⣹' '⣍⣹')
   local i=0
   [[ -t 1 ]] || return 0
   (
     while true; do
-      printf "\r  > %s %s" "${frames[$((i % 8))]}" "${msg}"
+      printf "\r  > %s %s" "${frames[$((i % 12))]}" "${msg}"
       i=$((i + 1))
       sleep 0.08
     done
