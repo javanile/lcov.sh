@@ -23,6 +23,11 @@ p {
   padding: 8px 0;
 }
 
+// Remove underline on navbar link hover
+.site-nav .page-link:hover {
+  text-decoration: none;
+}
+
 // Reduce top margin on post/page content
 .post-content,
 .page-content .wrapper {
