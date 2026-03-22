@@ -1,3 +1,8 @@
+---
+title: Home
+permalink: /
+---
+
 # LCOV.SH
 
 > The best LCOV coverage framework for Bash projects.
@@ -31,34 +36,18 @@ open coverage/index.html
 
 ---
 
-## Options
-
-| Flag | Description |
-|------|-------------|
-| `-o, --output DIR` | Write HTML output to `DIR` (default: `coverage`) |
-| `-i, --include PATH` | Include files matching `PATH` |
-| `-x, --exclude PATH` | Exclude files matching `PATH` |
-| `-e, --extension EXT` | Track files with extension `EXT` (default: `sh`) |
-| `-s, --stop-on-failure` | Stop immediately if a test fails |
-| `-v, --version` | Show version |
-| `-h, --help` | Show help |
-
----
-
-## Examples
-
-Browse interactive examples with embedded coverage reports:
-
-- [**Basic**](examples/basic) — covered vs uncovered functions
-- [**If / Elif / Else**](examples/if_basic) — tracking branches inside `if` chains
-- [**Case Statement**](examples/case_select) — untested `case` arms highlighted in red
-- [**Mixed If + Case**](examples/mixed) — real-world nested conditions
-
----
-
 ## Coverage report preview
 
 The example below shows a script where `uncovered_func` was never called by the test.
 Lines in red were **never executed**.
 
 <iframe width="100%" height="640" src="examples/basic/coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>
+
+---
+
+## Browse examples
+
+- [**Basic**](examples/basic) — covered vs uncovered functions
+- [**If / Elif / Else**](examples/if_basic) — tracking branches inside `if` chains
+- [**Case Statement**](examples/case_select) — untested `case` arms highlighted in red
+- [**Mixed If + Case**](examples/mixed) — real-world nested conditions

@@ -9,6 +9,11 @@ kramdown:
 plugins:
   - jekyll-seo-tag
 
+header_pages:
+  - docs.md
+  - examples/README.md
+  - CHANGELOG.md
+
 include:
   - examples
 
