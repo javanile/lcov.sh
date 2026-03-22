@@ -82,3 +82,8 @@ lcov_bats_run() {
   IFS="$orig_ifs"
   set "-$flags"
 }
+
+## Bypass entry-point if file was sourced — placed last so all functions are defined
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  return 0
+fi

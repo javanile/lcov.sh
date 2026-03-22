@@ -167,11 +167,3 @@ main() {
   lcov_done
 }
 
-## Bypass entry-point if file was sourced
-## then expose LCOV.SH and BATS functions
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-  export -f run
-  return 0
-fi
-main "$@"
-exit "$?"

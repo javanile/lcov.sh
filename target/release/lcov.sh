@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T21:41:59Z
+# @build_date: 2026-03-22T21:44:15Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -199,14 +199,7 @@ main() {
   lcov_done
 }
 
-## Bypass entry-point if file was sourced
-## then expose LCOV.SH and BATS functions
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-  export -f run
-  return 0
-fi
-main "$@"
-exit "$?"
+
 # @section_code: SC007
 # @section_name: source
 # @source_index: 2
@@ -680,6 +673,11 @@ lcov_bats_run() {
   IFS="$orig_ifs"
   set "-$flags"
 }
+
+## Bypass entry-point if file was sourced — placed last so all functions are defined
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  return 0
+fi
 # @section_code: SC006
 # @section_name: entrypoint
 main "$@"
