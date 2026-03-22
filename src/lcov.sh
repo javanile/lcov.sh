@@ -72,7 +72,7 @@ lcov_scan() {
     [[ "${skip_eof}" == "EOF" ]] && continue
     [[ "${line}" == *"<<EOF" ]] && skip_eof=EOF
     local hit=0
-    [[ "${line}" == *'[ -z "${LCOV_DEBUG}" ] || set -x'* ]] && hit=1
+    [[ "${line}" == *"LCOV_DEBUG"* && "${line}" == *"set -x"* ]] && hit=1
     echo "DA:${lineno},${hit}"
   done < "$1"
 
