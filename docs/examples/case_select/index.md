@@ -1,8 +1,11 @@
-# Example: Case Statement Coverage
+---
+title: "Example: Case Statement Coverage"
+---
 
 This example demonstrates how lcov.sh tracks **line coverage inside `case` statements**. Only two HTTP status codes and two log levels are tested — the rest show as uncovered.
 
-> File: `script.sh`
+**`script.sh`**
+
 ```bash
 #!/usr/bin/env bash
 
@@ -46,7 +49,8 @@ log_level_priority() {
 }
 ```
 
-> File: `test.sh`
+**`test.sh`**
+
 ```bash
 #!/usr/bin/env bash
 set -e
@@ -65,11 +69,11 @@ log_level_priority info
 log_level_priority error
 ```
 
-```
+```text
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  > DONE test.sh: '4' (ok)
+  DONE test.sh: '4' (ok)
 
 Overall coverage rate:
   lines......: 43.5% (10 of 23 lines)
@@ -82,6 +86,6 @@ Summary coverage rate:
   exit.......: 0 DONE
 ```
 
-> Each untested `case` branch appears red — helping you identify missing test scenarios.
+_Each untested `case` branch appears red — helping you identify missing test scenarios._
 
 <iframe width="100%" height="640" src="coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>

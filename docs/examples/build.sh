@@ -17,10 +17,12 @@ EXAMPLES="${ROOT}/docs/examples"
 ##
 code() {
   local file="$1"
-  echo "> File: \`$(basename "$file")\`"
+  echo "**\`$(basename "$file")\`**"
+  echo ""
   echo '```bash'
   cat "$file"
   echo '```'
+  echo ""
 }
 
 ##
@@ -54,20 +56,20 @@ build_new_example() {
   )
 
   (
-    echo "# ${title}"
+    echo "---"
+    echo "title: \"${title}\""
+    echo "---"
     echo ""
     echo "${description}"
     echo ""
     code "${dir}/script.sh"
-    echo ""
     code "${dir}/test.sh"
-    echo ""
-    echo '```'
+    echo '```text'
     echo "$ lcov.sh -e xyz -o coverage -i script.sh test.sh"
-    echo "${output}"
+    echo "${output}" | sed 's/^  > /  /g'
     echo '```'
     echo ""
-    echo "> ${note}"
+    echo "_${note}_"
     echo ""
     echo '<iframe width="100%" height="640" src="coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>'
   ) > "${dir}/index.md"

@@ -1,8 +1,11 @@
-# Example: If / Elif / Else Coverage
+---
+title: "Example: If / Elif / Else Coverage"
+---
 
 This example demonstrates how lcov.sh tracks **line coverage inside `if`, `elif`, and `else` branches**. The test only exercises a subset of paths — uncovered branches are highlighted in the report.
 
-> File: `script.sh`
+**`script.sh`**
+
 ```bash
 #!/usr/bin/env bash
 
@@ -41,7 +44,8 @@ describe_temperature() {
 }
 ```
 
-> File: `test.sh`
+**`test.sh`**
+
 ```bash
 #!/usr/bin/env bash
 set -e
@@ -58,11 +62,11 @@ describe_temperature 35
 describe_temperature 40
 ```
 
-```
+```text
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  > DONE test.sh: 'hot' (ok)
+  DONE test.sh: 'hot' (ok)
 
 Overall coverage rate:
   lines......: 50.0% (8 of 16 lines)
@@ -75,6 +79,6 @@ Summary coverage rate:
   exit.......: 0 DONE
 ```
 
-> The red lines below are branches that were **never executed** by the test.
+_The red lines below are branches that were **never executed** by the test._
 
 <iframe width="100%" height="640" src="coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>

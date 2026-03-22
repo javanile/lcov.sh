@@ -1,8 +1,11 @@
-# Example: Mixed If + Case Coverage
+---
+title: "Example: Mixed If + Case Coverage"
+---
 
 This example combines **nested `if` guards and a `case` dispatch** to show how lcov.sh handles real-world scripts where multiple code paths exist simultaneously.
 
-> File: `script.sh`
+**`script.sh`**
+
 ```bash
 #!/usr/bin/env bash
 
@@ -86,7 +89,8 @@ check_access() {
 }
 ```
 
-> File: `test.sh`
+**`test.sh`**
+
 ```bash
 #!/usr/bin/env bash
 set -e
@@ -108,11 +112,11 @@ get_permissions "viewer"
 check_access "viewer" "read"
 ```
 
-```
+```text
 $ lcov.sh -e xyz -o coverage -i script.sh test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
 
-  > DONE test.sh: 'access granted: viewer can read' (ok)
+  DONE test.sh: 'access granted: viewer can read' (ok)
 
 Overall coverage rate:
   lines......: 54.8% (23 of 42 lines)
@@ -125,6 +129,6 @@ Summary coverage rate:
   exit.......: 0 DONE
 ```
 
-> The coverage report shows exactly which error paths, roles, and access denials were never tested.
+_The coverage report shows exactly which error paths, roles, and access denials were never tested._
 
 <iframe width="100%" height="640" src="coverage/index.html" frameborder="0" scrolling="yes" style="border:1px solid #ddd;border-radius:4px"></iframe>
