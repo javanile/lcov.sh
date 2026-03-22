@@ -58,8 +58,14 @@ test-docker:
 build-examples:
 	bash docs/examples/build.sh
 
+dev-commit:
+	git add .
+	git commit -am "Release" && true
+	git push
+
 release: build-examples
 	git pull
 	git add .
 	git commit -am "Release" && true
 	git push
+
