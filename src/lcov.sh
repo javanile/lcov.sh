@@ -146,17 +146,20 @@ lcov_append_info() {
         if [[ -n "$(grep -e "^${file}$" "${lcov_files}" && true)" ]]; then
           lineno=$(echo "${line}" | cut -s -d':' -f4)
           echo -e "TN:\nSF:${file}\nDA:${lineno},1\nend_of_record" >> "${temp_info}"
-          local prev_lineno prev_line
-          prev_lineno=$((lineno - 1))
-          while [[ ${prev_lineno} -gt 0 ]]; do
-            prev_line=$(sed -n "${prev_lineno}p" "${file}")
-            prev_line="${prev_line#"${prev_line%%[![:space:]]*}"}"
-            prev_line="${prev_line%"${prev_line##*[![:space:]]}"}"
-            [[ -z "${prev_line}" ]] && { prev_lineno=$((prev_lineno - 1)); continue; }
-            [[ "${prev_line: -1}" == ")" && "${prev_line}" != *"{"* ]] && \
-              echo -e "TN:\nSF:${file}\nDA:${prev_lineno},1\nend_of_record" >> "${temp_info}"
-            break
-          done
+          local curr_line prev_lineno prev_line
+          curr_line=$(sed -n "${lineno}p" "${file}")
+          if [[ "${curr_line}" != *";;"* ]]; then
+            prev_lineno=$((lineno - 1))
+            while [[ ${prev_lineno} -gt 0 ]]; do
+              prev_line=$(sed -n "${prev_lineno}p" "${file}")
+              prev_line="${prev_line#"${prev_line%%[![:space:]]*}"}"
+              prev_line="${prev_line%"${prev_line##*[![:space:]]}"}"
+              [[ -z "${prev_line}" ]] && { prev_lineno=$((prev_lineno - 1)); continue; }
+              [[ "${prev_line: -1}" == ")" && "${prev_line}" != *"{"* ]] && \
+                echo -e "TN:\nSF:${file}\nDA:${prev_lineno},1\nend_of_record" >> "${temp_info}"
+              break
+            done
+          fi
         fi
       fi
     elif [[ "${line}" = "${line_stop}" ]]; then
