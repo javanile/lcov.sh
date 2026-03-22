@@ -1,0 +1,1 @@
+genhtml -q -o ./examples/case_select/coverage ./examples/case_select/coverage/lcov.info

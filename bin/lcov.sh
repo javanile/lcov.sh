@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T22:10:02Z
+# @build_date: 2026-03-22T22:18:32Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -341,8 +341,10 @@ lcov_init() {
   init_info="${lcov_output}/init.info"
 
   get_files "$@" | while IFS= read -r file; do
-    readlink -f "${file}" >> "${lcov_files}"
-    lcov_scan "${file}" > "${init_info}"
+    local abs_file
+    abs_file="$(readlink -f "${file}")"
+    echo "${abs_file}" >> "${lcov_files}"
+    lcov_scan "${abs_file}" > "${init_info}"
     [[ -f "${lcov_info}" ]] || lcov_exec -q -a "${init_info}" -o "${lcov_info}" && true
     lcov_exec -q -a "${init_info}" -a "${lcov_info}" -o "${lcov_info}"
     rm -f "${init_info}"
