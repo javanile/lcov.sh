@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">50.0&nbsp;%</td>
+            <td class="headerCovTableEntryMed">75.0&nbsp;%</td>
             <td class="headerCovTableEntry">4</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-22 23:53:15</td>
+            <td class="headerValue">2026-03-23 00:10:56</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -62,10 +62,10 @@
 <pre class="source">
 <span id="L1"><span class="lineNum">       1</span>              : #!/bin/bash</span>
 <span id="L2"><span class="lineNum">       2</span>              : </span>
-<span id="L3"><span class="lineNum">       3</span> <span class="tlaUNC tlaBgUNC">           0 : [[ -z &quot;${LCOV_DEBUG}&quot; ]] || set -x</span></span>
+<span id="L3"><span class="lineNum">       3</span> <span class="tlaGNC tlaBgGNC">           2 : [ -z &quot;${LCOV_DEBUG}&quot; ] || set -x</span></span>
 <span id="L4"><span class="lineNum">       4</span>              : </span>
 <span id="L5"><span class="lineNum">       5</span>              : covered_func() {</span>
-<span id="L6"><span class="lineNum">       6</span> <span class="tlaGNC tlaBgGNC">           1 :   echo &quot;Hello $1!&quot;</span></span>
+<span id="L6"><span class="lineNum">       6</span> <span class="tlaGNC">           1 :   echo &quot;Hello $1!&quot;</span></span>
 <span id="L7"><span class="lineNum">       7</span>              : }</span>
 <span id="L8"><span class="lineNum">       8</span>              : </span>
 <span id="L9"><span class="lineNum">       9</span>              : uncovered_func() {</span>

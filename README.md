@@ -34,12 +34,12 @@ bash lcov.sh -v
 
 ### Usage
 
-Add the following code `[[ -z "${LCOV_DEBUG}" ]] || set -x`
+Add the following code `[ -z "${LCOV_DEBUG}" ] || set -x`
 on top of source file you want in a coverage report, see below example:
 
 ```bash
 #!/usr/bin/env bash
-[[ -z "${LCOV_DEBUG}" ]] || set -x
+[ -z "${LCOV_DEBUG}" ] || set -x
 
 welcome () {
     echo "Hi $1, I'm testable code"

@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T22:53:10Z
+# @build_date: 2026-03-22T23:10:51Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -58,7 +58,7 @@ inject() { return 0; }
 # SOFTWARE.
 ##
 
-[[ -n "${LCOV_DEBUG}" ]] && set -x
+[ -z "${LCOV_DEBUG}" ] || set -x
 
 set -ef
 
@@ -387,7 +387,9 @@ lcov_scan() {
     [[ "${line}" == "EOF" ]] && skip_eof= && continue
     [[ "${skip_eof}" == "EOF" ]] && continue
     [[ "${line}" == *"<<EOF" ]] && skip_eof=EOF
-    echo "DA:${lineno},0"
+    local hit=0
+    [[ "${line}" == *'[ -z "${LCOV_DEBUG}" ] || set -x'* ]] && hit=1
+    echo "DA:${lineno},${hit}"
   done < "$1"
 
   echo "end_of_record"

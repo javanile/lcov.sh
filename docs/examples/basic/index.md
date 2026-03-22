@@ -1,8 +1,9 @@
-> File: `script.sh`
+**`script.sh`**
+
 ```bash
 #!/bin/bash
 
-[[ -z "${LCOV_DEBUG}" ]] || set -x
+[ -z "${LCOV_DEBUG}" ] || set -x
 
 covered_func() {
   echo "Hello $1!"
@@ -15,7 +16,9 @@ uncovered_func() {
 covered_func "World!"
 ```
 
-> File: `script-test.sh`
+
+**`script-test.sh`**
+
 ```bash
 #!/bin/bash
 
@@ -24,6 +27,7 @@ bash script.sh
 exit $?
 ```
 
+
 ```
 $ ../../../bin/lcov.sh script-test.sh
 LCOV.SH by Francesco Bianco <bianco@javanile.org>
@@ -31,10 +35,10 @@ LCOV.SH by Francesco Bianco <bianco@javanile.org>
   > DONE script-test.sh: 'Hello World!!' (ok)
 
 Overall coverage rate:
-  lines......: 66.7% (4 of 6 lines)
+  lines......: 83.3% (5 of 6 lines)
   functions......: no data found
 Summary coverage rate:
-  lines......: 66.7% (4 of 6 lines)
+  lines......: 83.3% (5 of 6 lines)
   functions..: no data found
   branches...: no data found
   tests......: 1 (1 done, 0 fail, 0 skip)

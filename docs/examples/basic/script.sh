@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ -z "${LCOV_DEBUG}" ]] || set -x
+[ -z "${LCOV_DEBUG}" ] || set -x
 
 covered_func() {
   echo "Hello $1!"
