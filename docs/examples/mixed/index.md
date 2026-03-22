@@ -119,10 +119,10 @@ LCOV.SH by Francesco Bianco <bianco@javanile.org>
   DONE test.sh: 'access granted: viewer can read' (ok)
 
 Overall coverage rate:
-  lines......: 54.8% (23 of 42 lines)
+  lines......: 59.5% (25 of 42 lines)
   functions..: no data found
 Summary coverage rate:
-  lines......: 54.8% (23 of 42 lines)
+  lines......: 59.5% (25 of 42 lines)
   functions..: no data found
   branches...: no data found
   tests......: 1 (1 done, 0 fail, 0 skip)
