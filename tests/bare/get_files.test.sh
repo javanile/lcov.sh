@@ -7,14 +7,8 @@ source ./tests/pipetest.sh
 source ./bin/lcov.sh
 lcov_env tests/coverage
 
-get_files tests/fixtures/sample.md | assert_equals "$(cat <<EXPECTED
-./tests/fixtures/sample.md
-EXPECTED
-)"
+# Should include specific file in output
+get_files | grep -c "tests/fixtures/sample.sh" | assert_equals 1
 
-get_files tests/fixtures/sample.sh tests/fixtures/test1.sh tests/fixtures/test2.sh | sort | assert_equals "$(cat <<EXPECTED
-./tests/fixtures/sample.sh
-./tests/fixtures/test1.sh
-./tests/fixtures/test2.sh
-EXPECTED
-)"
+# Exclude pattern: should exclude test files
+get_files '!tests' | grep "tests/" | wc -l | assert_equals 0

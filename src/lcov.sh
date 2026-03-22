@@ -4,7 +4,7 @@
 ##
 lcov_exec() {
   local log
-  log=$(lcov "${@}" 2>&1 && true)
+  log=$(lcov "${@}" 2>&1) || true
   if [[ -n ${log} ]]; then
     error "${log}" >> "${lcov_log}"
   fi

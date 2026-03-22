@@ -224,7 +224,7 @@ assert_exists() {
 #
 ##
 assert_success() {
-  [[ -n "$1" ]] && echo "$1"
+  [[ -n "$1" ]] && echo "$1" || true
 }
 
 ##

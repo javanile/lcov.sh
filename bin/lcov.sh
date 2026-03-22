@@ -13,7 +13,7 @@ set -e
 # @file_type: build-entrypoint
 # @build_type: bin
 # @build_with: Mush v0.2.0 (2026-03-22 develop)
-# @build_date: 2026-03-22T21:44:15Z
+# @build_date: 2026-03-22T22:10:02Z
 
 # @section_code: SC005
 # @section_name: functions
@@ -319,7 +319,7 @@ error() {
 ##
 lcov_exec() {
   local log
-  log=$(lcov "${@}" 2>&1 && true)
+  log=$(lcov "${@}" 2>&1) || true
   if [[ -n ${log} ]]; then
     error "${log}" >> "${lcov_log}"
   fi
